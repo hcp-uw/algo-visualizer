@@ -3,7 +3,7 @@ import React from "react";
 export default function Text() {
     return (
         <div>
-        Algo-Visualizer 
+        Algo-Visualizer   
         </div>
     )
 }
