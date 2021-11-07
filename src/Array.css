@@ -1,0 +1,22 @@
+.array {
+    background-color: lightblue;
+    padding: 50px;
+    display: inline-block;
+    margin-right: 4px;
+  }
+
+.arrayPivot{
+  background-color: lightcoral;
+  padding: 50px;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.values {
+    width: 104px;
+    display: inline-block;
+    text-align: center;
+}
+
+
+
