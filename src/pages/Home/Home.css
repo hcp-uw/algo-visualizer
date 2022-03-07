@@ -1,0 +1,14 @@
+.message {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    width: 97%;
+}
+
+.message p {
+    width: 30%;
+    text-align: center;
+    font-size: 30px;
+}
