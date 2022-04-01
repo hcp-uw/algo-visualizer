@@ -1,0 +1,48 @@
+.logo {
+    height: 5rem;
+    margin: 3px 0 3px 20px;
+}
+
+.bg-purple {
+    background-color: var(--purple);
+}
+
+.navbar {
+    font-size: 32px;
+    font-weight: lighter;
+    padding: 0;
+}
+
+.nav-link {
+    color:white;
+    height: auto;
+    padding: 1.5rem 2rem;
+}
+
+.dropdown-menu {
+    background-color: var(--light-purple);
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 0.5rem;
+    margin-top: 1rem !important;
+}
+
+.dropdown-item {
+    padding: 8px 30px;
+    border-radius: 0.5rem;
+}
+
+
+.nav-link:hover {
+    color: var(--gold);
+}
+
+.nav-link:focus {
+    background-color: var(--light-purple);
+    color: black;
+}
+
+.dropdown-item:hover {
+    color: white;
+    background-color: var(--purple);
+}
