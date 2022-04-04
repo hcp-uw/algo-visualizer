@@ -2,7 +2,8 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import './LinearSearch.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {linearSearch} from '../../algorithms/searches.js'
+import axios from 'axios'
+import { faCropSimple } from '@fortawesome/free-solid-svg-icons'
 
 class LinearSearch extends React.Component {
     constructor(props) {
@@ -60,10 +61,12 @@ class LinearSearch extends React.Component {
 
     doAlgorithm = () => {
         var input = parseInt(this.inputRef.current.value);
-        var algorithm = linearSearch;
         var array = this.state.array.map((o)=> o.value);
-        
-        this.setState( { algorSteps: algorithm(array, input), currentStep: 0 });
+        var data = { array: array, target: input };
+        axios.post("http://localhost:3001/searches/linearsearch/", data)
+            .then( (res) => {
+                this.setState( { algorSteps: res.data.result, currentStep: 0 });
+            });
     }
 
     doReset = () => {

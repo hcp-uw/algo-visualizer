@@ -1,16 +1,16 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import './Canvas.css'
-import '../algorithms/searches.js'
+//import '../algorithms/searches.js'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { binarySearch, linearSearch } from '../algorithms/searches.js'
+//import { binarySearch, linearSearch } from '../algorithms/searches.js'
 
 class Canvas extends React.Component {
     constructor(props) {
         super(props);
         this.boardRef = React.createRef();
         this.inputRef = React.createRef();
-        this.algorMap = { "linear": linearSearch, "binary" : binarySearch };
+        //this.algorMap = { "linear": linearSearch, "binary" : binarySearch };
         this.playTimer = undefined;
         this.state = {
             width: props.width,

@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import './BinarySearch.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {binarySearch} from '../../algorithms/searches.js'
+import axios from 'axios'
 
 class BinarySearch extends React.Component {
     constructor(props) {
@@ -60,10 +60,12 @@ class BinarySearch extends React.Component {
 
     doAlgorithm = () => {
         var input = parseInt(this.inputRef.current.value);
-        var algorithm = binarySearch;
         var array = this.state.array.map((o)=> o.value);
-        
-        this.setState( { algorSteps: algorithm(array, input), currentStep: 0 });
+        var data = { array: array, target: input };
+        axios.post("http://localhost:3001/searches/binarysearch/", data)
+            .then( (res) => {
+            this.setState( { algorSteps: res.data.result, currentStep: 0 });
+        });
     }
 
     doReset = () => {

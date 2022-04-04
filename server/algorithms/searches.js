@@ -19,7 +19,7 @@
  * @param {*} target 
  * @returns r the result object
  */
-export function linearSearch(arr, target) {
+function linearSearch(arr, target) {
     var r = { steps: [], success: false}
 
     for (var i = 0; i < arr.length; i++) {
@@ -34,7 +34,7 @@ export function linearSearch(arr, target) {
 }
 
 
-export function binarySearch(arr, target) {
+function binarySearch(arr, target) {
     var result = { steps: [], success: false};
     var l = 0, r = arr.length-1;
 
@@ -58,4 +58,9 @@ export function binarySearch(arr, target) {
     }
     result.steps.push(-1);
     return result;
+}
+
+module.exports = {
+    linearSearch,
+    binarySearch
 }
