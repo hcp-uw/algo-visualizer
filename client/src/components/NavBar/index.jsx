@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import {Navbar, NavDropdown} from 'react-bootstrap'
 import './NavBar.css'
-import logo from './logo.png';
+import logo from '../../assets/logo.png';
 import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 

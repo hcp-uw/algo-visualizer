@@ -1,0 +1,23 @@
+.controls .btn {
+    margin: 10px;
+}
+
+.btn .fa {
+    margin-left: 0.5rem;
+    color: var(--purple);
+    transition-duration: 0.1s;
+}
+
+.btn {
+    border: 2px solid black;
+    transition-duration: 0.1s;
+}
+
+.btn:hover {
+    background-color: var(--purple);
+    color: white
+}
+
+.btn:hover .fa {
+    color: white
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import './BinarySearch.css'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import Controls from '../../components/Controls'
 import axios from 'axios'
 
 class BinarySearch extends React.Component {
@@ -98,7 +98,7 @@ class BinarySearch extends React.Component {
         }
     }
 
-    updateSpeed(speed) {
+    updateSpeed = (speed) => {
         this.setState( { playSpeed: speed } );
     }
 
@@ -133,46 +133,19 @@ class BinarySearch extends React.Component {
                     <input ref={this.inputRef} className="num-input" type="number" placeholder="Search for" defaultValue={this.state.array[6].value}></input>
                 </div>
 
-                <div className='centered'>
-                    <span >
-                        Current step: <b>{this.state.currentStep}</b>/
-                        {this.state.algorSteps.steps.length ? this.state.algorSteps.steps.length : 0}
-                    </span>
-                    <div>
-                        <label htmlFor="speed-slider">Speed:&nbsp;</label>
-                        <input id="speed-slider" type="range" min="1" max="5" defaultValue={this.state.playSpeed} onChange={(e) => this.updateSpeed(e.target.value)}></input>
-                    </div>
-                </div>
-
-                <div className='controls'>
-                    <button className="btn" title="do algorithm" onClick={this.doAlgorithm}>
-                        <span>Build</span>
-                        <FontAwesomeIcon icon="fa-wrench" className="fa"/>                
-                    </button>
-                    {
-                        this.state.playing ? 
-                        (<button className="btn" onClick={this.doPause}>
-                            <span>Pause</span>
-                            <FontAwesomeIcon icon="fa-pause" className="fa"/>                
-                        </button>) :
-                        (<button className="btn" onClick={this.doPlay}>
-                            <span>Play</span>
-                            <FontAwesomeIcon icon="fa-play" className="fa"/>                
-                        </button>)
-                    }
-                    <button className="btn" title="step backward once" onClick={this.stepBackward}>
-                        <span>Backward</span>
-                        <FontAwesomeIcon icon="fa-backward-step" className="fa"/>                
-                    </button>
-                    <button className="btn" title="step forward once" onClick={this.stepForward}>
-                        <span>Forward</span>
-                        <FontAwesomeIcon icon="fa-forward-step" className="fa"/>                
-                    </button>
-                    <button className="btn" title="restart algorithm" onClick={this.doReset}>
-                        <span>Reset</span>
-                        <FontAwesomeIcon icon="fa-rotate-left" className="fa"/>                
-                    </button>
-                </div>
+                <Controls
+                    doAlgorithm={this.doAlgorithm}
+                    doPause={this.doPause}
+                    doPlay={this.doPlay}
+                    stepBackward={this.stepBackward}
+                    stepForward={this.stepForward}
+                    doReset={this.doReset}
+                    updateSpeed={this.updateSpeed}
+                    algorSteps={this.state.algorSteps}
+                    playing={this.state.playing}
+                    currentStep={this.state.currentStep}
+                >
+                </Controls>
             </div>
         );
     }
