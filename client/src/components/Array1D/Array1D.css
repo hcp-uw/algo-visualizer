@@ -1,0 +1,38 @@
+.board {
+    border: 1px solid black;
+    display: flex;
+    margin: auto;
+}
+
+.table-container {
+    display: flex;
+    margin: auto;
+    width: 1000px;
+    height: 400px;
+}
+
+.elements {
+    table-layout: fixed;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 15px 0;
+}
+
+.elements td {
+    width: 3.5rem;
+    height: 3.5rem;
+    text-align: center;
+}
+
+.value-row {
+    font-size: 24px;
+}
+
+.index-row {
+    font-size: 18px;
+}
+
+.value-block {
+    border: 2px solid black;
+    box-shadow: 2px 3px 3px #969696;
+}
