@@ -1,5 +1,5 @@
 .content {
-    padding: 40px;
+    padding: 20px 40px 40px 40px;
     font-size: 20px;
 }
 
@@ -8,11 +8,15 @@
 }
 
 .highlight-found {
-    background-color: #96FA9A;
+    background-color: #96FA9A !important;
 }
 
 .highlight-error {
     background-color: #FF9A94;
+}
+
+.highlight-domain {
+    background-color: #c7e6ff;
 }
 
 .centered {

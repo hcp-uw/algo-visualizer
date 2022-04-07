@@ -33,7 +33,10 @@ function linearSearch(arr, target) {
     return r;
 }
 
-
+/**
+ * The steps in binary search also return the left and right boundary
+ * for extra visuals.
+ */
 function binarySearch(arr, target) {
     var result = { steps: [], success: false};
     var l = 0, r = arr.length-1;
@@ -44,8 +47,10 @@ function binarySearch(arr, target) {
 
     while (l <= r) {
         var m = Math.floor((l+r)/2);
-        result.steps.push(m);
+        result.steps.push({step: m, l: l, r: r});
         if (arr[m] === target) {
+            l = m;
+            r = m;
             result.success = true;
             break;
         }
@@ -55,8 +60,11 @@ function binarySearch(arr, target) {
         } else {
             r = m-1;
         }
+        result.steps.push({step: -2, l: l, r: r});
     }
-    result.steps.push(-1);
+    if (!result.success)
+        result.steps.pop();
+    result.steps.push({step: -1, l: l, r: r});
     return result;
 }
 

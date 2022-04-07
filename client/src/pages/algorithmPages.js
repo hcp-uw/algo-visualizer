@@ -21,23 +21,23 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                 array: [],
                 algorSteps: { steps: [], success: false},
                 currentStep: 0,
-                playSpeed: 3,
+                playSpeed: 5,
                 playing: false
             }
     
             var rands = [];
-            while (rands.length < 10) {
+            while (rands.length < 15) {
                 var n = Math.floor(Math.random() * 100);
                 rands.push(n);
             }
             rands.sort( (a,b) => a - b);
     
-            for (var i = 0; i < 10; i++) {
+            for (var i = 0; i < 15; i++) {
                 this.state.array.push({id:i, value:rands[i]})
             }
         }
 
-        // step forward the algorithm
+        // step forward the algorithm, use for button
         stepForward = () => {
             this.setState({ currentStep : Math.min(this.state.currentStep+1, this.state.algorSteps.steps.length) });
             this.doPause();
@@ -62,12 +62,18 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                         style = this.state.algorSteps.success ? ' highlight-found' : ' highlight-error';
                     }
                     
-                    return <td className={"value-block" + style} key={v.id} id={v.id}>{v.value}</td>
-                })
+                    return <td 
+                        className={"value-block" + style} 
+                        key={v.id} 
+                        id={v.id}
+                        onClick={this.updateTargetBoxValue.bind(this)}
+                        >{v.value}</td>
+                });
         }
         
         // request the backend to perform the algorithm
         doAlgorithm = () => {
+            this.doPause();
             var input = parseInt(this.inputRef.current.value);
             var array = this.state.array.map((o)=> o.value);
             var data = { array: array, target: input };
@@ -83,14 +89,27 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.doPause();
         }
         
-        // play the algorithm steps
+        // start playing the algorithm
         doPlay = () => {
             this.doPause();
-    
+            // restart the current step if the user press play at last step
+            if (this.state.currentStep === this.state.algorSteps.steps.length) {
+                this.setState( { currentStep: 0} );
+            }
+
             if (this.state.currentStep < this.state.algorSteps.steps.length) {
+                this.playStepLoop();
+            }
+        }
+        
+        // step the algorithm once and reestablish the timer loop
+        playStepLoop = () => {
+            if (this.state.currentStep === this.state.algorSteps.steps.length) {
+                this.doPause();
+            } else {
                 this.stepForward();
-                var interval = 10000 / Math.pow(Math.E, this.state.playSpeed);
-                this.playTimer = setTimeout(this.doPlay, interval);
+                var interval = 7500 / Math.sqrt(Math.pow(Math.E, this.state.playSpeed));
+                this.playTimer = setTimeout(this.playStepLoop, interval);
                 this.setState( { playing: true } );
             }
         }
@@ -117,6 +136,12 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.setState( { playSpeed: speed } );
         }
 
+        // update target box
+        // DOES NOT UPDATE INTERNAL TARGET VALUE
+        updateTargetBoxValue = (e) => {
+            this.inputRef.current.value = e.target.innerHTML;
+        }
+
         render = () => {
             return <React.Fragment>
                 <OriginalPage 
@@ -128,6 +153,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                     doPlay={this.doPlay}
                     doPause={this.doPause}
                     updateSpeed={this.updateSpeed}
+                    updateTargetBoxValue={this.updateTargetBoxValue}
                     inputRef={this.inputRef}
                     boardRef={this.boardRef}
                     { ... this.state}

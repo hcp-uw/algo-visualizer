@@ -7,7 +7,7 @@
 .table-container {
     display: flex;
     margin: auto;
-    width: 1000px;
+    width: auto;
     height: 400px;
 }
 
@@ -19,20 +19,25 @@
 }
 
 .elements td {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3rem;
+    height: 3rem;
     text-align: center;
 }
 
 .value-row {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .index-row {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .value-block {
     border: 2px solid black;
     box-shadow: 2px 3px 3px #969696;
+}
+
+.value-block:hover {
+    cursor: pointer;
+    background-color: #c8ffcb;
 }

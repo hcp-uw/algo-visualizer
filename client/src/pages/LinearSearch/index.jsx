@@ -9,6 +9,9 @@ class LinearSearch extends React.Component {
     render = (props) => {
         return (
             <div className="content">
+                <div className="centered">
+                    <h2>Linear Search</h2>
+                </div>
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
@@ -25,7 +28,7 @@ class LinearSearch extends React.Component {
                 
 
                 <div className='input-container'>
-                    <input ref={this.props.inputRef} className="num-input" type="number" placeholder="Search for" defaultValue={this.props.array[6].value}></input>
+                    <input ref={this.props.inputRef} className="num-input" type="number" placeholder="Search for" defaultValue={this.props.array[12].value}></input>
                 </div>
 
                 <Controls
