@@ -72,7 +72,9 @@ class NavBar extends React.Component {
                             <LinkContainer to="/insertion-sort">
                                 <NavDropdown.Item>Insertion Sort</NavDropdown.Item> 
                             </LinkContainer>
-                            <NavDropdown.Item href="#">3rd</NavDropdown.Item> 
+                            <LinkContainer to="/selection-sort">
+                                <NavDropdown.Item>Selection Sort</NavDropdown.Item> 
+                            </LinkContainer>
                             <NavDropdown.Item href="#">4th</NavDropdown.Item> 
                         </div>
                     </NavDropdown>

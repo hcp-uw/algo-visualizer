@@ -20,4 +20,11 @@ router.post("/insertionsort", (req, res) => {
     });
 });
 
+router.post("/selectionsort", (req, res) => {
+    var r = sorts.selectionSort(req.body.array);
+    res.status(200).send({
+        result: r
+    });
+});
+
 module.exports = router;

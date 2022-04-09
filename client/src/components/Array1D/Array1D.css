@@ -20,6 +20,10 @@
     background-color: #ffd0ce;
 }
 
+.highlight-minflag {
+    background-color: #b3beff;
+}
+
 .table-container {
     display: flex;
     margin: auto;

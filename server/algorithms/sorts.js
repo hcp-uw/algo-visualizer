@@ -93,7 +93,41 @@ function insertionSort(arr) {
     return r;
 }
 
+function selectionSort(arr) {
+    if (arr.length <= 1)
+        return;
+    
+    var r = { steps: [] };
+    var sorted = [];
+    var swapCount = 0;
+    var ids = [...Array(arr.length).keys()];
+    var minI = 0;
+    for (var i = 0; i < arr.length; i++) {
+        minI = i;
+        // start of new iteration
+        r.steps.push({ array: [...ids], highlight: [ids[i]], sorted: [...sorted], swapped: false, swapCount: swapCount, min: ids[minI]});
+        for (var j = i+1; j < arr.length; j++) {
+            // start traversing the rest of array
+            r.steps.push({ array: [...ids], highlight: [ids[j]], sorted: [...sorted], swapped: false, swapCount: swapCount, min: ids[minI]});
+            if (arr[ids[minI]] > arr[ids[j]]) {
+                minI = j;
+                // take the new min
+                r.steps.push({ array: [...ids], highlight: [], sorted: [...sorted], swapped: false, swapCount: swapCount, min: ids[minI]});
+            }
+        }
+        swap(ids, i, minI);
+        // swap at the end of iteration
+        r.steps.push({ array: [...ids], highlight: [ids[i], ids[minI]], sorted: [...sorted], swapped: true, swapCount: swapCount, min: ids[i]});
+        sorted.push(ids[i]);
+        // recognize the i index is sorted
+        r.steps.push({ array: [...ids], highlight: [], sorted: [...sorted], swapped: false, swapCount: swapCount, min: -1});
+    }
+
+    return r;
+}
+
 module.exports = {
     bubbleSort,
-    insertionSort
+    insertionSort,
+    selectionSort
 }
