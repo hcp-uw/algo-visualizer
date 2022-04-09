@@ -13,4 +13,11 @@ router.post("/bubblesort", (req, res) => {
     });
 });
 
+router.post("/insertionsort", (req, res) => {
+    var r = sorts.insertionSort(req.body.array);
+    res.status(200).send({
+        result: r
+    });
+});
+
 module.exports = router;

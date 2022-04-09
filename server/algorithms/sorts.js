@@ -28,7 +28,7 @@ function swap(array, i, j) {
 function bubbleSort(arr, descending=false) {
     if (arr.length <= 1)
         return;
-    var r = { steps: [] }
+    var r = { steps: [] };
     
     // multiplier for ascending/descending sort
     var mul = descending ? 1 : -1;
@@ -40,13 +40,13 @@ function bubbleSort(arr, descending=false) {
     var ids = [...Array(arr.length).keys()];
     for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr.length-1-i; j++) {
-            r.steps.push({ array: [...ids], highlight: [ids[j], ids[j+1]], sorted: [...sorted], swap: false, swapCount: swapCount});
+            r.steps.push({ array: [...ids], highlight: [ids[j], ids[j+1]], sorted: [...sorted], swapped: false, swapCount: swapCount});
             // compare with the next element
             if ((arr[ids[j+1]] - arr[ids[j]])* mul > 0) {
                 swap(ids, j, j+1);
                 swapped = true;
                 swapCount++;
-                r.steps.push({ array: [...ids], highlight: [ids[j], ids[j+1]], sorted: [...sorted], swap: true, swapCount: swapCount});
+                r.steps.push({ array: [...ids], highlight: [ids[j], ids[j+1]], sorted: [...sorted], swapped: true, swapCount: swapCount});
             } 
         }
         if (!swapped) {
@@ -60,12 +60,40 @@ function bubbleSort(arr, descending=false) {
                 sorted.push(ids[arr.length-1-i]);
             }
         }
-        r.steps.push({ array: [...ids], highlight: [], sorted: [...sorted], swap: false, swapCount: swapCount});
+        r.steps.push({ array: [...ids], highlight: [], sorted: [...sorted], swapped: false, swapCount: swapCount});
     }
 
     return r;
 }
 
+function insertionSort(arr) {
+    if (arr.length <= 1)
+        return;
+
+    var r = { steps: [] };
+    var sorted = [];
+    var swapCount = 0;
+    var ids = [...Array(arr.length).keys()];
+
+    var p = 0;
+    var i = 0;
+    while (i < arr.length) {
+        r.steps.push({ array: [...ids], highlight: [ids[p]], sorted: [...sorted], swapped: false, swapCount: swapCount});
+        while (p > 0 && arr[ids[p]] < arr[ids[p-1]]) {
+            swap(ids, p, p-1);
+            swapCount++;
+            r.steps.push({ array: [...ids], highlight: [ids[p], ids[p-1]], sorted: [...sorted], swapped: true, swapCount: swapCount});
+            p--;
+        }
+        sorted.push(ids[p]);
+        r.steps.push({ array: [...ids], highlight: [], sorted: [...sorted], swapped: false, swapCount: swapCount});
+        i++;
+        p = i;
+    }
+    return r;
+}
+
 module.exports = {
-    bubbleSort
+    bubbleSort,
+    insertionSort
 }

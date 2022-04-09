@@ -1,12 +1,12 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import './BubbleSort.css'
+import './InsertionSort.css'
 import Controls from '../../components/Controls'
 import algorithmPages from '../algorithmPages'
 import Array1D from '../../components/Array1D'
 import axios from 'axios'
 
-class BubbleSort extends React.Component {
+class InsertionSort extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,7 +57,7 @@ class BubbleSort extends React.Component {
         } else {
             var steps = this.props.algorSteps.steps;
             var currentStep = this.props.currentStep-1;
-            var array = steps[currentStep].array;
+            var array = steps[currentStep].array; // array of indexes
             var highlight = steps[currentStep].highlight;
             var swapped = steps[currentStep].swapped;
             var sorted = steps[currentStep].sorted;
@@ -88,7 +88,7 @@ class BubbleSort extends React.Component {
         return (
             <div className="content">
                 <div className="centered">
-                    <h2>Bubble Sort</h2>
+                    <h2>Insertion Sort</h2>
                 </div>
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
@@ -131,4 +131,4 @@ class BubbleSort extends React.Component {
     }
 }
 
-export default algorithmPages(BubbleSort, "http://localhost:3001/sorts/bubblesort/");
+export default algorithmPages(InsertionSort, "http://localhost:3001/sorts/insertionsort/");

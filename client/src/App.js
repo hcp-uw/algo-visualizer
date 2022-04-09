@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import LinearSearch from './pages/LinearSearch';
 import BinarySearch from './pages/BinarySearch';
 import BubbleSort from './pages/BubbleSort';
+import InsertionSort from './pages/InsertionSort';
 
 // necesary step to use these icons on other components
 library.add(faPlay, faForwardStep, faBackwardStep, faRotateLeft, faPause, faWrench)
@@ -24,6 +25,7 @@ class App extends React.Component {
           <Route exact path="/linear-search" element={<LinearSearch sort={true} />} />
           <Route exact path="/binary-search" element={<BinarySearch sort={true} />} />
           <Route exact path="/bubble-sort" element={<BubbleSort />} />
+          <Route exact path="/insertion-sort" element={<InsertionSort />} />
         </Routes>
       </React.Fragment>
     );
