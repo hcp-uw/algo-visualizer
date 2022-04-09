@@ -13,6 +13,9 @@ app.use(cors());
 // searches api
 app.use("/searches", require("./routes/searches.js"));
 
+// sorts api
+app.use("/sorts", require("./routes/sorts.js"));
+
 app.listen('3001', () => {
     console.log("Server up and running on port: 3001");
 })

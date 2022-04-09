@@ -21,7 +21,7 @@ class BinarySearch extends React.Component {
                             style = ' highlight';
                         } else if (currentStep !== 0 && v.id === steps[currentStep-1].step
                             && currentHighlightId === -1) {
-                            style = this.props.algorSteps.success ? ' highlight-found' : ' highlight-error';
+                            style = this.props.algorSteps.success ? ' highlight-success' : ' highlight-error';
                         }
                     }
                     

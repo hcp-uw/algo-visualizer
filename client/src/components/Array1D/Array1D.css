@@ -4,6 +4,22 @@
     margin: auto;
 }
 
+.highlight {
+    background-color: #FCF5B9;
+}
+
+.highlight-success {
+    background-color: #96FA9A !important;
+}
+
+.highlight-error {
+    background-color: #fc7c76;
+}
+
+.highlight-domain {
+    background-color: #ffd0ce;
+}
+
 .table-container {
     display: flex;
     margin: auto;
@@ -15,7 +31,7 @@
     table-layout: fixed;
     margin: auto;
     border-collapse: separate;
-    border-spacing: 15px 0;
+    border-spacing: 10px 0;
 }
 
 .elements td {

@@ -66,7 +66,9 @@ class NavBar extends React.Component {
                     <NavDropdown title="Sort">
                         <div onMouseLeave={(e) => this.navMenuMouseLeave(e)}>
                             <div style={invisBlock}>m</div>
-                            <NavDropdown.Item href="#">1st</NavDropdown.Item> 
+                            <LinkContainer to="/bubble-sort">
+                                <NavDropdown.Item>Bubble Sort</NavDropdown.Item> 
+                            </LinkContainer>
                             <NavDropdown.Item href="#">2nd</NavDropdown.Item> 
                             <NavDropdown.Item href="#">3rd</NavDropdown.Item> 
                             <NavDropdown.Item href="#">4th</NavDropdown.Item> 

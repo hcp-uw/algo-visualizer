@@ -1,12 +1,12 @@
 /**
- * All algorithms will take an array of (numbers/objects) as the elements to perform algorithm.
+ * Search algorithms will take an array of (numbers/objects) as the elements to perform algorithm.
  * The output will be an object containing the steps and a success flag.
  * 
  * INPUT:    array: Array(Numbers/Objects). Eg.: [1,2,3,4,5,6,7]
  *           value: Number/Object. The target value to search.
  * OUTPUT:   Object in format
  *              {
- *                  steps:      Array(Numbers)      *for now*   
+ *                  steps:      Array(Numbers)  
  *                  success:    boolean
  *              }
  */

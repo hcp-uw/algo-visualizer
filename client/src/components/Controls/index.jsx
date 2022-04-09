@@ -14,7 +14,7 @@ class Controls extends Component {
                     </span>
                     <div>
                         <label htmlFor="speed-slider">Speed:&nbsp;</label>
-                        <input id="speed-slider" type="range" min="1" max="10" defaultValue={5} onChange={(e) => this.props.updateSpeed(e.target.value)}></input>
+                        <input id="speed-slider" type="range" min="1" max="11" defaultValue={5} onChange={(e) => this.props.updateSpeed(e.target.value)}></input>
                     </div>
                     <div className="controls">
                         <button className="btn" title="do algorithm" onClick={this.props.doAlgorithm}>

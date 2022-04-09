@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import LinearSearch from './pages/LinearSearch';
 import BinarySearch from './pages/BinarySearch';
+import BubbleSort from './pages/BubbleSort';
 
 // necesary step to use these icons on other components
 library.add(faPlay, faForwardStep, faBackwardStep, faRotateLeft, faPause, faWrench)
@@ -20,8 +21,9 @@ class App extends React.Component {
         <NavBar />
         <Routes>
           <Route exact path="/" element={<Home/>} />
-          <Route exact path="/linear-search" element={<LinearSearch/>} />
-          <Route exact path="/binary-search" element={<BinarySearch/>} />
+          <Route exact path="/linear-search" element={<LinearSearch sort={true} />} />
+          <Route exact path="/binary-search" element={<BinarySearch sort={true} />} />
+          <Route exact path="/bubble-sort" element={<BubbleSort />} />
         </Routes>
       </React.Fragment>
     );

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import './common.css'
 
 /**
  * This is a wrapper function for any pages that do algorithms. 
@@ -30,7 +31,8 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                 var n = Math.floor(Math.random() * 100);
                 rands.push(n);
             }
-            rands.sort( (a,b) => a - b);
+            if (props.sort)
+                rands.sort( (a,b) => a - b);
     
             for (var i = 0; i < 15; i++) {
                 this.state.array.push({id:i, value:rands[i]})
@@ -59,7 +61,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                         style = ' highlight';
                     } else if (v.id === this.state.algorSteps.steps[this.state.currentStep-2] 
                         && currentHighlightId === -1) {
-                        style = this.state.algorSteps.success ? ' highlight-found' : ' highlight-error';
+                        style = this.state.algorSteps.success ? ' highlight-success' : ' highlight-error';
                     }
                     
                     return <td 
@@ -142,6 +144,11 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.inputRef.current.value = e.target.innerHTML;
         }
 
+        // cheat
+        setStateFromChild = (state) => {
+            this.setState(state);
+        }
+
         render = () => {
             return <React.Fragment>
                 <OriginalPage 
@@ -154,8 +161,10 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                     doPause={this.doPause}
                     updateSpeed={this.updateSpeed}
                     updateTargetBoxValue={this.updateTargetBoxValue}
+                    setStateFromChild={this.setStateFromChild}
                     inputRef={this.inputRef}
                     boardRef={this.boardRef}
+                    algorithmUrl={algorithmUrl}
                     { ... this.state}
                     { ... this.props}
                 />
