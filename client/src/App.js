@@ -31,6 +31,10 @@ library.add(
 );
 
 class App extends React.Component {
+    componentDidMount() {
+        document.title = "AlgoViz";
+    }
+
     render() {
         return (
             <React.Fragment>
