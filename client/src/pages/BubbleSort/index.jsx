@@ -101,9 +101,11 @@ class BubbleSort extends React.Component {
                 <div className="centered">
                     <h2>Bubble Sort</h2>
                 </div>
+                {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
+                */}
 
                 {/*
                 <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>

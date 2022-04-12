@@ -104,10 +104,11 @@ class SelectionSort extends React.Component {
                 <div className="centered">
                     <h2>Selection Sort</h2>
                 </div>
+                {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
-
+                */}
                 {/*
                 <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>
                     USE SVG FOR MORE ADVANCED ANIMATIONS IN THE FUTURE

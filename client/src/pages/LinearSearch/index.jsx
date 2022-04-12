@@ -12,9 +12,11 @@ class LinearSearch extends React.Component {
                 <div className="centered">
                     <h2>Linear Search</h2>
                 </div>
+                {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
+                */}
 
                 <Array1D
                     boardRef={this.props.boardRef}

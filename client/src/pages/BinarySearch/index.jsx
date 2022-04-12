@@ -53,9 +53,11 @@ class BinarySearch extends React.Component {
                 <div className="centered">
                     <h2>Binary Search</h2>
                 </div>
+                {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
+                */}
 
                 {/*
                 <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>
