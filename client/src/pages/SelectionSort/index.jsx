@@ -5,6 +5,7 @@ import Controls from "../../components/Controls";
 import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
+import StepTracker from "../../components/StepTracker";
 
 class SelectionSort extends React.Component {
     constructor(props) {
@@ -98,7 +99,7 @@ class SelectionSort extends React.Component {
         }
     };
 
-    render = (props) => {
+    render = () => {
         return (
             <div className="content">
                 <div className="centered">
@@ -138,6 +139,11 @@ class SelectionSort extends React.Component {
                     </span>
                 </div>
 
+                <StepTracker
+                    algorSteps={this.props.algorSteps}
+                    currentStep={this.props.currentStep}
+                ></StepTracker>
+
                 <Controls
                     doAlgorithm={this.doAlgorithm}
                     doPause={this.props.doPause}
@@ -146,9 +152,7 @@ class SelectionSort extends React.Component {
                     stepForward={this.props.stepForward}
                     doReset={this.props.doReset}
                     updateSpeed={this.props.updateSpeed}
-                    algorSteps={this.props.algorSteps}
                     playing={this.props.playing}
-                    currentStep={this.props.currentStep}
                 ></Controls>
             </div>
         );

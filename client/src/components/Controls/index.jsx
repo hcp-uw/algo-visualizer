@@ -8,12 +8,6 @@ class Controls extends Component {
         return (
             <React.Fragment>
                 <div className="centered">
-                    <span>
-                        Current step: <b>{this.props.currentStep}</b>/
-                        {this.props.algorSteps.steps.length
-                            ? this.props.algorSteps.steps.length
-                            : 0}
-                    </span>
                     <div>
                         <label htmlFor="speed-slider">Speed:&nbsp;</label>
                         <input

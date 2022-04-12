@@ -6,7 +6,7 @@
  *           value: Number/Object. The target value to search.
  * OUTPUT:   Object in format
  *              {
- *                  steps:      Array(Numbers)
+ *                  steps:      Array(Object{ element, description })
  *                  success:    boolean
  *              }
  */
@@ -23,13 +23,19 @@ function linearSearch(arr, target) {
     var r = { steps: [], success: false };
 
     for (var i = 0; i < arr.length; i++) {
-        r.steps.push(i);
+        r.steps.push({ element: i, description: `Checking index ${i}` });
         if (arr[i] === target) {
             r.success = true;
             break;
         }
     }
-    r.steps.push(-1); // mark the final step for highlight and stuff
+    // mark the final step for highlight and stuff
+    r.steps.push({
+        element: -1,
+        description: r.success
+            ? `Element found at index ${r.steps[r.steps.length - 1].element}!`
+            : `Element not found!`,
+    });
     return r;
 }
 
@@ -42,13 +48,27 @@ function binarySearch(arr, target) {
     var l = 0,
         r = arr.length - 1;
 
+    // array is not sorted
     if (arr[l] > arr[r]) {
+        result.steps.push({
+            step: -1,
+            l: l,
+            r: r,
+            description: "Array is not sorted! Search aborted",
+        });
         return result;
     }
 
     while (l <= r) {
+        // calculate middle index
         var m = Math.floor((l + r) / 2);
-        result.steps.push({ step: m, l: l, r: r });
+        result.steps.push({
+            step: m,
+            l: l,
+            r: r,
+            description: `Checking middle element at index ${m}(=floor(${l}+${r})/2)`,
+        });
+        // check if middle is target
         if (arr[m] === target) {
             l = m;
             r = m;
@@ -56,15 +76,31 @@ function binarySearch(arr, target) {
             break;
         }
 
+        let description = "";
+        // move left/right bound
         if (arr[m] < target) {
             l = m + 1;
+            description = `Middle element is less than target (${arr[m]}<${target}). Moving left bound to index ${l} (middle+1)`;
         } else {
             r = m - 1;
+            description = `Middle element is greater than target (${arr[m]}>${target}). Moving right bound to index ${r} (middle-1)`;
         }
-        result.steps.push({ step: -2, l: l, r: r });
+
+        result.steps.push({ step: -2, l: l, r: r, description: description });
     }
+    // when element is found, the last bound moving step is unesessary to report
     if (!result.success) result.steps.pop();
-    result.steps.push({ step: -1, l: l, r: r });
+    // report the result
+    result.steps.push({
+        step: -1,
+        l: l,
+        r: r,
+        description: result.success
+            ? `Element found at index ${
+                  result.steps[result.steps.length - 1].step
+              }!`
+            : `Element not found!`,
+    });
     return result;
 }
 

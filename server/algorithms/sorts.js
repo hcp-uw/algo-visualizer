@@ -45,6 +45,9 @@ function bubbleSort(arr, descending = false) {
                 sorted: [...sorted],
                 swapped: false,
                 swapCount: swapCount,
+                description: `Comparing index ${j}(=${
+                    arr[ids[j]]
+                }) and index ${j}(=${arr[ids[j + 1]]})`,
             });
             // compare with the next element
             if ((arr[ids[j + 1]] - arr[ids[j]]) * mul > 0) {
@@ -57,6 +60,9 @@ function bubbleSort(arr, descending = false) {
                     sorted: [...sorted],
                     swapped: true,
                     swapCount: swapCount,
+                    description: `${arr[ids[j]]} < ${
+                        arr[ids[j + 1]]
+                    }. Swapping index ${j} and ${j + 1}`,
                 });
             }
         }
@@ -77,6 +83,7 @@ function bubbleSort(arr, descending = false) {
             sorted: [...sorted],
             swapped: false,
             swapCount: swapCount,
+            description: `Index ${arr.length - i - 1} is sorted`,
         });
     }
 
@@ -91,16 +98,30 @@ function insertionSort(arr) {
     var swapCount = 0;
     var ids = [...Array(arr.length).keys()];
 
-    var p = 0;
-    var i = 0;
+    // first element is sorted always
+    sorted.push(ids[0]);
+    r.steps.push({
+        array: [...ids],
+        highlight: [],
+        sorted: [...sorted],
+        swapped: false,
+        swapCount: swapCount,
+        description: "First element is sorted",
+    });
+    var p = 1;
+    var i = 1;
     while (i < arr.length) {
+        // start pushing the ith index to the sorted partition
         r.steps.push({
             array: [...ids],
             highlight: [ids[p]],
             sorted: [...sorted],
             swapped: false,
             swapCount: swapCount,
+            description: `Start inserting index ${i} to the sorted partition`,
         });
+        // compare the ith element with the preceeding one.
+        // if the current one smaller, swap the two elements
         while (p > 0 && arr[ids[p]] < arr[ids[p - 1]]) {
             swap(ids, p, p - 1);
             swapCount++;
@@ -110,9 +131,13 @@ function insertionSort(arr) {
                 sorted: [...sorted],
                 swapped: true,
                 swapCount: swapCount,
+                description: `Current element is less than the preceding one (${
+                    arr[ids[p]]
+                }<${arr[ids[p - 1]]}). Swapping index ${p} and ${p - 1}`,
             });
             p--;
         }
+        // recognize that the ith index is sorted
         sorted.push(ids[p]);
         r.steps.push({
             array: [...ids],
@@ -120,6 +145,7 @@ function insertionSort(arr) {
             sorted: [...sorted],
             swapped: false,
             swapCount: swapCount,
+            description: `Index ${i} is now sorted`,
         });
         i++;
         p = i;
@@ -145,6 +171,8 @@ function selectionSort(arr) {
             swapped: false,
             swapCount: swapCount,
             min: ids[minI],
+            description:
+                `Starting iteration #${i + 1}. New minima is ` + arr[ids[i]],
         });
         for (var j = i + 1; j < arr.length; j++) {
             // start traversing the rest of array
@@ -155,9 +183,9 @@ function selectionSort(arr) {
                 swapped: false,
                 swapCount: swapCount,
                 min: ids[minI],
+                description: "Checking index " + j,
             });
             if (arr[ids[minI]] > arr[ids[j]]) {
-                minI = j;
                 // take the new min
                 r.steps.push({
                     array: [...ids],
@@ -166,19 +194,30 @@ function selectionSort(arr) {
                     swapped: false,
                     swapCount: swapCount,
                     min: ids[minI],
+                    description:
+                        `Found new minima (${arr[ids[j]]} < ${
+                            arr[ids[minI]]
+                        }) at index ` + j,
                 });
+                minI = j;
             }
         }
-        swap(ids, i, minI);
-        // swap at the end of iteration
-        r.steps.push({
-            array: [...ids],
-            highlight: [ids[i], ids[minI]],
-            sorted: [...sorted],
-            swapped: true,
-            swapCount: swapCount,
-            min: ids[i],
-        });
+        if (i !== minI) {
+            swap(ids, i, minI);
+            // swap at the end of iteration
+            r.steps.push({
+                array: [...ids],
+                highlight: [ids[i], ids[minI]],
+                sorted: [...sorted],
+                swapped: true,
+                swapCount: swapCount,
+                min: ids[i],
+                description: `Swapping index ${i}(=${
+                    arr[ids[i]]
+                }) and ${minI}(=${arr[ids[minI]]})`,
+            });
+        }
+
         sorted.push(ids[i]);
         // recognize the i index is sorted
         r.steps.push({
@@ -188,6 +227,7 @@ function selectionSort(arr) {
             swapped: false,
             swapCount: swapCount,
             min: -1,
+            description: `Index ${i} is now sorted`,
         });
     }
 

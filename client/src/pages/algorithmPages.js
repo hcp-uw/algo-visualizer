@@ -60,21 +60,26 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
         // draw the individual blocks of the array
         drawBlocks = () => {
             var currentHighlightId =
-                this.state.algorSteps.steps[this.state.currentStep - 1];
+                this.state.algorSteps.steps[0] > 0
+                    ? this.state.algorSteps.steps[this.state.currentStep - 1]
+                          .element
+                    : undefined;
             return this.state.array.map((v) => {
                 var style = "";
-                if (currentHighlightId === v.id) {
-                    style = " highlight";
-                } else if (
-                    v.id ===
-                        this.state.algorSteps.steps[
-                            this.state.currentStep - 2
-                        ] &&
-                    currentHighlightId === -1
-                ) {
-                    style = this.state.algorSteps.success
-                        ? " highlight-success"
-                        : " highlight-error";
+                if (currentHighlightId !== undefined) {
+                    if (currentHighlightId === v.id) {
+                        style = " highlight";
+                    } else if (
+                        v.id ===
+                            this.state.algorSteps.steps[
+                                this.state.currentStep - 2
+                            ].element &&
+                        currentHighlightId === -1
+                    ) {
+                        style = this.state.algorSteps.success
+                            ? " highlight-success"
+                            : " highlight-error";
+                    }
                 }
 
                 return (
@@ -116,6 +121,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
 
         // start playing the algorithm
         doPlay = () => {
+            this.updateConsoleText();
             this.doPause();
             // restart the current step if the user press play at last step
             if (this.state.currentStep === this.state.algorSteps.steps.length) {
@@ -172,6 +178,8 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
         setStateFromChild = (state) => {
             this.setState(state);
         };
+
+        updateConsoleText = () => {};
 
         render = () => {
             return (

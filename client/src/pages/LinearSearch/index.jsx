@@ -4,9 +4,10 @@ import "./LinearSearch.css";
 import Controls from "../../components/Controls";
 import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
+import StepTracker from "../../components/StepTracker";
 
 class LinearSearch extends React.Component {
-    render = (props) => {
+    render = () => {
         return (
             <div className="content">
                 <div className="centered">
@@ -28,6 +29,11 @@ class LinearSearch extends React.Component {
                 </svg>
                 */}
 
+                <StepTracker
+                    algorSteps={this.props.algorSteps}
+                    currentStep={this.props.currentStep}
+                ></StepTracker>
+
                 <div className="input-container">
                     <input
                         ref={this.props.inputRef}
@@ -46,9 +52,7 @@ class LinearSearch extends React.Component {
                     stepForward={this.props.stepForward}
                     doReset={this.props.doReset}
                     updateSpeed={this.props.updateSpeed}
-                    algorSteps={this.props.algorSteps}
                     playing={this.props.playing}
-                    currentStep={this.props.currentStep}
                 ></Controls>
             </div>
         );
