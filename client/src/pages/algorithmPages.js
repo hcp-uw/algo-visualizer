@@ -14,16 +14,20 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
     class AlgorithmPages extends React.Component {
         constructor(props) {
             super(props);
+            // reference for the target input box
             this.inputRef = React.createRef();
+            // the timer for algorithm stepping
             this.playTimer = undefined;
+
             this.state = {
                 width: props.width, // unused
                 height: props.height, // unused
-                array: [], // hold the current
+                array: [], // hold the original input array
+                // hold all the steps of an angorithm run
                 algorSteps: { steps: [], success: false },
                 currentStep: 0,
                 playSpeed: 5,
-                playing: false,
+                playing: false, // a flag for if the algo is playing
             };
 
             var rands = [];
@@ -105,7 +109,6 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
          * Automatically increment the step at an interval.
          */
         doPlay = () => {
-            this.updateConsoleText();
             this.doPause();
             // restart the current step if the user press play at last step
             if (this.state.currentStep === this.state.algorSteps.steps.length) {

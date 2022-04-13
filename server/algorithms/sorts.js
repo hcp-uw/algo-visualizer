@@ -25,6 +25,9 @@ function swap(array, i, j) {
     array[j] = t;
 }
 /**
+ * Bubble sort. Swapping two element adjacent elements if they are in wrong order,
+ * until the entire array is sorted.
+ * At the end of one iteration, at least one element is sorted.
  *
  * @param {*} arr array of numbers
  * @param {*} descending // unused option for sorting array descending
@@ -60,9 +63,9 @@ function bubbleSort(arr, descending = false) {
                 sorted: [...sorted],
                 swapped: false,
                 swapCount: swapCount,
-                description: `Comparing index ${j}(=${
-                    arr[ids[j]]
-                }) and index ${j}(=${arr[ids[j + 1]]})`,
+                description: `Comparing index ${j}(=${arr[ids[j]]}) and index ${
+                    j + 1
+                }(=${arr[ids[j + 1]]})`,
             });
             // compare with the next element
             if ((arr[ids[j + 1]] - arr[ids[j]]) * mul > 0) {
@@ -106,6 +109,8 @@ function bubbleSort(arr, descending = false) {
 }
 
 /**
+ * Insertion sort. Build the sorted array one at a time by sliding an element to one
+ * end of the array until they are in order.
  *
  * @param {*} arr array of numbers
  * @param {*} descending // unused option for sorting array descending
@@ -162,9 +167,9 @@ function insertionSort(arr) {
                 sorted: [...sorted],
                 swapped: true,
                 swapCount: swapCount,
-                description: `Current element is less than the preceding one (${
-                    arr[ids[p]]
-                }<${arr[ids[p - 1]]}). Swapping index ${p} and ${p - 1}`,
+                description: `${arr[ids[p]]} < ${
+                    arr[ids[p - 1]]
+                }. Swapping index ${p} and ${p - 1}`,
             });
             p--;
         }
@@ -185,6 +190,8 @@ function insertionSort(arr) {
 }
 
 /**
+ * Selection Sort. Build the sorted array one at a time by finding the minimum value among the
+ * unsorted values and put it at the end of the sorted partition.
  *
  * @param {*} arr array of numbers
  * @param {*} descending // unused option for sorting array descending
