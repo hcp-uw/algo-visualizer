@@ -1,3 +1,6 @@
+/**
+ * Handles the requests made to /api/sorts/ endpoint.
+ */
 const sorts = require("../algorithms/sorts.js");
 
 const express = require("express");

@@ -12,6 +12,7 @@ import {
     faPause,
     faWrench,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import LinearSearch from "./pages/LinearSearch";
@@ -31,6 +32,7 @@ library.add(
 );
 
 class App extends React.Component {
+    // set the title of the page
     componentDidMount() {
         document.title = "AlgoViz";
     }
@@ -39,6 +41,7 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <NavBar />
+                {/* These determines the page hrefs for the app */}
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route

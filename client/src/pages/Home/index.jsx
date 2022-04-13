@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Home.css";
 
+// home page
 const Home = () => {
     return (
         <div className="message">

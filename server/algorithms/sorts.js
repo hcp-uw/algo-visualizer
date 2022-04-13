@@ -2,13 +2,13 @@
  * Sort algorithms will take an array of (numbers/objects) as the elements to perform algorithm.
  * The output will be an object containing the steps.
  *
- * The steps array contains the objects about the order of array and sorted/unsorted region
- * at any given step.
+ * The steps array contains the objects about the state of the array at a given step.
  *
  * INPUT:    array: Array(Numbers/Objects). Eg.: [1,2,3,4,5,6,7]
  * OUTPUT:   Object in format
  *              {
- *                  steps:      Array(Object)
+ *                  steps:      Array(JSON)   more detail at the doc of respective function
+ *                  success:    Bool
  *              }
  */
 
@@ -24,7 +24,22 @@ function swap(array, i, j) {
     array[i] = array[j];
     array[j] = t;
 }
-
+/**
+ *
+ * @param {*} arr array of numbers
+ * @param {*} descending // unused option for sorting array descending
+ * @returns json object in format mentioned above. The step object is in format:
+ *              {
+ *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
+ *                                          Ex: [2,0,1], at this step, the third element in the original array is now at the first index
+ *                                                                     the first element in the original array is now at the second index...
+ *                  highlight(Array[Numbers]): The indexes that are being focused
+ *                  sorted(Array[Number]): The indexes of sorted elements
+ *                  swapped(Bool): Mark if a swap is happening at this step
+ *                  swapCount(Number): The number of swaps happened up to this step
+ *                  description(String): something about whats happening
+ *              }
+ */
 function bubbleSort(arr, descending = false) {
     if (arr.length <= 1) return;
     var r = { steps: [] };
@@ -90,6 +105,22 @@ function bubbleSort(arr, descending = false) {
     return r;
 }
 
+/**
+ *
+ * @param {*} arr array of numbers
+ * @param {*} descending // unused option for sorting array descending
+ * @returns json object in format mentioned above. The step object is in format:
+ *              {
+ *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
+ *                                          Ex: [2,0,1], at this step, the third element in the original array is now at the first index
+ *                                                                     the first element in the original array is now at the second index...
+ *                  highlight(Array[Numbers]): The indexes that are being focused
+ *                  sorted(Array[Number]): The indexes of sorted elements
+ *                  swapped(Bool): Mark if a swap is happening at this step
+ *                  swapCount(Number): The number of swaps happened up to this step
+ *                  description(String): something about whats happening
+ *              }
+ */
 function insertionSort(arr) {
     if (arr.length <= 1) return;
 
@@ -153,6 +184,23 @@ function insertionSort(arr) {
     return r;
 }
 
+/**
+ *
+ * @param {*} arr array of numbers
+ * @param {*} descending // unused option for sorting array descending
+ * @returns json object in format mentioned above. The step object is in format:
+ *              {
+ *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
+ *                                          Ex: [2,0,1], at this step, the third element in the original array is now at the first index
+ *                                                                     the first element in the original array is now at the second index...
+ *                  highlight(Array[Numbers]): The indexes that are being focused
+ *                  sorted(Array[Number]): The indexes of sorted elements
+ *                  swapped(Bool): Mark if a swap is happening at this step
+ *                  swapCount(Number): The number of swaps happened up to this step
+ *                  min(Number): The index of the minimum element.
+ *                  description(String): something about whats happening
+ *              }
+ */
 function selectionSort(arr) {
     if (arr.length <= 1) return;
 

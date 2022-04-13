@@ -17,9 +17,9 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.inputRef = React.createRef();
             this.playTimer = undefined;
             this.state = {
-                width: props.width,
-                height: props.height,
-                array: [],
+                width: props.width, // unused
+                height: props.height, // unused
+                array: [], // hold the current
                 algorSteps: { steps: [], success: false },
                 currentStep: 0,
                 playSpeed: 5,
@@ -57,42 +57,22 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.doPause();
         };
 
-        // draw the individual blocks of the array
+        /**
+         * Decide how to draw blocks on the array.
+         * Use by passing to the Array1D or any other visual components.
+         *
+         * We expect the json returned from the backend to include an
+         * array of steps and a success flag.
+         *
+         * Each step also contains a description to describe the step,
+         * used for the logger.
+         *
+         * Additionally, it can contain extra information depends on the
+         * algorithm.
+         */
         drawBlocks = () => {
-            var currentHighlightId =
-                this.state.algorSteps.steps[0] > 0
-                    ? this.state.algorSteps.steps[this.state.currentStep - 1]
-                          .element
-                    : undefined;
-            return this.state.array.map((v) => {
-                var style = "";
-                if (currentHighlightId !== undefined) {
-                    if (currentHighlightId === v.id) {
-                        style = " highlight";
-                    } else if (
-                        v.id ===
-                            this.state.algorSteps.steps[
-                                this.state.currentStep - 2
-                            ].element &&
-                        currentHighlightId === -1
-                    ) {
-                        style = this.state.algorSteps.success
-                            ? " highlight-success"
-                            : " highlight-error";
-                    }
-                }
-
-                return (
-                    <td
-                        className={"value-block" + style}
-                        key={v.id}
-                        id={v.id}
-                        onClick={this.updateTargetBoxValue.bind(this)}
-                    >
-                        {v.value}
-                    </td>
-                );
-            });
+            // just a template, every algorithm has its own display method
+            // and thus this method is defined in their respective page.
         };
 
         // request the backend to perform the algorithm
@@ -119,7 +99,11 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.doPause();
         };
 
-        // start playing the algorithm
+        /**
+         * For the play button.
+         *
+         * Automatically increment the step at an interval.
+         */
         doPlay = () => {
             this.updateConsoleText();
             this.doPause();
@@ -133,7 +117,10 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             }
         };
 
-        // step the algorithm once and reestablish the timer loop
+        /**
+         * Helper function for doPlay()
+         * Step the algorithm once and reestablish the timer loop.
+         */
         playStepLoop = () => {
             if (this.state.currentStep === this.state.algorSteps.steps.length) {
                 this.doPause();
@@ -163,31 +150,41 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             }
         };
 
-        // update speed
+        /**
+         * For the speed slider.
+         *
+         * @param {*} speed parse from the slider element
+         */
         updateSpeed = (speed) => {
             this.setState({ playSpeed: speed });
         };
 
-        // update target box
-        // DOES NOT UPDATE INTERNAL TARGET VALUE
+        /**
+         * Update the target input box. Used to update this box
+         * on user array click.
+         *
+         * DOES NOT UPDATE INTERNAL (STATE) TARGET VALUE
+         *
+         * @param {*} e the html element of the array block
+         */
         updateTargetBoxValue = (e) => {
             this.inputRef.current.value = e.target.innerHTML;
         };
 
-        // cheat
+        // cheat to update state from children
+        // should use redux/provider or other technique
+        // to handle the state flow of the application
         setStateFromChild = (state) => {
             this.setState(state);
         };
 
-        updateConsoleText = () => {};
-
         render = () => {
             return (
                 <React.Fragment>
+                    {/* pass the necessary functions/state variables as props to the original page */}
                     <OriginalPage
                         stepForward={this.stepForward}
                         stepBackward={this.stepBackward}
-                        drawBlocks={this.drawBlocks}
                         doAlgorithm={this.doAlgorithm}
                         doReset={this.doReset}
                         doPlay={this.doPlay}
@@ -198,7 +195,9 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                         inputRef={this.inputRef}
                         boardRef={this.boardRef}
                         algorithmUrl={algorithmUrl}
+                        /* Passing all state variables */
                         {...this.state}
+                        /* passing all props */
                         {...this.props}
                     />
                 </React.Fragment>

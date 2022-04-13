@@ -1,3 +1,8 @@
+/**
+ * Handle any controls UI for the page.
+ * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
+ */
+
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "bootstrap/dist/css/bootstrap.css";
@@ -8,6 +13,7 @@ class Controls extends Component {
         return (
             <React.Fragment>
                 <div className="centered">
+                    {/* speed slider */}
                     <div>
                         <label htmlFor="speed-slider">Speed:&nbsp;</label>
                         <input
@@ -21,7 +27,10 @@ class Controls extends Component {
                             }
                         ></input>
                     </div>
+
+                    {/* wrapper for the buttons */}
                     <div className="controls">
+                        {/* build button that request the backend to perform algorithm */}
                         <button
                             className="btn"
                             title="do algorithm"
@@ -30,6 +39,8 @@ class Controls extends Component {
                             <span>Build</span>
                             <FontAwesomeIcon icon="fa-wrench" className="fa" />
                         </button>
+
+                        {/* play/pause button, conditioned by the 'playing' state */}
                         {this.props.playing ? (
                             <button
                                 className="btn"
@@ -50,6 +61,8 @@ class Controls extends Component {
                                 />
                             </button>
                         )}
+
+                        {/* step forward button */}
                         <button
                             className="btn"
                             title="step backward once"
@@ -61,6 +74,8 @@ class Controls extends Component {
                                 className="fa"
                             />
                         </button>
+
+                        {/* step backward button */}
                         <button
                             className="btn"
                             title="step forward once"
@@ -72,6 +87,8 @@ class Controls extends Component {
                                 className="fa"
                             />
                         </button>
+
+                        {/* reset button: reset the current step to 0 */}
                         <button
                             className="btn"
                             title="restart algorithm"

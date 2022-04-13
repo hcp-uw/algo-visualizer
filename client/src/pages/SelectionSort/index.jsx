@@ -11,6 +11,7 @@ class SelectionSort extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // swaps[i] is the boolean if a swap is happening at step i
             swaps: [],
         };
     }
@@ -45,12 +46,30 @@ class SelectionSort extends React.Component {
         });
     };
 
+    /**
+     * Check the drawBlocks() function on algorithmPages.js for general info.
+     *
+     * For bubble sort, each step includes the following:
+     *
+     * this.props.algorSteps.steps[i] =
+     *                          {
+     *                              array(Array):  array of indexes. the state of the entire array at the ith step
+     *                              highlight(Array): the indexes of elements that are currently focused
+     *                              sorted(Array): the indexes of elements that are sorted
+     *                              swapped(Bool): mark if the ith step is swapping two elements
+     *                              swapCount(Number): the count of total swaps up to step ith
+     *                              min(Number): the index of the minimum value at step ith
+     *                          }
+     *
+     * @returns react components
+     */
     drawBlocks = () => {
         // when page loaded at first or in case steps are missing
         if (
             this.props.algorSteps.steps.length === 0 ||
             this.props.currentStep === 0
         ) {
+            // no format, just display the array blocks normally
             return this.props.array.map((v) => {
                 return (
                     <td
@@ -72,6 +91,7 @@ class SelectionSort extends React.Component {
             var sorted = steps[currentStep].sorted;
             var min = steps[currentStep].min;
 
+            // for each element in the array at the current step
             return array.map((v) => {
                 var style = "";
 
@@ -120,6 +140,10 @@ class SelectionSort extends React.Component {
                     drawBlocks={this.drawBlocks}
                 />
 
+                {
+                    // The input box is hidden, will break the app if removed because the functions in
+                    // the prototype is referencing this element. Could find a fix somehow.
+                }
                 <div className="input-container hidden">
                     <input
                         ref={this.props.inputRef}
@@ -132,10 +156,7 @@ class SelectionSort extends React.Component {
 
                 <div className="swap-counter-container">
                     <span>
-                        {" "}
-                        Swaps: {
-                            this.state.swaps[this.props.currentStep - 1]
-                        }{" "}
+                        Swaps: {this.state.swaps[this.props.currentStep - 1]}
                     </span>
                 </div>
 

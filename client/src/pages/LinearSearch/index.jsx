@@ -7,6 +7,63 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 
 class LinearSearch extends React.Component {
+    /**
+     * Check the drawBlocks() function on algorithmPages.js for general info.
+     *
+     * For linear search, each step just include the index of focused element.
+     *
+     * this.props.algorSteps.steps[i] =
+     *                          {
+     *                              step: index of focused element at step i
+     *                          }
+     *
+     * @returns react components
+     */
+    drawBlocks = () => {
+        // react can try to render before the backend return the steps (when page first loaded)
+        // so a guard is necessary
+        var currentHighlightId =
+            this.state.algorSteps.steps[0] > 0
+                ? this.state.algorSteps.steps[this.state.currentStep - 1]
+                      .element
+                : undefined;
+
+        // for each element in the array
+        return this.state.array.map((v) => {
+            // first decide the highlight style for the element
+            var style = "";
+            // undefined guard
+            if (currentHighlightId !== undefined) {
+                // highlight if the current element is focused
+                if (currentHighlightId === v.id) {
+                    style = " highlight";
+                }
+                // else if we reach the end of search (marked as -1)
+                else if (
+                    v.id ===
+                        this.state.algorSteps.steps[this.state.currentStep - 2]
+                            .element &&
+                    currentHighlightId === -1
+                ) {
+                    style = this.state.algorSteps.success
+                        ? " highlight-success"
+                        : " highlight-error";
+                }
+            }
+            // return a react component
+            return (
+                <td
+                    className={"value-block" + style}
+                    key={v.id}
+                    id={v.id}
+                    onClick={this.updateTargetBoxValue.bind(this)}
+                >
+                    {v.value}
+                </td>
+            );
+        });
+    };
+
     render = () => {
         return (
             <div className="content">
@@ -21,7 +78,7 @@ class LinearSearch extends React.Component {
 
                 <Array1D
                     boardRef={this.props.boardRef}
-                    drawBlocks={this.props.drawBlocks}
+                    drawBlocks={this.drawBlocks}
                 />
                 {/*
                 <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>

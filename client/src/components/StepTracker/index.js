@@ -1,3 +1,8 @@
+/**
+ * Handle everything related to algorithm steping.
+ * Currently include the current step counter and a detail console log.
+ */
+
 import React, { Component } from "react";
 import "./StepTracker.css";
 

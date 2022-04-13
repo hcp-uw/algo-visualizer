@@ -1,3 +1,6 @@
+/**
+ * Handles the requests made to /api/searches/ endpoint
+ */
 const searches = require("../algorithms/searches.js");
 
 const express = require("express");
