@@ -39,6 +39,8 @@
 }
 
 .elements td {
+    min-width: 3rem;
+    min-height: 3rem;
     width: 3rem;
     height: 3rem;
     text-align: center;

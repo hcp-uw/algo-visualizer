@@ -64,7 +64,6 @@ class BinarySearch extends React.Component {
                         : " highlight-error";
                 }
             }
-
             // return a react component
             return (
                 <td

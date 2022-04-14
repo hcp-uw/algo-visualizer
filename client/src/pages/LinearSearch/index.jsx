@@ -23,13 +23,13 @@ class LinearSearch extends React.Component {
         // react can try to render before the backend return the steps (when page first loaded)
         // so a guard is necessary
         var currentHighlightId =
-            this.state.algorSteps.steps[0] > 0
-                ? this.state.algorSteps.steps[this.state.currentStep - 1]
+            this.props.algorSteps.steps[0] > 0
+                ? this.props.algorSteps.steps[this.props.currentStep - 1]
                       .element
                 : undefined;
 
         // for each element in the array
-        return this.state.array.map((v) => {
+        return this.props.array.map((v) => {
             // first decide the highlight style for the element
             var style = "";
             // undefined guard
@@ -41,11 +41,11 @@ class LinearSearch extends React.Component {
                 // else if we reach the end of search (marked as -1)
                 else if (
                     v.id ===
-                        this.state.algorSteps.steps[this.state.currentStep - 2]
+                        this.props.algorSteps.steps[this.props.currentStep - 2]
                             .element &&
                     currentHighlightId === -1
                 ) {
-                    style = this.state.algorSteps.success
+                    style = this.props.algorSteps.success
                         ? " highlight-success"
                         : " highlight-error";
                 }
@@ -56,7 +56,7 @@ class LinearSearch extends React.Component {
                     className={"value-block" + style}
                     key={v.id}
                     id={v.id}
-                    onClick={this.updateTargetBoxValue.bind(this)}
+                    onClick={this.props.updateTargetBoxValue.bind(this)}
                 >
                     {v.value}
                 </td>
