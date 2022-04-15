@@ -1,0 +1,65 @@
+.board {
+    border: 1px solid black;
+    display: flex;
+    margin: auto;
+}
+
+.highlight {
+    background-color: #FCF5B9;
+}
+
+.highlight-success {
+    background-color: #96FA9A !important;
+}
+
+.highlight-error {
+    background-color: #fc7c76;
+}
+
+.highlight-domain {
+    background-color: #ffd0ce;
+}
+
+.highlight-minflag {
+    background-color: #b3beff;
+}
+
+.table-container {
+    display: flex;
+    margin: auto;
+    width: auto;
+    height: 200px;
+}
+
+.elements {
+    table-layout: fixed;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 10px 0;
+}
+
+.elements td {
+    min-width: 3rem;
+    min-height: 3rem;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+}
+
+.value-row {
+    font-size: 20px;
+}
+
+.index-row {
+    font-size: 16px;
+}
+
+.value-block {
+    border: 2px solid black;
+    box-shadow: 2px 3px 3px #969696;
+}
+
+.value-block:hover {
+    cursor: pointer;
+    background-color: #c8ffcb;
+}

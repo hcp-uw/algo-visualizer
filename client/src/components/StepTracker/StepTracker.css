@@ -1,0 +1,17 @@
+.step-tracker-container {
+    display: grid;
+    place-items: center;
+    margin-bottom: 5px;
+}
+
+.console {
+    font-family: monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow-y: scroll;
+    width: 50%;
+    border: 1px solid gray;
+    font-size: 16px;
+    max-height: 15em;
+    line-height: 1.5em;
+}
