@@ -6,6 +6,7 @@ import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
+import { animated, Transition } from "react-spring";
 
 class SelectionSort extends React.Component {
     constructor(props) {
@@ -43,6 +44,7 @@ class SelectionSort extends React.Component {
         this.props.setStateFromChild({
             algorSteps: response.data.result,
             currentStep: 0,
+            prevStep: -1,
         });
     };
 
@@ -65,24 +67,10 @@ class SelectionSort extends React.Component {
      */
     drawBlocks = () => {
         // when page loaded at first or in case steps are missing
-        if (
-            this.props.algorSteps.steps.length === 0 ||
-            this.props.currentStep === 0
-        ) {
-            // no format, just display the array blocks normally
-            return this.props.array.map((v) => {
-                return (
-                    <td
-                        className={"value-block"}
-                        key={v.id}
-                        id={v.id}
-                        onClick={this.props.updateTargetBoxValue.bind(this)}
-                    >
-                        {v.value}
-                    </td>
-                );
-            });
-        } else {
+        let isStepAvailable =
+            this.props.algorSteps.steps.length > 0 &&
+            this.props.currentStep > 0;
+        if (isStepAvailable) {
             var steps = this.props.algorSteps.steps;
             var currentStep = this.props.currentStep - 1;
             var array = steps[currentStep].array;
@@ -90,33 +78,64 @@ class SelectionSort extends React.Component {
             var swapped = steps[currentStep].swapped;
             var sorted = steps[currentStep].sorted;
             var min = steps[currentStep].min;
-
-            // for each element in the array at the current step
-            return array.map((v) => {
-                var style = "";
-
-                if (highlight.includes(v)) {
+        } else {
+            // default array from contianing numbers from 0 to 14
+            array = [...Array(15).keys()];
+        }
+        // for each element in the array at the current step
+        return this.props.array.map((v, i) => {
+            var style = "";
+            if (isStepAvailable) {
+                if (highlight.includes(i)) {
                     style = swapped ? " highlight-error" : " highlight";
-                } else if (v === min) {
+                } else if (i === min) {
                     style = " highlight-minflag";
-                } else if (sorted.includes(v)) {
+                } else if (sorted.includes(i)) {
                     style = " highlight-success";
                 } else {
                     style = " highlight-domain";
                 }
+            }
+            let m = array.indexOf(i) - i;
+            let prev =
+                isStepAvailable && this.props.prevStep - 1 >= 0
+                    ? steps[this.props.prevStep - 1].array.indexOf(i) - i
+                    : 0;
 
-                return (
-                    <td
-                        className={"value-block" + style}
-                        key={v}
-                        id={v}
-                        onClick={this.props.updateTargetBoxValue.bind(this)}
-                    >
-                        {this.props.array[v].value}
-                    </td>
-                );
-            });
-        }
+            return (
+                <Transition
+                    items={v}
+                    // default value is 170/26
+                    config={{
+                        tension: 170 * 1.5,
+                        friction: 26,
+                    }}
+                    enter={{ transform: prev }}
+                    update={{ transform: m }}
+                    key={"t" + i * i}
+                >
+                    {({ transform }) => {
+                        return (
+                            <animated.td
+                                className={"value-block" + style}
+                                key={i}
+                                id={i}
+                                style={{
+                                    transform: transform
+                                        .to({
+                                            range: [prev, m],
+                                            output: [prev * 58, m * 58],
+                                        })
+                                        .to((x) => `translate3d(${x}px, 0, 0)`),
+                                }}
+                            >
+                                {v.value}
+                            </animated.td>
+                        );
+                    }}
+                </Transition>
+            );
+        });
     };
 
     render = () => {

@@ -26,6 +26,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                 // hold all the steps of an angorithm run
                 algorSteps: { steps: [], success: false },
                 currentStep: 0,
+                prevStep: -1,
                 playSpeed: 5,
                 playing: false, // a flag for if the algo is playing
             };
@@ -44,21 +45,29 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
 
         // step forward the algorithm, use for button
         stepForward = () => {
-            this.setState({
-                currentStep: Math.min(
-                    this.state.currentStep + 1,
-                    this.state.algorSteps.steps.length
-                ),
-            });
-            this.doPause();
+            let newStep = Math.min(
+                this.state.currentStep + 1,
+                this.state.algorSteps.steps.length
+            );
+            if (newStep !== this.state.currentStep) {
+                this.setState({
+                    prevStep: this.state.currentStep,
+                    currentStep: newStep,
+                });
+                this.doPause();
+            }
         };
 
         // step backward the algorithm
         stepBackward = () => {
-            this.setState({
-                currentStep: Math.max(this.state.currentStep - 1, 0),
-            });
-            this.doPause();
+            let newStep = Math.max(this.state.currentStep - 1, 0);
+            if (newStep !== this.state.currentStep) {
+                this.setState({
+                    prevStep: this.state.currentStep,
+                    currentStep: newStep,
+                });
+                this.doPause();
+            }
         };
 
         /**
@@ -91,6 +100,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
                 this.setState({
                     algorSteps: response.data.result,
                     currentStep: 0,
+                    prevStep: -1,
                 });
             } catch (err) {
                 console.log(err);
@@ -99,7 +109,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
 
         // reset the current step back to 0
         doReset = () => {
-            this.setState({ currentStep: 0 });
+            this.setState({ currentStep: 0, prevStep: -1 });
             this.doPause();
         };
 
@@ -112,7 +122,7 @@ const algorithmPages = (OriginalPage, algorithmUrl) => {
             this.doPause();
             // restart the current step if the user press play at last step
             if (this.state.currentStep === this.state.algorSteps.steps.length) {
-                this.setState({ currentStep: 0 });
+                this.setState({ currentStep: 0, prevStep: -1 });
             }
 
             if (this.state.currentStep < this.state.algorSteps.steps.length) {

@@ -62,12 +62,6 @@ class NavBar extends React.Component {
                                     Binary Search
                                 </NavDropdown.Item>
                             </LinkContainer>
-                            <LinkContainer to="/#">
-                                <NavDropdown.Item>3rd</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to="/#">
-                                <NavDropdown.Item>4th</NavDropdown.Item>
-                            </LinkContainer>
                         </div>
                     </NavDropdown>
 
