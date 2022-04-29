@@ -23,11 +23,10 @@ class LinearSearch extends React.Component {
         // react can try to render before the backend return the steps (when page first loaded)
         // so a guard is necessary
         var currentHighlightId =
-            this.props.algorSteps.steps[0] > 0
+            this.props.algorSteps.steps.length > 0 && this.props.currentStep > 0
                 ? this.props.algorSteps.steps[this.props.currentStep - 1]
                       .element
                 : undefined;
-
         // for each element in the array
         return this.props.array.map((v) => {
             // first decide the highlight style for the element
@@ -40,10 +39,10 @@ class LinearSearch extends React.Component {
                 }
                 // else if we reach the end of search (marked as -1)
                 else if (
+                    currentHighlightId === -1 &&
                     v.id ===
                         this.props.algorSteps.steps[this.props.currentStep - 2]
-                            .element &&
-                    currentHighlightId === -1
+                            .element
                 ) {
                     style = this.props.algorSteps.success
                         ? " highlight-success"
