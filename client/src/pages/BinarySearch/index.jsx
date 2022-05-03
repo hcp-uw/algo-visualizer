@@ -2,7 +2,7 @@
  * The page for binary search
  */
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./BinarySearch.css";
 import Controls from "../../components/Controls";
@@ -19,6 +19,8 @@ const BinarySearch = () => {
     const array = useSelector((state) => state.global.array);
     const inputBoxRef = useRef();
 
+    const [inputValue, setInputValue] = useState(array[12]);
+
     const dispatch = useDispatch();
     // reset data upon exiting the page
     useEffect(() => {
@@ -30,6 +32,7 @@ const BinarySearch = () => {
     // function that update input box
     const updateTargetBoxValue = (e) => {
         inputBoxRef.current.value = e.target.innerHTML;
+        setInputValue(e.target.innerHTML);
     };
 
     /**
@@ -127,14 +130,17 @@ const BinarySearch = () => {
                     className="num-input"
                     type="number"
                     placeholder="Search for"
-                    defaultValue={array[12]}
+                    defaultValue={inputValue}
+                    onChange={(e) => {
+                        setInputValue(e.target.value);
+                    }}
                 ></input>
             </div>
 
             <Controls
                 requestSortedArray={true}
-                inputBoxRef={inputBoxRef}
                 algorithmUrl={algorithmUrl}
+                inputValue={inputValue}
             />
         </div>
     );

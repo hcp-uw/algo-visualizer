@@ -28,6 +28,9 @@ const Controls = (props) => {
     // does not trigger a component rerender
     const [playing, setPlaying] = useState(false);
 
+    // saving a previous value for input box, for glowing animation of buttons
+    const [prevInputValue, setPrevInputValue] = useState(props.inputValue);
+
     // miscellaneous variables
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
     const dispatch = useDispatch();
@@ -79,13 +82,14 @@ const Controls = (props) => {
               // since the parent page doesnt have the doPause function, we just call it here
               doPause();
               props.doAlgorithm(arr);
+              setPrevInputValue(props.inputValue);
           }
         : async (arr) => {
               // default function
               doPause();
               let input =
-                  props.inputBoxRef.current != null
-                      ? parseInt(props.inputBoxRef.current.value)
+                  props.inputValue != null
+                      ? parseInt(props.inputValue)
                       : arr[12];
               let data = { array: arr, target: input };
 
@@ -99,6 +103,7 @@ const Controls = (props) => {
                           algorSteps: response.data.result,
                       })
                   );
+                  setPrevInputValue(props.inputValue);
               } catch (err) {
                   console.log(err);
               }
@@ -178,7 +183,12 @@ const Controls = (props) => {
                 <div className="controls">
                     {/* build button that request the backend to perform algorithm */}
                     <button
-                        className="btn"
+                        className={
+                            "btn" +
+                            (props.inputValue !== prevInputValue
+                                ? " glow-border"
+                                : " disabled")
+                        }
                         title="do algorithm"
                         onClick={() => doAlgorithm(array)}
                     >
@@ -188,12 +198,15 @@ const Controls = (props) => {
 
                     {/* play/pause button, conditioned by the 'playing' state */}
                     {playing ? (
-                        <button className="btn" onClick={doPause}>
+                        <button
+                            className="btn glow-border-anim"
+                            onClick={doPause}
+                        >
                             <span>Pause</span>
                             <FontAwesomeIcon icon="fa-pause" className="fa" />
                         </button>
                     ) : (
-                        <button className="btn" onClick={doPlay}>
+                        <button className="btn glow-border" onClick={doPlay}>
                             <span>Play</span>
                             <FontAwesomeIcon icon="fa-play" className="fa" />
                         </button>

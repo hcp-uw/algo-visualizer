@@ -2,6 +2,9 @@
 // this causes a problem with react hooks that the setTimeout function of javascript only
 // record the initial state, thus in subsequence callbacks it does not use the updated state variables
 // for example, currentStep stays the same and nothing progresses.
+
+// problem description and a way to get around it: https://www.youtube.com/watch?v=eTDnfS2_WE4
+
 // we switch to setInterval to take advantage of this 'hack':
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 
