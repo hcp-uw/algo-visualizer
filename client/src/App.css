@@ -3,3 +3,61 @@
     --light-purple: #ddd7ec;
     --gold: #f0c558;
 }
+
+.content {
+    padding: 20px 40px 40px 40px;
+    font-size: 20px;
+}
+
+.centered {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-container {
+    border: 1px solid black;
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+    display: table;
+    margin: auto;
+    border-radius: 0.5rem;
+}
+
+.num-input {
+    border: none;
+    width: 10rem;
+    text-align: center;
+}
+
+/* maybe find a better way instead of forcing absolute positioning*/
+.info {
+    position: absolute;
+    display: inline-block;
+    right: 50px;
+    width: 5em;
+    z-index: 2;
+}
+
+/* to remove spinners from number input box */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.table-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .table-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

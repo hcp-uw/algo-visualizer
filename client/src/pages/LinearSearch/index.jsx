@@ -1,50 +1,75 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./LinearSearch.css";
 import Controls from "../../components/Controls";
-import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
+import { useSelector, useDispatch } from "react-redux";
+import { resetSteps } from "../../redux/stateSlice";
 
-class LinearSearch extends React.Component {
+const algorithmUrl = "searches/linearsearch/";
+
+const LinearSearch = () => {
+    const algorSteps = useSelector((state) => state.global.algorSteps);
+    const currentStep = useSelector((state) => state.global.currentStep);
+    const array = useSelector((state) => state.global.array);
+    const inputBoxRef = useRef();
+
+    const dispatch = useDispatch();
+    // reset data upon exiting the page
+    useEffect(() => {
+        return () => {
+            dispatch(resetSteps());
+        };
+    }, []);
+
+    // function that update input box
+    const updateTargetBoxValue = (e) => {
+        inputBoxRef.current.value = e.target.innerHTML;
+    };
+
     /**
-     * Check the drawBlocks() function on algorithmPages.js for general info.
+     * Decide how to draw blocks on the array.
+     * Use by passing to the Array1D or any other visual components.
+     *
+     * We expect the json returned from the backend to include an
+     * array of steps and a success flag.
+     *
+     * Each step also contains a description to describe the step,
+     * used for the logger.
      *
      * For linear search, each step just include the index of focused element.
      *
-     * this.props.algorSteps.steps[i] =
+     * algorSteps.steps[i] =
      *                          {
      *                              step: index of focused element at step i
      *                          }
      *
      * @returns react components
      */
-    drawBlocks = () => {
+    const drawBlocks = () => {
         // react can try to render before the backend return the steps (when page first loaded)
         // so a guard is necessary
-        var currentHighlightId =
-            this.props.algorSteps.steps.length > 0 && this.props.currentStep > 0
-                ? this.props.algorSteps.steps[this.props.currentStep - 1]
-                      .element
+        let currentHighlightId =
+            algorSteps.steps.length > 0 && currentStep > 0
+                ? algorSteps.steps[currentStep - 1].element
                 : undefined;
         // for each element in the array
-        return this.props.array.map((v) => {
+        return array.map((value, id) => {
             // first decide the highlight style for the element
-            var style = "";
+            let style = "";
             // undefined guard
             if (currentHighlightId !== undefined) {
                 // highlight if the current element is focused
-                if (currentHighlightId === v.id) {
+                if (currentHighlightId === id) {
                     style = " highlight";
                 }
                 // else if we reach the end of search (marked as -1)
                 else if (
                     currentHighlightId === -1 &&
-                    v.id ===
-                        this.props.algorSteps.steps[this.props.currentStep - 2]
-                            .element
+                    id === algorSteps.steps[currentStep - 2].element
                 ) {
-                    style = this.props.algorSteps.success
+                    style = algorSteps.success
                         ? " highlight-success"
                         : " highlight-error";
                 }
@@ -53,66 +78,44 @@ class LinearSearch extends React.Component {
             return (
                 <td
                     className={"value-block" + style}
-                    key={v.id}
-                    id={v.id}
-                    onClick={this.props.updateTargetBoxValue.bind(this)}
+                    key={id}
+                    id={id}
+                    onClick={updateTargetBoxValue.bind(this)}
                 >
-                    {v.value}
+                    {value}
                 </td>
             );
         });
     };
 
-    render = () => {
-        return (
-            <div className="content">
-                <div className="centered">
-                    <h2>Linear Search</h2>
-                </div>
-                {/*
+    return (
+        <div className="content">
+            <div className="centered">
+                <h2>Linear Search</h2>
+            </div>
+            {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
                 */}
 
-                <Array1D
-                    boardRef={this.props.boardRef}
-                    drawBlocks={this.drawBlocks}
-                />
-                {/*
-                <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>
-                    USE SVG FOR MORE ADVANCED ANIMATIONS IN THE FUTURE
-                </svg>
-                */}
+            <Array1D drawBlocks={drawBlocks} />
 
-                <StepTracker
-                    algorSteps={this.props.algorSteps}
-                    currentStep={this.props.currentStep}
-                ></StepTracker>
+            <StepTracker />
 
-                <div className="input-container">
-                    <input
-                        ref={this.props.inputRef}
-                        className="num-input"
-                        type="number"
-                        placeholder="Search for"
-                        defaultValue={this.props.array[12].value}
-                    ></input>
-                </div>
-
-                <Controls
-                    doAlgorithm={this.props.doAlgorithm}
-                    doPause={this.props.doPause}
-                    doPlay={this.props.doPlay}
-                    stepBackward={this.props.stepBackward}
-                    stepForward={this.props.stepForward}
-                    doReset={this.props.doReset}
-                    updateSpeed={this.props.updateSpeed}
-                    playing={this.props.playing}
-                ></Controls>
+            <div className="input-container">
+                <input
+                    ref={inputBoxRef}
+                    className="num-input"
+                    type="number"
+                    placeholder="Search for"
+                    defaultValue={array[12]}
+                ></input>
             </div>
-        );
-    };
-}
 
-export default algorithmPages(LinearSearch, "searches/linearsearch/");
+            <Controls inputBoxRef={inputBoxRef} algorithmUrl={algorithmUrl} />
+        </div>
+    );
+};
+
+export default LinearSearch;

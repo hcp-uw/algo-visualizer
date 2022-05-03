@@ -1,59 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./InsertionSort.css";
 import Controls from "../../components/Controls";
-import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
+import { useSelector, useDispatch } from "react-redux";
+import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
 
-class InsertionSort extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // swaps[i] is the boolean if a swap is happening at step i
-            swaps: [],
+const algorithmUrl = "sorts/insertionsort/";
+
+const InsertionSort = () => {
+    const algorSteps = useSelector((state) => state.global.algorSteps);
+    const currentStep = useSelector((state) => state.global.currentStep);
+    const prevStep = useSelector((state) => state.global.prevStep);
+    const array = useSelector((state) => state.global.array);
+    const dispatch = useDispatch();
+
+    // swaps[i] is the boolean if a swap is happening at step i
+    const [swaps, setSwaps] = useState([]);
+
+    // reset data upon exiting the page
+    useEffect(() => {
+        return () => {
+            dispatch(resetSteps());
         };
-    }
-
-    // rewrite as the result of rewriting doAlgorithm
-    componentDidMount = () => {
-        if (this.props.algorSteps.steps.length === 0) {
-            this.doAlgorithm();
-        }
-    };
+    }, []);
 
     // slightly different from the prototype: update swap count after receiving
     // response from backend
-    doAlgorithm = async () => {
-        this.props.doPause();
-        let array = this.props.array.map((o) => o.value);
-        let data = { array: array };
+    const doAlgorithm = async (arr) => {
+        let data = { array: arr };
 
-        let response = await AlgoFetcher.post(this.props.algorithmUrl, data);
-        // update swap
-        let c = 0;
-        let s = [];
-        for (let i = 0; i < response.data.result.steps.length; i++) {
-            c += response.data.result.steps[i].swapped ? 1 : 0;
-            s.push(c);
+        try {
+            let response = await AlgoFetcher.post(algorithmUrl, data);
+            // update swap
+            let c = 0;
+            let s = [];
+            for (let i = 0; i < response.data.result.steps.length; i++) {
+                c += response.data.result.steps[i].swapped ? 1 : 0;
+                s.push(c);
+            }
+            s[-1] = 0;
+            setSwaps(s);
+            dispatch(updateAlgorSteps({ algorSteps: response.data.result }));
+        } catch (err) {
+            console.log(err);
         }
-        s[-1] = 0;
-        this.setState({ swaps: s });
-        this.props.setStateFromChild({
-            algorSteps: response.data.result,
-            currentStep: 0,
-            prevStep: -1,
-        });
     };
 
     /**
-     * Check the drawBlocks() function on algorithmPages.js for general info.
+     * Decide how to draw blocks on the array.
+     * Use by passing to the Array1D or any other visual components.
+     *
+     * We expect the json returned from the backend to include an
+     * array of steps and a success flag.
+     *
+     * Each step also contains a description to describe the step,
+     * used for the logger.
      *
      * For insertion sort, each step includes the following:
      *
-     * this.props.algorSteps.steps[i] =
+     * algorSteps.steps[i] =
      *                          {
      *                              array(Array): array of indexes. the state of the entire array at the ith step
      *                              highlight(Array): the indexes of elements that are currently focused
@@ -64,43 +73,48 @@ class InsertionSort extends React.Component {
      *
      * @returns react components
      */
-    drawBlocks = () => {
+    const drawBlocks = () => {
         // when page loaded at first or in case steps are missing
         let isStepAvailable =
-            this.props.algorSteps.steps.length > 0 &&
-            this.props.currentStep > 0;
+            // the steps are loaded
+            algorSteps.steps.length > 0 &&
+            // if the algorithm is in progress (step 0: default state)
+            currentStep > 0 &&
+            // if the steps are in the correct format
+            algorSteps.steps[0].highlight != null;
+
         if (isStepAvailable) {
-            var steps = this.props.algorSteps.steps;
-            var currentStep = this.props.currentStep - 1;
-            var array = steps[currentStep].array;
-            var highlight = steps[currentStep].highlight;
-            var swapped = steps[currentStep].swapped;
-            var sorted = steps[currentStep].sorted;
+            var steps = algorSteps.steps;
+            var currentArrayStep = currentStep - 1;
+            var arr = steps[currentArrayStep].array;
+            var highlight = steps[currentArrayStep].highlight;
+            var swapped = steps[currentArrayStep].swapped;
+            var sorted = steps[currentArrayStep].sorted;
         } else {
             // default array from contianing numbers from 0 to 14
-            array = [...Array(15).keys()];
+            arr = [...Array(15).keys()];
         }
         // for each element in the array at the current step
-        return this.props.array.map((v, i) => {
+        return array.map((value, id) => {
             var style = "";
             if (isStepAvailable) {
-                if (highlight.includes(i)) {
+                if (highlight.includes(id)) {
                     style = swapped ? " highlight-error" : " highlight";
-                } else if (sorted.includes(i)) {
+                } else if (sorted.includes(id)) {
                     style = " highlight-success";
                 } else {
                     style = " highlight-domain";
                 }
             }
-            let m = array.indexOf(i) - i;
+            let m = arr.indexOf(id) - id;
             let prev =
-                isStepAvailable && this.props.prevStep - 1 >= 0
-                    ? steps[this.props.prevStep - 1].array.indexOf(i) - i
+                isStepAvailable && prevStep - 1 >= 0
+                    ? steps[prevStep - 1].array.indexOf(id) - id
                     : 0;
 
             return (
                 <Transition
-                    items={v}
+                    items={value}
                     // default value is 170/26
                     config={{
                         tension: 170 * 1.5,
@@ -108,14 +122,14 @@ class InsertionSort extends React.Component {
                     }}
                     enter={{ transform: prev }}
                     update={{ transform: m }}
-                    key={"t" + i * i}
+                    key={"t" + id * id}
                 >
                     {({ transform }) => {
                         return (
                             <animated.td
                                 className={"value-block" + style}
-                                key={i}
-                                id={i}
+                                key={id}
+                                id={id}
                                 style={{
                                     transform: transform
                                         .to({
@@ -125,7 +139,7 @@ class InsertionSort extends React.Component {
                                         .to((x) => `translate3d(${x}px, 0, 0)`),
                                 }}
                             >
-                                {v.value}
+                                {value}
                             </animated.td>
                         );
                     }}
@@ -134,66 +148,33 @@ class InsertionSort extends React.Component {
         });
     };
 
-    render = () => {
-        return (
-            <div className="content">
-                <div className="centered">
-                    <h2>Insertion Sort</h2>
-                </div>
-                {/*
+    return (
+        <div className="content">
+            <div className="centered">
+                <h2>Insertion Sort</h2>
+            </div>
+            {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
                 */}
 
-                {/*
-                <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>
-                    USE SVG FOR MORE ADVANCED ANIMATIONS IN THE FUTURE
-                </svg>
-                */}
-                <Array1D
-                    boardRef={this.props.boardRef}
-                    drawBlocks={this.drawBlocks}
-                />
+            <Array1D drawBlocks={drawBlocks} />
 
-                {
-                    // The input box is hidden, will break the app if removed because the functions in
-                    // the prototype is referencing this element. Could find a fix somehow.
-                }
-                <div className="input-container hidden">
-                    <input
-                        ref={this.props.inputRef}
-                        className="num-input"
-                        type="number"
-                        placeholder="Search for"
-                        defaultValue={this.props.array[12].value}
-                    ></input>
-                </div>
-
-                <div className="swap-counter-container">
-                    <span>
-                        Swaps: {this.state.swaps[this.props.currentStep - 1]}
-                    </span>
-                </div>
-
-                <StepTracker
-                    algorSteps={this.props.algorSteps}
-                    currentStep={this.props.currentStep}
-                ></StepTracker>
-
-                <Controls
-                    doAlgorithm={this.doAlgorithm}
-                    doPause={this.props.doPause}
-                    doPlay={this.props.doPlay}
-                    stepBackward={this.props.stepBackward}
-                    stepForward={this.props.stepForward}
-                    doReset={this.props.doReset}
-                    updateSpeed={this.props.updateSpeed}
-                    playing={this.props.playing}
-                ></Controls>
+            <div className="swap-counter-container">
+                <span>
+                    Swaps:{" "}
+                    {swaps[currentStep - 1] != null
+                        ? swaps[currentStep - 1]
+                        : 0}
+                </span>
             </div>
-        );
-    };
-}
 
-export default algorithmPages(InsertionSort, "sorts/insertionsort/");
+            <StepTracker></StepTracker>
+
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={algorithmUrl} />
+        </div>
+    );
+};
+
+export default InsertionSort;

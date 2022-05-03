@@ -2,21 +2,49 @@
  * The page for binary search
  */
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./BinarySearch.css";
 import Controls from "../../components/Controls";
-import algorithmPages from "../algorithmPages";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
+import { useDispatch, useSelector } from "react-redux";
+import { resetSteps } from "../../redux/stateSlice";
 
-class BinarySearch extends React.Component {
+const algorithmUrl = "searches/binarysearch/";
+
+const BinarySearch = () => {
+    const algorSteps = useSelector((state) => state.global.algorSteps);
+    const currentStep = useSelector((state) => state.global.currentStep);
+    const array = useSelector((state) => state.global.array);
+    const inputBoxRef = useRef();
+
+    const dispatch = useDispatch();
+    // reset data upon exiting the page
+    useEffect(() => {
+        return () => {
+            dispatch(resetSteps());
+        };
+    }, []);
+
+    // function that update input box
+    const updateTargetBoxValue = (e) => {
+        inputBoxRef.current.value = e.target.innerHTML;
+    };
+
     /**
-     * Check the drawBlocks() function on algorithmPages.js for general info.
+     * Decide how to draw blocks on the array.
+     * Use by passing to the Array1D or any other visual components.
+     *
+     * We expect the json returned from the backend to include an
+     * array of steps and a success flag.
+     *
+     * Each step also contains a description to describe the step,
+     * used for the logger.
      *
      * For binary search, each step object includes the left and right bound of search.
      *
-     * this.props.algorSteps.steps[i] =
+     * algorSteps.steps[i] =
      *                          {
      *                              step: index of focused element at step i
      *                              l: index of left bound
@@ -25,41 +53,41 @@ class BinarySearch extends React.Component {
      *
      * @returns react components
      */
-    drawBlocks = () => {
-        var steps = this.props.algorSteps.steps;
-        var currentStep = this.props.currentStep - 1;
+    const drawBlocks = () => {
+        let steps = algorSteps.steps;
+        let currentArrayStep = currentStep - 1;
         // react can try to render before the backend return the steps (when page first loaded)
         // so a guard is necessary
-        var currentHighlightId = steps[currentStep]
-            ? steps[currentStep].step
+        let currentHighlightId = steps[currentArrayStep]
+            ? steps[currentArrayStep].step
             : undefined;
 
         // for each element in the array
-        return this.props.array.map((v) => {
+        return array.map((value, id) => {
             // first decide the highlight style for the element
-            var style = "";
+            let style = "";
             // undefined guard
             if (currentHighlightId !== undefined) {
                 // highlight if the current element is in the searching bound
                 if (
-                    v.id >= steps[currentStep].l &&
-                    v.id <= steps[currentStep].r
+                    id >= steps[currentArrayStep].l &&
+                    id <= steps[currentArrayStep].r
                 ) {
                     style = " highlight-domain ";
                 }
 
                 // highlight if the current element is focused
                 // overwrites the previous style
-                if (currentHighlightId === v.id) {
+                if (currentHighlightId === id) {
                     style = " highlight";
                 }
                 // the end of the search is marked as -1
                 else if (
-                    currentStep !== 0 &&
-                    v.id === steps[currentStep - 1].step &&
+                    currentArrayStep !== 0 &&
+                    id === steps[currentArrayStep - 1].step &&
                     currentHighlightId === -1
                 ) {
-                    style = this.props.algorSteps.success
+                    style = algorSteps.success
                         ? " highlight-success"
                         : " highlight-error";
                 }
@@ -68,66 +96,48 @@ class BinarySearch extends React.Component {
             return (
                 <td
                     className={"value-block" + style}
-                    key={v.id}
-                    id={v.id}
-                    onClick={this.props.updateTargetBoxValue.bind(this)}
+                    key={id}
+                    id={id}
+                    onClick={updateTargetBoxValue.bind(this)}
                 >
-                    {v.value}
+                    {value}
                 </td>
             );
         });
     };
 
-    render = () => {
-        return (
-            <div className="content">
-                <div className="centered">
-                    <h2>Binary Search</h2>
-                </div>
-                {/*
+    return (
+        <div className="content">
+            <div className="centered">
+                <h2>Binary Search</h2>
+            </div>
+            {/*
                 <div className="info">
                     <button className="btn">Extra Info right here</button>
                 </div>
                 */}
 
-                {/*
-                <svg ref={this.boardRef} className="board" width={this.state.width} height={this.state.height}>
-                    USE SVG FOR MORE ADVANCED ANIMATIONS IN THE FUTURE
-                </svg>
-                */}
-                <Array1D
-                    boardRef={this.props.boardRef}
-                    drawBlocks={this.drawBlocks}
-                />
+            <Array1D drawBlocks={drawBlocks} />
 
-                <StepTracker
-                    algorSteps={this.props.algorSteps}
-                    currentStep={this.props.currentStep}
-                ></StepTracker>
+            <StepTracker />
 
-                <div className="input-container">
-                    <input
-                        ref={this.props.inputRef}
-                        className="num-input"
-                        type="number"
-                        placeholder="Search for"
-                        defaultValue={this.props.array[12].value}
-                    ></input>
-                </div>
-
-                <Controls
-                    doAlgorithm={this.props.doAlgorithm}
-                    doPause={this.props.doPause}
-                    doPlay={this.props.doPlay}
-                    stepBackward={this.props.stepBackward}
-                    stepForward={this.props.stepForward}
-                    doReset={this.props.doReset}
-                    updateSpeed={this.props.updateSpeed}
-                    playing={this.props.playing}
-                ></Controls>
+            <div className="input-container">
+                <input
+                    ref={inputBoxRef}
+                    className="num-input"
+                    type="number"
+                    placeholder="Search for"
+                    defaultValue={array[12]}
+                ></input>
             </div>
-        );
-    };
-}
 
-export default algorithmPages(BinarySearch, "searches/binarysearch/");
+            <Controls
+                requestSortedArray={true}
+                inputBoxRef={inputBoxRef}
+                algorithmUrl={algorithmUrl}
+            />
+        </div>
+    );
+};
+
+export default BinarySearch;

@@ -167,7 +167,7 @@ function insertionSort(arr) {
                 sorted: [...sorted],
                 swapped: true,
                 swapCount: swapCount,
-                description: `${arr[ids[p]]} < ${
+                description: `${arr[ids[p]]} > ${
                     arr[ids[p - 1]]
                 }. Swapping index ${p} and ${p - 1}`,
             });
