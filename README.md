@@ -1,6 +1,6 @@
 # algo-visualizer
 
-Main files are App.js and index.js.
+The Express server should be started before running the React client.
 
 ## **Running guide**:
 

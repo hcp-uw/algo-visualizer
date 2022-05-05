@@ -212,9 +212,9 @@ const Controls = (props) => {
                         </button>
                     )}
 
-                    {/* step forward button */}
+                    {/* step backward button */}
                     <button
-                        className="btn"
+                        className={"btn" + (currentStep > 0 ? "" : " disabled")}
                         title="step backward once"
                         onClick={stepBackward}
                     >
@@ -225,9 +225,14 @@ const Controls = (props) => {
                         />
                     </button>
 
-                    {/* step backward button */}
+                    {/* step forward button */}
                     <button
-                        className="btn"
+                        className={
+                            "btn" +
+                            (currentStep < algorSteps.steps.length
+                                ? ""
+                                : " disabled")
+                        }
                         title="step forward once"
                         onClick={stepForward}
                     >
