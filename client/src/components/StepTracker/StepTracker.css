@@ -12,6 +12,13 @@
     width: 50%;
     border: 1px solid gray;
     font-size: 16px;
+    height: 15em;
     max-height: 15em;
     line-height: 1.5em;
+}
+
+.step-highlight-border {
+    border: 1px rgb(121, 121, 121);
+    border-style: groove;
+    border-radius: 8px;
 }

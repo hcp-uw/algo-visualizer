@@ -18,88 +18,72 @@ const invisBlock = {
     left: "-1px",
     width: "100%",
 };
+/**
+ * Close the dropdown when mouse leaves
+ */
+const navMenuMouseLeave = (e) => {
+    e.target.parentNode.parentNode.parentNode.click();
+    // unfocus nav-item
+    e.target.parentNode.parentNode.parentNode.firstChild.blur();
 
-class NavBar extends React.Component {
-    // constructor() {
-    //     super();
-    //     this.navMenuMouseLeave = this.navMenuMouseLeave.bind(this);
-    // }
+    // currently attaching with the wraparound div of the dropdown.
+    // could instead attach to element of dropdown-menu class through componentDidMount()
+};
 
-    /**
-     * Close the dropdown when mouse leaves
-     */
-    navMenuMouseLeave = (e) => {
-        e.target.parentNode.parentNode.parentNode.click();
-        // unfocus nav-item
-        e.target.parentNode.parentNode.parentNode.firstChild.blur();
+const NavBar = () => {
+    return (
+        <React.Fragment>
+            <Navbar className="bg-purple">
+                {/* the app logo */}
+                <Navbar.Brand>
+                    <Link to="/" title="AlgoViz">
+                        <img src={logo} className="logo" alt="logo" />
+                    </Link>
+                </Navbar.Brand>
 
-        // currently attaching with the wraparound div of the dropdown.
-        // could instead attach to element of dropdown-menu class through componentDidMount()
-    };
+                {/* search dropdown */}
+                <NavDropdown title="Search">
+                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                        <div style={invisBlock}>m</div>
+                        <LinkContainer to="/linear-search">
+                            <NavDropdown.Item>Linear Search</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/binary-search">
+                            <NavDropdown.Item>Binary Search</NavDropdown.Item>
+                        </LinkContainer>
+                    </div>
+                </NavDropdown>
 
-    render() {
-        return (
-            <React.Fragment>
-                <Navbar className="bg-purple">
-                    {/* the app logo */}
-                    <Navbar.Brand>
-                        <Link to="/" title="AlgoViz">
-                            <img src={logo} className="logo" alt="logo" />
-                        </Link>
-                    </Navbar.Brand>
+                {/* sort dropdown */}
+                <NavDropdown title="Sort">
+                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                        <div style={invisBlock}>m</div>
+                        <LinkContainer to="/bubble-sort">
+                            <NavDropdown.Item>Bubble Sort</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/insertion-sort">
+                            <NavDropdown.Item>Insertion Sort</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/selection-sort">
+                            <NavDropdown.Item>Selection Sort</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                    </div>
+                </NavDropdown>
 
-                    {/* search dropdown */}
-                    <NavDropdown title="Search">
-                        <div onMouseLeave={(e) => this.navMenuMouseLeave(e)}>
-                            <div style={invisBlock}>m</div>
-                            <LinkContainer to="/linear-search">
-                                <NavDropdown.Item>
-                                    Linear Search
-                                </NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to="/binary-search">
-                                <NavDropdown.Item>
-                                    Binary Search
-                                </NavDropdown.Item>
-                            </LinkContainer>
-                        </div>
-                    </NavDropdown>
-
-                    {/* sort dropdown */}
-                    <NavDropdown title="Sort">
-                        <div onMouseLeave={(e) => this.navMenuMouseLeave(e)}>
-                            <div style={invisBlock}>m</div>
-                            <LinkContainer to="/bubble-sort">
-                                <NavDropdown.Item>Bubble Sort</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to="/insertion-sort">
-                                <NavDropdown.Item>
-                                    Insertion Sort
-                                </NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to="/selection-sort">
-                                <NavDropdown.Item>
-                                    Selection Sort
-                                </NavDropdown.Item>
-                            </LinkContainer>
-                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                        </div>
-                    </NavDropdown>
-
-                    {/* pathfinding dropdown */}
-                    <NavDropdown title="Pathfinding">
-                        <div onMouseLeave={(e) => this.navMenuMouseLeave(e)}>
-                            <div style={invisBlock}>m</div>
-                            <NavDropdown.Item href="#">1st</NavDropdown.Item>
-                            <NavDropdown.Item href="#">2nd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">3rd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                        </div>
-                    </NavDropdown>
-                </Navbar>
-            </React.Fragment>
-        );
-    }
-}
+                {/* pathfinding dropdown */}
+                <NavDropdown title="Pathfinding">
+                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                        <div style={invisBlock}>m</div>
+                        <NavDropdown.Item href="#">1st</NavDropdown.Item>
+                        <NavDropdown.Item href="#">2nd</NavDropdown.Item>
+                        <NavDropdown.Item href="#">3rd</NavDropdown.Item>
+                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                    </div>
+                </NavDropdown>
+            </Navbar>
+        </React.Fragment>
+    );
+};
 
 export default NavBar;

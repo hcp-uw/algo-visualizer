@@ -21,3 +21,26 @@
 .btn:hover .fa {
     color: white
 }
+
+.glow-border {
+    box-shadow: 0 0 5px 3px rgb(185, 160, 207) !important;
+}
+
+.glow-border-anim {
+    animation: glow 0.75s ease-in-out infinite alternate;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px 2px rgb(190, 174, 204);
+      }
+      
+      to {
+        box-shadow: 0 0 10px 5px rgb(180, 134, 223);
+      }
+}

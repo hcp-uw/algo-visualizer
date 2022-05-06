@@ -31,44 +31,37 @@ library.add(
     faWrench
 );
 
-class App extends React.Component {
-    // set the title of the page
-    componentDidMount() {
-        document.title = "AlgoViz";
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                <NavBar />
-                {/* These determines the page hrefs for the app */}
-                <Routes>
-                    <Route exact path="/" element={<Home />} />
-                    <Route
-                        exact
-                        path="/linear-search"
-                        element={<LinearSearch sort={true} />}
-                    />
-                    <Route
-                        exact
-                        path="/binary-search"
-                        element={<BinarySearch sort={true} />}
-                    />
-                    <Route exact path="/bubble-sort" element={<BubbleSort />} />
-                    <Route
-                        exact
-                        path="/insertion-sort"
-                        element={<InsertionSort />}
-                    />
-                    <Route
-                        exact
-                        path="/selection-sort"
-                        element={<SelectionSort />}
-                    />
-                </Routes>
-            </React.Fragment>
-        );
-    }
-}
+const App = () => {
+    return (
+        <React.Fragment>
+            <NavBar />
+            {/* These determines the page hrefs for the app */}
+            <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route
+                    exact
+                    path="/linear-search"
+                    element={<LinearSearch sort={true} />}
+                />
+                <Route
+                    exact
+                    path="/binary-search"
+                    element={<BinarySearch sort={true} />}
+                />
+                <Route exact path="/bubble-sort" element={<BubbleSort />} />
+                <Route
+                    exact
+                    path="/insertion-sort"
+                    element={<InsertionSort />}
+                />
+                <Route
+                    exact
+                    path="/selection-sort"
+                    element={<SelectionSort />}
+                />
+            </Routes>
+        </React.Fragment>
+    );
+};
 
 export default App;
