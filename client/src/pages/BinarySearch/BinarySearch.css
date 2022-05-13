@@ -1,4 +1,4 @@
-.algo-modal {
+.algo-modal-block {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -9,6 +9,9 @@
     background-color: white;
     width: 500px;
     max-width: 80%;
+}
+
+.algo-modal {
     display: none;
 }
 
@@ -44,7 +47,7 @@
     border-bottom: 1px solid black;
 }
 
-.overlay {
+.overlay-toggler-block {
     position: fixed;
     opacity: 100;
     top: 0;
@@ -52,6 +55,10 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-toggler {
+    display: none;
 }
 
 .popover-button {

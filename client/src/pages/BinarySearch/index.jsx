@@ -154,27 +154,17 @@ const BinarySearch = () => {
 };
 
 const AlgorithmDescription = () => {
-    const [displayModal, setDisplayModal] = useState(true)
+    const [displayModal, setDisplayModal] = useState(false)
 
     const handleClick = () => {
         setDisplayModal(!displayModal)
-        let algorithmModal = document.querySelector("#algo-modal")
-        let overlay = document.querySelector(".overlay-toggler")
-
-        if (displayModal) {
-            algorithmModal.style.display = "block"
-            overlay.classList.add("overlay")
-        } else {
-            algorithmModal.style.display = "none"
-            overlay.classList.remove("overlay")
-        }
     }
 
     return (
         <>
             <div className="col-2">
-                <button className="popover-button"onClick={handleClick}>Information on algorithm / tutorial</button>
-                <div className="algo-modal" id="algo-modal">
+                <button className="popover-button" onClick={handleClick}>Information on algorithm / tutorial</button>
+                <div className={"algo-modal" + (displayModal ? "-block" : "")} id="algo-modal">
                     <div className="algo-modal-header">
                         <div className="algo-title">Binary Search</div>
                         <button className="algo-close-button" onClick={handleClick}>&times;</button>
@@ -193,7 +183,7 @@ const AlgorithmDescription = () => {
                     </div>
                 </div>
             </div>
-            <div className="overlay-toggler" onClick={handleClick}></div>
+            <div className={"overlay-toggler" + (displayModal ? "-block" : "")} onClick={handleClick}></div>
         </>
     );
 }
