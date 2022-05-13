@@ -55,7 +55,7 @@ const BubbleSort = () => {
      * Use by passing to the Array1D or any other visual components.
      *
      * We expect the json returned from the backend to include an
-     * array of steps and a success flag.
+     * array of steps.
      *
      * Each step also contains a description to describe the step,
      * used for the logger.
