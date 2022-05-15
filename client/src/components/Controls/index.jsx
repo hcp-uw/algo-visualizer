@@ -3,7 +3,7 @@
  * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Controls.css";
@@ -20,7 +20,7 @@ const Controls = (props) => {
     // global state variables we pull from redux store
     let currentStep = useSelector((state) => state.global.currentStep);
     const algorSteps = useSelector((state) => state.global.algorSteps);
-    let array = useSelector((state) => state.global.array);
+    const array = useSelector((state) => state.global.array);
 
     // local state variables
     const [playSpeed, setSpeed] = useState(5);
@@ -29,7 +29,12 @@ const Controls = (props) => {
     const [playing, setPlaying] = useState(false);
 
     // saving a previous value for input box, for glowing animation of buttons
-    const [prevInputValue, setPrevInputValue] = useState(props.inputValue);
+    const [prevNumInput, setPrevNumInput] = useState(props.numInput);
+
+    // states related to array input box
+    const [prevArrayInput, setPrevArrayInput] = useState(array);
+    const [arrayInput, setArrayInput] = useState(array);
+    const [validInput, setValidInput] = useState(true);
 
     // miscellaneous variables
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
@@ -81,16 +86,17 @@ const Controls = (props) => {
         ? async (arr) => {
               // since the parent page doesnt have the doPause function, we just call it here
               doPause();
+              dispatch(updateArray(arr));
               props.doAlgorithm(arr);
-              setPrevInputValue(props.inputValue);
+              setPrevNumInput(props.numInput);
+              setPrevArrayInput(arr.toString());
           }
         : async (arr) => {
               // default function
               doPause();
+              dispatch(updateArray(arr));
               let input =
-                  props.inputValue != null
-                      ? parseInt(props.inputValue)
-                      : arr[12];
+                  props.numInput != null ? parseInt(props.numInput) : arr[12];
               let data = { array: arr, target: input };
 
               try {
@@ -98,12 +104,19 @@ const Controls = (props) => {
                       props.algorithmUrl,
                       data
                   );
+                  // udpate algorithm steps
                   dispatch(
                       updateAlgorSteps({
                           algorSteps: response.data.result,
                       })
                   );
-                  setPrevInputValue(props.inputValue);
+                  // update previous values for highlights
+                  setPrevNumInput(props.numInput);
+                  setPrevArrayInput(arr.toString());
+
+                  // update target (for search algorithms)
+                  if (response.data.result.target)
+                      props.setCurrentTarget(response.data.result.target);
               } catch (err) {
                   console.log(err);
               }
@@ -148,6 +161,17 @@ const Controls = (props) => {
         setSpeed(speed);
     };
 
+    const checkArrayInput = (arr) => {
+        // 5 to 20 elements, range 1-99
+        if (arr.length < 5 || arr.length > 20) return false;
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < 1 || arr[i] > 99) return false;
+        }
+
+        return true;
+    };
+
     // do the algorithm once every time the page load
     useEffect(() => {
         let sorted = props.requestSortedArray
@@ -155,17 +179,37 @@ const Controls = (props) => {
             : false;
         // if the page request a sorted array (binary search)
 
-        // this assignment will last for one render, to compensate for the
-        // time it takes for redux to update the actual global array
-        array = makeRandomArray(sorted);
+        let tempArray = makeRandomArray(sorted);
 
-        dispatch(updateArray(array));
-        doAlgorithm(array);
+        dispatch(updateArray(tempArray));
+        setArrayInput(tempArray.toString());
+        doAlgorithm(tempArray);
     }, []);
 
     return (
         <React.Fragment>
             <div className="centered">
+                {/* Array Input */}
+                <div
+                    className="array-input-tooltip"
+                    data-text="Array must have 5-20 elements, range 1-99, comma-separated"
+                >
+                    <input
+                        className={
+                            "array-input " + (validInput ? "" : "warning")
+                        }
+                        placeholder="Array"
+                        value={arrayInput}
+                        onChange={(e) => {
+                            // only allow digits and single comma
+                            let newText = e.target.value
+                                .replace(/[^\d,]/g, "")
+                                .replace(/[,]{2,}/g, ",");
+                            setArrayInput(newText);
+                            setValidInput(checkArrayInput(newText.split(",")));
+                        }}
+                    ></input>
+                </div>
                 {/* speed slider */}
                 <div>
                     <label htmlFor="speed-slider">Speed:&nbsp;</label>
@@ -185,12 +229,18 @@ const Controls = (props) => {
                     <button
                         className={
                             "btn" +
-                            (props.inputValue !== prevInputValue
+                            ((props.numInput !== prevNumInput ||
+                                arrayInput !== prevArrayInput) &&
+                            validInput
                                 ? " glow-border"
                                 : " disabled")
                         }
                         title="do algorithm"
-                        onClick={() => doAlgorithm(array)}
+                        onClick={() =>
+                            doAlgorithm(
+                                arrayInput.split(",").map((e) => parseInt(e))
+                            )
+                        }
                     >
                         <span>Build</span>
                         <FontAwesomeIcon icon="fa-wrench" className="fa" />
@@ -258,13 +308,13 @@ const Controls = (props) => {
     );
 };
 
-// return a random array of length 15, range 0-99, allows duplicate,
+// return a random array of length 15, range 1-99, allows duplicate,
 // and NOT sorted by default
 const makeRandomArray = (sort = false, size = 15, max = 99) => {
     var rands = [];
     var result = [];
     while (rands.length < size) {
-        var n = Math.floor(Math.random() * (max + 1));
+        var n = 1 + Math.floor(Math.random() * max);
         rands.push(n);
     }
     if (sort) rands.sort((a, b) => a - b);

@@ -19,7 +19,8 @@ const BinarySearch = () => {
     const array = useSelector((state) => state.global.array);
     const inputBoxRef = useRef();
 
-    const [inputValue, setInputValue] = useState(array[12]);
+    const [numInput, setNumInput] = useState("");
+    const [currentTarget, setCurrentTarget] = useState("");
 
     const dispatch = useDispatch();
     // reset data upon exiting the page
@@ -32,7 +33,7 @@ const BinarySearch = () => {
     // function that update input box
     const updateTargetBoxValue = (e) => {
         inputBoxRef.current.value = e.target.innerHTML;
-        setInputValue(e.target.innerHTML);
+        setNumInput(e.target.innerHTML);
     };
 
     /**
@@ -124,15 +125,16 @@ const BinarySearch = () => {
 
             <StepTracker />
 
+            <div className="centered">Current target: {currentTarget}</div>
             <div className="input-container">
                 <input
                     ref={inputBoxRef}
                     className="num-input"
                     type="number"
                     placeholder="Search for"
-                    defaultValue={inputValue}
+                    value={numInput}
                     onChange={(e) => {
-                        setInputValue(e.target.value);
+                        setNumInput(e.target.value);
                     }}
                 ></input>
             </div>
@@ -140,7 +142,8 @@ const BinarySearch = () => {
             <Controls
                 requestSortedArray={true}
                 algorithmUrl={algorithmUrl}
-                inputValue={inputValue}
+                numInput={numInput}
+                setCurrentTarget={setCurrentTarget}
             />
         </div>
     );
