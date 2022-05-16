@@ -19,7 +19,7 @@ const makeRandomArray = (sort = false, size = 15, max = 99) => {
 
 const initialState = {
     algorSteps: { steps: [], success: false },
-    array: makeRandomArray(),
+    array: [],
     currentStep: 0,
     prevStep: -1,
 };

@@ -94,8 +94,8 @@ const SelectionSort = () => {
             var sorted = steps[currentArrayStep].sorted;
             var min = steps[currentArrayStep].min;
         } else {
-            // default array from contianing numbers from 0 to 14
-            arr = [...Array(15).keys()];
+            // default array from contianing numbers from 0 to array.length - 1
+            arr = [...Array(array.length).keys()];
         }
         // for each element in the array at the current step
         return array.map((value, id) => {

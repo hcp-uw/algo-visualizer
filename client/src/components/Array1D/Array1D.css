@@ -26,9 +26,27 @@
 
 .table-container {
     display: flex;
-    margin: auto;
+    margin: 0px auto;
     width: auto;
     height: 200px;
+    outline: 1px dotted black;
+    overflow: hidden;
+}
+
+.reset-position-button > * {
+    font-size: 12px;
+    padding: 2px 4px;
+    border: none;
+    float: left;
+    position: relative;
+}
+
+.reset-position-button .fa {
+    margin: 0;
+}
+
+.wrapper {
+    margin: auto;
 }
 
 .elements {
@@ -37,13 +55,23 @@
     border-collapse: separate;
     border-spacing: 10px 0;
 }
+.elements:hover {
+    cursor:grab
+}
+
+.elements:active {
+    cursor: grabbing;
+}
 
 .elements td {
     min-width: 3rem;
     min-height: 3rem;
     width: 3rem;
     height: 3rem;
+    max-width: 3rem;
+    max-height: 3rem;
     text-align: center;
+    overflow: hidden;
 }
 
 .value-row {

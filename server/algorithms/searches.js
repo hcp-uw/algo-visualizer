@@ -20,7 +20,7 @@
  * @returns r the result object
  */
 function linearSearch(arr, target) {
-    var r = { steps: [], success: false };
+    var r = { steps: [], success: false, target: target };
 
     for (var i = 0; i < arr.length; i++) {
         r.steps.push({ element: i, description: `Checking index ${i}` });
@@ -44,19 +44,21 @@ function linearSearch(arr, target) {
  * for extra visuals.
  */
 function binarySearch(arr, target) {
-    var result = { steps: [], success: false };
+    var result = { steps: [], success: false, target: target };
     var l = 0,
         r = arr.length - 1;
 
     // array is not sorted
-    if (arr[l] > arr[r]) {
-        result.steps.push({
-            step: -1,
-            l: l,
-            r: r,
-            description: "Array is not sorted! Search aborted",
-        });
-        return result;
+    for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            result.steps.push({
+                step: -1,
+                l: l,
+                r: r,
+                description: "Array is not sorted! Search aborted",
+            });
+            return result;
+        }
     }
 
     while (l <= r) {
