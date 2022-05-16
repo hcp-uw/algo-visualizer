@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "bootstrap/dist/css/bootstrap.css";
 import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
 import AlgoFetcher from "../../apis/AlgoFetcher";
@@ -202,9 +201,7 @@ const Controls = (props) => {
                         value={arrayInput}
                         onChange={(e) => {
                             // only allow digits and single comma
-                            let newText = e.target.value
-                                .replace(/[^\d,]/g, "")
-                                .replace(/[,]{2,}/g, ",");
+                            let newText = e.target.value.replace(/[^\d,]/g, "");
                             setArrayInput(newText);
                             setValidInput(checkArrayInput(newText.split(",")));
                         }}
