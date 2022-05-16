@@ -27,12 +27,13 @@
     border-radius: 0.5rem;
     margin: 5px 0px;
     padding: 6px 12px;
-    border: 1px solid black;
+    border: 1px solid rgba(180, 88, 24, 0.8);
     width: 100%;
+    background-color: rgba(180, 88, 24, 0.2);
 }
 
 .array-input:focus {
-    outline: 1px solid black;
+    outline: 1px solid rgba(180, 88, 24, 0.8);
 }
 
 /* https://blog.logrocket.com/creating-beautiful-tooltips-with-only-css/ */
