@@ -434,7 +434,7 @@ function selectionSort(arr) {
     });
 
     // Step 2: Remove all values from the start of the heap
-    while (heapIds.length > 1) {
+    while (ids.length < arr.length) {
         r.steps.push({
             array: [...ids],
             heap: [...heapIds],
@@ -448,24 +448,11 @@ function selectionSort(arr) {
         ids.push(heapRemoveMin());
     }
 
-    // Push the last couple steps
+    // Push the last step
     r.steps.push({
         array: [...ids],
-        heap: [...heapIds],
-        highlight: [heapIds[0]],
-        sorted: [...sorted],
-        swapped: false,
-        swapCount: swapCount,
-        description:
-            `Adding the heap minimum back into the array`,
-    });
-
-    ids.push(heapRemoveMin());
-
-    r.steps.push({
-        array: [...ids],
-        heap: [...heapIds],
-        highlight: [heapIds[0]],
+        heap: [],
+        highlight: [],
         sorted: [...sorted],
         swapped: false,
         swapCount: swapCount,
