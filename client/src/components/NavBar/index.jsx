@@ -67,7 +67,10 @@ const NavBar = () => {
                         <LinkContainer to="/selection-sort">
                             <NavDropdown.Item>Selection Sort</NavDropdown.Item>
                         </LinkContainer>
-                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                        <LinkContainer to="/heap-sort">
+                            <NavDropdown.Item>Heap Sort</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Item href="#">Merge Sort?</NavDropdown.Item>
                     </div>
                 </NavDropdown>
 

@@ -290,8 +290,8 @@ function selectionSort(arr) {
 }
 
 /**
- * Insertion sort. Build the sorted array one at a time by sliding an element to one
- * end of the array until they are in order.
+ * Heap sort. Build the sorted array by putting all values in a heap in any order,
+ * then removing the minimum value from the heap until the heap is empty.
  *
  * @param {*} arr array of numbers
  * @param {*} descending // unused option for sorting array descending
@@ -403,6 +403,7 @@ function selectionSort(arr) {
         return minId;
     }
 
+    // Step 1: Add all values to the heap
     for (var i = 0; ids.length > 0; i++) {
         var id = ids[0];
         r.steps.push({
@@ -420,6 +421,7 @@ function selectionSort(arr) {
         ids.splice(0, 1);
     }
 
+    // Values will be in the heap
     r.steps.push({
         array: [...ids],
         heap: [...heapIds],
@@ -431,6 +433,7 @@ function selectionSort(arr) {
             `All values sorted in the heap`,
     });
 
+    // Step 2: Remove all values from the start of the heap
     while (heapIds.length > 1) {
         r.steps.push({
             array: [...ids],
@@ -445,6 +448,7 @@ function selectionSort(arr) {
         ids.push(heapRemoveMin());
     }
 
+    // Push the last couple steps
     r.steps.push({
         array: [...ids],
         heap: [...heapIds],
