@@ -289,8 +289,192 @@ function selectionSort(arr) {
     return r;
 }
 
+/**
+ * Insertion sort. Build the sorted array one at a time by sliding an element to one
+ * end of the array until they are in order.
+ *
+ * @param {*} arr array of numbers
+ * @param {*} descending // unused option for sorting array descending
+ * @returns json object in format mentioned above. The step object is in format:
+ *              {
+ *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
+ *                                          Ex: [2,0,1], at this step, the third element in the original array is now at the first index
+ *                                                                     the first element in the original array is now at the second index...
+ *                  highlight(Array[Numbers]): The indexes that are being focused
+ *                  sorted(Array[Number]): The indexes of sorted elements
+ *                  swapped(Bool): Mark if a swap is happening at this step
+ *                  swapCount(Number): The number of swaps happened up to this step
+ *                  description(String): something about whats happening
+ *              }
+ */
+ function heapSort(arr) {
+    if (arr.length <= 1) return;
+
+    var r = { steps: [] };
+    var heap = [];
+    var heapIds = [];
+    var sorted = [];
+    var swapCount = 0;
+    var ids = [...Array(arr.length).keys()];
+
+    let swapHeapVals = (idx1, idx2) => {
+        swap(heap, idx1, idx2);
+        swap(heapIds, idx1, idx2);
+        swapCount++;
+    }
+
+    let swapDown = (idx1, idx2) => {
+        swapHeapVals(idx1, idx2);
+        r.steps.push({
+            array: [...ids],
+            heap: [...heapIds],
+            highlight: [heapIds[idx1], heapIds[idx2]],
+            sorted: [...sorted],
+            swapped: true,
+            swapCount: swapCount,
+            description:
+                `Filter index ${idx1} down`,
+        });
+    }
+
+    let swapUp = (idx1, idx2) => {
+        swapHeapVals(idx1, idx2);
+
+        r.steps.push({
+            array: [...ids],
+            heap: [...heapIds],
+            highlight: [heapIds[idx1], heapIds[idx2]],
+            sorted: [...sorted],
+            swapped: true,
+            swapCount: swapCount,
+            description:
+                `Filter index ${idx1} up`,
+        });
+    }
+
+    let filterDown = (idx) => {
+        if (idx < heap.length) {
+            if (2 * idx + 1 < heap.length && 2 * idx + 2 < heap.length) {
+                if (heap[2 * idx + 1] <= heap[2 * idx + 2 ]) {
+                    if (heap[2 * idx + 1] < heap[idx]) {
+                        swapDown(idx, 2 * idx + 1);
+                        filterDown(2 * idx + 1);
+                    }
+                } else if (heap[2 * idx + 2] < heap[idx]) {
+                    swapDown(idx, 2 * idx + 2);
+                    filterDown(2 * idx + 2);
+                }
+            } else if (2 * idx + 1 < heap.length && heap[2 * idx + 1] < heap[idx]) {
+                swapDown(idx, 2 * idx + 1);
+                filterDown(2 * idx + 1);
+            }
+        }
+    }
+
+    let filterUp = (idx) => {
+        var p = Math.floor((idx - 1) / 2);
+        if (idx > 0 && heap[idx] < heap[p]) {
+            swapUp(idx, p);
+            filterUp(p);
+        }
+    }
+
+    let addToHeap = (val, id) => {
+        heap.push(val);
+        heapIds.push(id);
+        r.steps.push({
+            array: [...ids],
+            heap: [...heapIds],
+            highlight: [ids[0]],
+            sorted: [...sorted],
+            swapped: false,
+            swapCount: swapCount,
+            description:
+                `Sorting ${val}`,
+        });
+        filterUp(heap.length - 1);
+    }
+
+    let heapRemoveMin = () => {
+        var minId = heapIds[0];
+        heap[0] = heap.splice(heap.length - 1, 1)[0];
+        heapIds[0] = heapIds.splice(heapIds.length - 1, 1)[0];
+        filterDown(0);
+        return minId;
+    }
+
+    for (var i = 0; ids.length > 0; i++) {
+        var id = ids[0];
+        r.steps.push({
+            array: [...ids],
+            heap: [...heapIds],
+            highlight: [id],
+            sorted: [...sorted],
+            swapped: false,
+            swapCount: swapCount,
+            description:
+                `Moving ${arr[id]} to the heap`,
+        });
+        addToHeap(arr[id], id);
+        sorted.push(id);
+        ids.splice(0, 1);
+    }
+
+    r.steps.push({
+        array: [...ids],
+        heap: [...heapIds],
+        highlight: [],
+        sorted: [...sorted],
+        swapped: false,
+        swapCount: swapCount,
+        description:
+            `All values sorted in the heap`,
+    });
+
+    while (heapIds.length > 1) {
+        r.steps.push({
+            array: [...ids],
+            heap: [...heapIds],
+            highlight: [heapIds[0]],
+            sorted: [...sorted],
+            swapped: false,
+            swapCount: swapCount,
+            description:
+                `Adding the heap minimum back into the array`,
+        });
+        ids.push(heapRemoveMin());
+    }
+
+    r.steps.push({
+        array: [...ids],
+        heap: [...heapIds],
+        highlight: [heapIds[0]],
+        sorted: [...sorted],
+        swapped: false,
+        swapCount: swapCount,
+        description:
+            `Adding the heap minimum back into the array`,
+    });
+
+    ids.push(heapRemoveMin());
+
+    r.steps.push({
+        array: [...ids],
+        heap: [...heapIds],
+        highlight: [heapIds[0]],
+        sorted: [...sorted],
+        swapped: false,
+        swapCount: swapCount,
+        description:
+            `Adding the heap minimum back into the array`,
+    });
+
+    return r;
+}
+
 module.exports = {
     bubbleSort,
     insertionSort,
     selectionSort,
+    heapSort,
 };

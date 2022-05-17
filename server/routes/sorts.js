@@ -30,4 +30,11 @@ router.post("/selectionsort", (req, res) => {
     });
 });
 
+router.post("/heapsort", (req, res) => {
+    var r = sorts.heapSort(req.body.array);
+    res.status(200).send({
+        result: r,
+    });
+});
+
 module.exports = router;
