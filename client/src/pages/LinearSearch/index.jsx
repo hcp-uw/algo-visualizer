@@ -4,6 +4,7 @@ import "./LinearSearch.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
+import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
 import { resetSteps } from "../../redux/stateSlice";
 
@@ -103,7 +104,9 @@ const LinearSearch = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <StepTracker />
 

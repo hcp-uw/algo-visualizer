@@ -5,6 +5,7 @@ import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
+import VisualizerContainer from "../../components/VisualizerContainer";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
@@ -164,7 +165,9 @@ const SelectionSort = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <div className="swap-counter-container">
                 <span>

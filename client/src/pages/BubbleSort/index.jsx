@@ -8,6 +8,7 @@ import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import VisualizerContainer from "../../components/VisualizerContainer";
 
 const algorithmUrl = "sorts/bubblesort/";
 
@@ -159,7 +160,9 @@ const BubbleSort = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <div className="swap-counter-container">
                 <span>

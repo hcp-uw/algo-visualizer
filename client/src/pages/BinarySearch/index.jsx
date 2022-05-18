@@ -10,6 +10,7 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import { useDispatch, useSelector } from "react-redux";
 import { resetSteps } from "../../redux/stateSlice";
+import VisualizerContainer from "../../components/VisualizerContainer";
 
 const algorithmUrl = "searches/binarysearch/";
 
@@ -121,7 +122,9 @@ const BinarySearch = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <StepTracker />
 
