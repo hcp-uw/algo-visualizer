@@ -21,6 +21,7 @@ import BinarySearch from "./pages/BinarySearch";
 import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
+import MergeSort from "./pages/MergeSort";
 
 // necesary step to use these icons on other components
 library.add(
@@ -61,6 +62,7 @@ const App = () => {
                     path="/selection-sort"
                     element={<SelectionSort />}
                 />
+                <Route exact path="/merge-sort" element={<MergeSort />} />
             </Routes>
         </React.Fragment>
     );

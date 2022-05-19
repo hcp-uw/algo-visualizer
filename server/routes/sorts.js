@@ -30,4 +30,11 @@ router.post("/selectionsort", (req, res) => {
     });
 });
 
+router.post("/mergesort", (req, res) => {
+    var r = sorts.mergeSort(req.body.array);
+    res.status(200).send({
+        result: r,
+    });
+});
+
 module.exports = router;

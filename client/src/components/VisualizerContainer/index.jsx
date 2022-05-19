@@ -8,10 +8,14 @@ import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
 
 const VisualizerContainer = (props) => {
-    const [scale, setScale] = useState(1);
+    let s = props.scale ? props.scale : 1;
+
+    let initPosition = props.initPosition ? props.initPosition : { x: 0, y: 0 };
+
+    const [scale, setScale] = useState(Math.min(1.5, Math.max(0.5, s)));
 
     // these two states are for position reset
-    const [position, setPosition] = useState(null);
+    const [position, setPosition] = useState(initPosition);
     const [key, setKey] = useState(1);
 
     // call back for position reset
@@ -41,9 +45,9 @@ const VisualizerContainer = (props) => {
         let d = 0;
 
         if (event.deltaY > 0) {
-            d = Math.max(0.6, scale + (0.1 * event.deltaY) / -100);
+            d = Math.max(0.5, scale + (0.1 * event.deltaY) / -100);
         } else {
-            d = Math.min(1.4, scale + (0.1 * event.deltaY) / -100);
+            d = Math.min(1.5, scale + (0.1 * event.deltaY) / -100);
         }
         setScale(d);
     };
@@ -54,14 +58,15 @@ const VisualizerContainer = (props) => {
             onWheel={(e) => {
                 handleScaleChange(e);
             }}
+            style={{ height: `${props.height}px` }}
         >
             <div className="reset-position-button">
                 <button
                     className="btn"
                     onClick={() => {
                         // zoom and drag reset are handled here
-                        setPosition({ x: 0, y: 0 });
-                        setScale(1);
+                        setPosition(initPosition);
+                        setScale(s);
                         setKey(key + 1);
                     }}
                     title="Reset array position"

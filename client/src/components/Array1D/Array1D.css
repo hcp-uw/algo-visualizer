@@ -39,7 +39,7 @@
     max-width: 3rem;
     max-height: 3rem;
     text-align: center;
-    overflow: hidden;
+    transition: transform ease-in-out 0.2s;
 }
 
 .value-row {
