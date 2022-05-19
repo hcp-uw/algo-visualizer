@@ -80,6 +80,7 @@ const MergeSort = () => {
         if (isStepAvailable) {
             var highlight = step.highlight;
             var swapped = step.swapped;
+            var comparing = step.comparing;
             var sorted = step.sorted;
         }
 
@@ -90,7 +91,9 @@ const MergeSort = () => {
                 if (sorted) {
                     style = " highlight-success";
                 } else if (highlight.includes(id)) {
-                    style = swapped ? " highlight-error" : " highlight";
+                    if (comparing) style = " highlight-compare";
+                    else if (swapped) style = " highlight-error";
+                    else style = " highlight";
                 } else {
                     style = " highlight-domain";
                 }

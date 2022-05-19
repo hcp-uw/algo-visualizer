@@ -24,6 +24,20 @@
     background-color: #b3beff;
 }
 
+.highlight-compare {
+    animation: comparing 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes comparing {
+    from {
+        background-color: #f8e990;
+      }
+      
+      to {
+        background-color: #ffa58a;
+      }
+}
+
 .elements {
     table-layout: fixed;
     margin: auto;

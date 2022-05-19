@@ -307,9 +307,7 @@ function mergeSort(arr) {
     r.steps.push({
         positions: copyOject(positions),
         highlight: [],
-        swapped: false,
         compareCount: r.compareCount,
-        sorted: false,
         description: "Starting merge sort...",
     });
 
@@ -318,7 +316,6 @@ function mergeSort(arr) {
     r.steps.push({
         positions: copyOject(positions),
         highlight: [],
-        swapped: false,
         compareCount: r.compareCount,
         sorted: true,
         description: "Array is sorted!",
@@ -341,35 +338,41 @@ function mergeSortHelper(arr, ids, r, positions, level, treePos) {
     let step = {
         positions: copyOject(positions),
         highlight: ids1.concat(ids2),
-        swapped: false,
         compareCount: r.compareCount,
-        sorted: false,
         description: `Splitting array into subarrays...`,
     };
     r.steps.push(step);
 
-    // split themselves
-    ids1 = mergeSortHelper(arr, ids1, r, positions, level + 1, 2 * treePos + 1);
-    ids2 = mergeSortHelper(
-        arr,
-        ids2,
-        r,
-        positions,
-        level + 1,
-        2 * (treePos + 1)
-    );
+    // in the case of only 2 elements, split and merge is redundant
+    if (ids1.length > 1 || ids2.length > 1) {
+        // split themselves
+        ids1 = mergeSortHelper(
+            arr,
+            ids1,
+            r,
+            positions,
+            level + 1,
+            2 * treePos + 1
+        );
+        ids2 = mergeSortHelper(
+            arr,
+            ids2,
+            r,
+            positions,
+            level + 1,
+            2 * (treePos + 1)
+        );
 
-    // adding step
-    fillSubarrayPositions(ids1, ids2, positions, level, treePos);
-    step = {
-        positions: copyOject(positions),
-        highlight: ids1.concat(ids2),
-        swapped: false,
-        compareCount: r.compareCount,
-        sorted: false,
-        description: `Merging subarrays...`,
-    };
-    r.steps.push(step);
+        // adding step
+        fillSubarrayPositions(ids1, ids2, positions, level, treePos);
+        step = {
+            positions: copyOject(positions),
+            highlight: ids1.concat(ids2),
+            compareCount: r.compareCount,
+            description: `Merging subarrays...`,
+        };
+        r.steps.push(step);
+    }
 
     // merge them together
     return mergeHelper(arr, ids1, ids2, r, positions, level, treePos);
@@ -385,9 +388,8 @@ function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
         let step = {
             positions: copyOject(positions),
             highlight: [ids1[0], ids2[0]],
-            swapped: false,
+            comparing: true,
             compareCount: r.compareCount,
-            sorted: false,
             description: `Comparing ${arr[ids1[0]]} and ${arr[ids2[0]]}...`,
         };
 
@@ -432,7 +434,6 @@ function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
             highlight: highlighted,
             swapped: true,
             compareCount: r.compareCount,
-            sorted: false,
             description: description,
         };
         r.steps.push(step);
@@ -467,9 +468,7 @@ function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
     step = {
         positions: copyOject(positions),
         highlight: ids3,
-        swapped: false,
         compareCount: r.compareCount,
-        sorted: false,
         description: description,
     };
     r.steps.push(step);
