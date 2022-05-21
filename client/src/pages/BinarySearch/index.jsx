@@ -4,12 +4,13 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./BinarySearch.css";
+// import "./BinarySearch.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import { useDispatch, useSelector } from "react-redux";
 import { resetSteps } from "../../redux/stateSlice";
+import AlgorithmPopover from "../../components/AlgorithmPopover";
 
 const algorithmUrl = "searches/binarysearch/";
 
@@ -117,7 +118,21 @@ const BinarySearch = () => {
                         <div className="col-10">
                             <h2>Binary Search</h2>
                         </div>
-                        <AlgorithmDescription />
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Binary Search",
+                                    title : "Binary search finds the position of a target value within a sorted array by comparing the target value to the middle element of the array.",
+                                    description : [
+                                        "Worst Complexity: O(log(n))",
+                                        "In Practice Complexity: O(log(n))",
+                                        "Best Complexity: O(1)",
+                                        "Space Complexity: O(1)"
+                                    ]
+                                }
+
+                            }
+                        />
                     </div>
                 </div>
             </div>
@@ -159,6 +174,8 @@ const AlgorithmDescription = () => {
     const handleClick = () => {
         setDisplayModal(!displayModal)
     }
+
+    // state, event handler, data
 
     return (
         <>

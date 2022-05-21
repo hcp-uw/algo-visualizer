@@ -6,6 +6,7 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import { useSelector, useDispatch } from "react-redux";
 import { resetSteps } from "../../redux/stateSlice";
+import AlgorithmPopover from "../../components/AlgorithmPopover";
 
 const algorithmUrl = "searches/linearsearch/";
 
@@ -94,7 +95,28 @@ const LinearSearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Linear Search</h2>
+            <div className="container">
+                    <div className="row">
+                        <div className="col-10">
+                            <h2>Linear Search</h2>
+                        </div>
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Linear Search",
+                                    title : "Linear search checks each element of the list until a match is found or the whole list is exhausted",
+                                    description : [
+                                        "Worst Complexity: O(n)",
+                                        "In Practice Complexity: O(n)",
+                                        "Best Complexity: O(1)",
+                                        "Space Complexity: O(1)"
+                                    ]
+                                }
+
+                            }
+                        />
+                    </div>
+                </div>
             </div>
             {/*
                 <div className="info">

@@ -8,6 +8,7 @@ import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import AlgorithmPopover from "../../components/AlgorithmPopover";
 
 const algorithmUrl = "sorts/selectionsort/";
 
@@ -156,13 +157,30 @@ const SelectionSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Selection Sort</h2>
-            </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
+            <div className="container">
+                    <div className="row">
+                        <div className="col-10">
+                            <h2>Selection Sort</h2>
+                        </div>
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Selection Sort",
+                                    title : "Selection Sort is an in-place sorting algorithm that selects the smallest element of an unsorted list and places it in the beginning of the unsorted partition",
+                                    description : [
+                                        "Worst Complexity: O(n^2)",
+                                        "In Practice Complexity: O(n^2)",
+                                        "Best Complexity: O(n^2)",
+                                        "Space Complexity: O(1)",
+                                        "Stable: No"
+                                    ]
+                                }
+
+                            }
+                        />
+                    </div>
                 </div>
-                */}
+            </div>
 
             <Array1D drawBlocks={drawBlocks} />
 

@@ -8,6 +8,7 @@ import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import AlgorithmPopover from "../../components/AlgorithmPopover"
 
 const algorithmUrl = "sorts/bubblesort/";
 
@@ -151,13 +152,30 @@ const BubbleSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Bubble Sort</h2>
-            </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-10">
+                            <h2>Bubble Sort</h2>
+                        </div>
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Bubble Sort",
+                                    title : "Bubble Sort compares adjacent elements and swaps them if they are in the wrong order",
+                                    description : [
+                                        "Worst Complexity: O(n^2)",
+                                        "In Practice Complexity: O(n^2)",
+                                        "Best Complexity: O(n)",
+                                        "Space Complexity: O(1)",
+                                        "Stable: Yes"
+                                    ]
+                                }
+
+                            }
+                        />
+                    </div>
                 </div>
-                */}
+            </div>
 
             <Array1D drawBlocks={drawBlocks} />
 

@@ -8,6 +8,7 @@ import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import AlgorithmPopover from "../../components/AlgorithmPopover"
 
 const algorithmUrl = "sorts/insertionsort/";
 
@@ -151,7 +152,29 @@ const InsertionSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Insertion Sort</h2>
+            <div className="container">
+                    <div className="row">
+                        <div className="col-10">
+                            <h2>Insertion Sort</h2>
+                        </div>
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Insertion Sort",
+                                    title : "Insertion sort builds a final sorted array one at a time by taking one entry from the unsorted partition and placing it in the sorted partition",
+                                    description : [
+                                        "Worst Complexity: O(n^2)",
+                                        "In Practice Complexity: O(n^2)",
+                                        "Best Complexity: O(n)",
+                                        "Space Complexity: O(1)",
+                                        "Stable: Yes"
+                                    ]
+                                }
+
+                            }
+                        />
+                    </div>
+                </div>
             </div>
             {/*
                 <div className="info">
