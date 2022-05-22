@@ -12,6 +12,7 @@ import {
     faPause,
     faWrench,
     faArrowsRotate,
+    faBug,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Route, Routes } from "react-router-dom";
@@ -31,7 +32,8 @@ library.add(
     faRotateLeft,
     faPause,
     faWrench,
-    faArrowsRotate
+    faArrowsRotate,
+    faBug
 );
 
 const App = () => {

@@ -8,9 +8,14 @@ import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
-import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import {
+    updateAlgorSteps,
+    resetSteps,
+    updateAlgorName,
+} from "../../redux/stateSlice";
 
-const algorithmUrl = "sorts/selectionsort/";
+const ALGORITHM_URL = "sorts/selectionsort/";
+const ALGORITHM_NAME = "Selection Sort";
 
 const SelectionSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -25,6 +30,9 @@ const SelectionSort = () => {
     // reset data upon exiting the page
     useEffect(() => {
         return () => {
+            // update the name on first load
+            dispatch(updateAlgorName(ALGORITHM_NAME));
+
             dispatch(resetSteps());
         };
     }, []);
@@ -35,7 +43,7 @@ const SelectionSort = () => {
         let data = { array: arr };
 
         try {
-            let response = await AlgoFetcher.post(algorithmUrl, data);
+            let response = await AlgoFetcher.post(ALGORITHM_URL, data);
             // update swap
             let c = 0;
             let s = [];
@@ -157,7 +165,7 @@ const SelectionSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Selection Sort</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -180,7 +188,7 @@ const SelectionSort = () => {
 
             <StepTracker></StepTracker>
 
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={algorithmUrl} />
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
         </div>
     );
 };

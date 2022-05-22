@@ -9,10 +9,11 @@ import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import { useDispatch, useSelector } from "react-redux";
-import { resetSteps } from "../../redux/stateSlice";
+import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import VisualizerContainer from "../../components/VisualizerContainer";
 
-const algorithmUrl = "searches/binarysearch/";
+const ALGORITHM_URL = "searches/binarysearch/";
+const ALGORITHM_NAME = "Binary Search";
 
 const BinarySearch = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -26,6 +27,9 @@ const BinarySearch = () => {
     const dispatch = useDispatch();
     // reset data upon exiting the page
     useEffect(() => {
+        // update the name on first load
+        dispatch(updateAlgorName(ALGORITHM_NAME));
+
         return () => {
             dispatch(resetSteps());
         };
@@ -114,7 +118,7 @@ const BinarySearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Binary Search</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -144,7 +148,7 @@ const BinarySearch = () => {
 
             <Controls
                 requestSortedArray={true}
-                algorithmUrl={algorithmUrl}
+                algorithmUrl={ALGORITHM_URL}
                 numInput={numInput}
                 setCurrentTarget={setCurrentTarget}
             />

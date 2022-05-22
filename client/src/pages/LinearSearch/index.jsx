@@ -6,9 +6,10 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { resetSteps } from "../../redux/stateSlice";
+import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 
-const algorithmUrl = "searches/linearsearch/";
+const ALGORITHM_URL = "searches/linearsearch/";
+const ALGORITHM_NAME = "Linear Search";
 
 const LinearSearch = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -22,6 +23,9 @@ const LinearSearch = () => {
     const dispatch = useDispatch();
     // reset data upon exiting the page
     useEffect(() => {
+        // update the name on first load
+        dispatch(updateAlgorName(ALGORITHM_NAME));
+
         return () => {
             dispatch(resetSteps());
         };
@@ -96,7 +100,7 @@ const LinearSearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Linear Search</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -126,7 +130,7 @@ const LinearSearch = () => {
 
             <Controls
                 numInput={numInput}
-                algorithmUrl={algorithmUrl}
+                algorithmUrl={ALGORITHM_URL}
                 setCurrentTarget={setCurrentTarget}
             />
         </div>

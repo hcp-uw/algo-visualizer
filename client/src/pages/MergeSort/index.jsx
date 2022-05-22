@@ -7,9 +7,14 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import {
+    updateAlgorSteps,
+    resetSteps,
+    updateAlgorName,
+} from "../../redux/stateSlice";
 
-const algorithmUrl = "sorts/mergesort/";
+const ALGORITHM_URL = "sorts/mergesort/";
+const ALGORITHM_NAME = "Merge Sort";
 
 const MergeSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -22,6 +27,9 @@ const MergeSort = () => {
 
     // reset data upon exiting the page
     useEffect(() => {
+        // update the name on first load
+        dispatch(updateAlgorName(ALGORITHM_NAME));
+
         return () => {
             dispatch(resetSteps());
         };
@@ -33,7 +41,7 @@ const MergeSort = () => {
         let data = { array: arr };
 
         try {
-            let response = await AlgoFetcher.post(algorithmUrl, data);
+            let response = await AlgoFetcher.post(ALGORITHM_URL, data);
             // update compareCount
             let c = 0;
             let s = [];
@@ -149,7 +157,7 @@ const MergeSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Merge Sort</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -176,7 +184,7 @@ const MergeSort = () => {
 
             <StepTracker></StepTracker>
 
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={algorithmUrl} />
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
         </div>
     );
 };
