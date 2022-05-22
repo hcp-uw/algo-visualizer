@@ -47,3 +47,17 @@ Follow the Postgres' official [site](https://www.postgresql.org/download/) and s
 2. Login with default parameters. After login you can make direct queries through the command line.
 
 3. Copy and run the content of `./server/db/SetupTables.sql` to setup tables.
+
+**Setup environment variables** (for local testing)
+
+Create a file called `.env` in `./server/` folder with the following content:
+
+```
+PGUSER=postgres
+PGHOST=localhost
+PGPASSWORD=test123
+PGDATABASE=postgres
+PGPORT=5432
+```
+
+Express will use this credentials to login to Postgres database.
