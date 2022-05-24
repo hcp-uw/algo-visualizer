@@ -16,7 +16,7 @@ const AlgorithmDescription = (props) => {
     const algorithm = props.data.algorithm
     const algorithmTitle = props.data.title
     const algorithmDescription = props.data.description.map((listItem) => {
-        let listField = <li>{listItem}</li>;
+        let listField = <li key={listItem}>{listItem}</li>;
         return listField;
     })
 
