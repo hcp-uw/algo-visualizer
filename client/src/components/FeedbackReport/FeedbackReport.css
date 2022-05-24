@@ -1,0 +1,99 @@
+.overlay {
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 11;
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+.feedback-modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.feedback-popup {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 20em;
+    border-radius: 10px;
+    z-index: 12;
+    animation: pop-in 0.2s ease-in-out;
+}
+
+.feedback-popup header {
+    font-weight: 400;
+    position: relative;
+    padding: 10px 20px; 
+    border-bottom: solid 1px black;
+    border-radius: 10px 10px 0 0;
+    background-color: #614fcc;
+    color: white;
+}
+
+.feedback-popup section {
+    flex-direction: column;
+    padding: 10px 20px 10px 20px; 
+    font-size: 20px;
+}
+
+.feedback-popup section button {
+    display: block;
+    margin: auto;
+}
+
+.feedback-popup section > * {
+    margin: 5px 0;
+}
+
+.close {
+    position: relative;
+    right: 0px;
+    border: none;
+    padding: 0;
+}
+
+.close::after {
+    font-weight: bold;
+    right: 0px;
+    position: absolute;
+    background-color: none;
+    content: "\00d7";
+    cursor: pointer;
+}
+
+#feedback-input {
+    height: 7em;
+    min-height: 6em;
+    line-height: 1.5em;
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.feedback-button {
+    font-size: 24px;
+    border: none;
+    background-color: #f16350;
+    padding: 0 7px;
+}
+
+.feedback-button:hover {
+    background-color: #ee422b;
+}
+
+.hidden {
+    display: none;
+}

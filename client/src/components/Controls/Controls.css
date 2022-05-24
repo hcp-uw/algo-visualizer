@@ -22,6 +22,64 @@
     color: white
 }
 
+.array-input {
+    text-align: center;
+    border-radius: 0.5rem;
+    margin: 5px 0px;
+    padding: 6px 12px;
+    border: 1px solid rgba(180, 88, 24, 0.8);
+    width: 100%;
+    background-color: rgba(180, 88, 24, 0.2);
+}
+
+.array-input:focus {
+    outline: 1px solid rgba(180, 88, 24, 0.8);
+}
+
+/* https://blog.logrocket.com/creating-beautiful-tooltips-with-only-css/ */
+.array-input-tooltip {
+    position:relative; /* making the .tooltip span a container for the tooltip text */
+    width: 50%;
+    margin: auto;
+    padding: 0;
+}
+
+.array-input-tooltip::before {
+    content: attr(data-text); /* here's the magic */
+    position:absolute;
+    
+    left: 30%;
+    top: -150%;
+    margin-left:15px; /* and add a small left margin */
+    
+    /* basic styles */
+    width:80%;
+    padding:10px;
+    border-radius:10px;
+    background:rgb(40, 39, 41, 0.9);
+    color: rgb(255, 255, 255);
+    text-align:center;
+    font-size: 16px;
+  
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+
+  .array-input-tooltip:hover::before {
+    visibility: visible;
+    animation: tooltip 1s;
+    animation-fill-mode: forwards;
+  }
+
+.warning {
+    border: 1px solid red;
+}
+
+.warning:focus {
+    outline: 1px solid red ;
+}
+
 .glow-border {
     box-shadow: 0 0 5px 3px rgb(185, 160, 207) !important;
 }
@@ -43,4 +101,9 @@
       to {
         box-shadow: 0 0 10px 5px rgb(180, 134, 223);
       }
+}
+
+@keyframes tooltip {
+    85% {opacity: 0}
+    100% { opacity: 1}
 }

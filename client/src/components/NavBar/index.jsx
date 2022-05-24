@@ -3,11 +3,12 @@
  */
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import { Navbar, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "./NavBar.css";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import FeedbackReport from "../FeedbackReport";
 
 // cheat to have the dropdown separated from nav-item while
 // the hovers work normally
@@ -33,7 +34,7 @@ const navMenuMouseLeave = (e) => {
 const NavBar = () => {
     return (
         <React.Fragment>
-            <Navbar className="bg-purple">
+            <Navbar className="bg-purple container-fluid">
                 {/* the app logo */}
                 <Navbar.Brand>
                     <Link to="/" title="AlgoViz">
@@ -68,6 +69,9 @@ const NavBar = () => {
                             <NavDropdown.Item>Selection Sort</NavDropdown.Item>
                         </LinkContainer>
                         <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                        <LinkContainer to="/merge-sort">
+                            <NavDropdown.Item>Merge Sort</NavDropdown.Item>
+                        </LinkContainer>
                     </div>
                 </NavDropdown>
 
@@ -81,6 +85,9 @@ const NavBar = () => {
                         <NavDropdown.Item href="#">4th</NavDropdown.Item>
                     </div>
                 </NavDropdown>
+                <Nav.Item className="ms-auto me-4">
+                    <FeedbackReport />
+                </Nav.Item>
             </Navbar>
         </React.Fragment>
     );

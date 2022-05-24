@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS Feedback CASCADE;
+CREATE TABLE Feedback (
+    Id BIGSERIAL NOT NULL PRIMARY KEY,
+    Timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+    Message VARCHAR(1023) NOT NULL,
+    Browser_info VARCHAR(255),
+    Algorithm_data TEXT
+);

@@ -6,8 +6,8 @@ const searches = require("../algorithms/searches.js");
 const express = require("express");
 const router = express.Router();
 
-//This allows parsing of the body of POST requests, that are encoded in JSON
-router.use(require("body-parser").json());
+// attach the body as a json into res variable
+router.use(express.json());
 
 router.post("/binarysearch", (req, res) => {
     var r = searches.binarySearch(req.body.array, req.body.target);

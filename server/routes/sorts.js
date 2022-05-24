@@ -6,8 +6,8 @@ const sorts = require("../algorithms/sorts.js");
 const express = require("express");
 const router = express.Router();
 
-//This allows parsing of the body of POST requests, that are encoded in JSON
-router.use(require("body-parser").json());
+// attach the body as a json into res variable
+router.use(express.json());
 
 router.post("/bubblesort", (req, res) => {
     var r = sorts.bubbleSort(req.body.array);
@@ -25,6 +25,13 @@ router.post("/insertionsort", (req, res) => {
 
 router.post("/selectionsort", (req, res) => {
     var r = sorts.selectionSort(req.body.array);
+    res.status(200).send({
+        result: r,
+    });
+});
+
+router.post("/mergesort", (req, res) => {
+    var r = sorts.mergeSort(req.body.array);
     res.status(200).send({
         result: r,
     });

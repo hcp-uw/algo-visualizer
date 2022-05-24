@@ -24,11 +24,18 @@
     background-color: #b3beff;
 }
 
-.table-container {
-    display: flex;
-    margin: auto;
-    width: auto;
-    height: 200px;
+.highlight-compare {
+    animation: comparing 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes comparing {
+    from {
+        background-color: #f8e990;
+      }
+      
+      to {
+        background-color: #ffa58a;
+      }
 }
 
 .elements {
@@ -43,7 +50,10 @@
     min-height: 3rem;
     width: 3rem;
     height: 3rem;
+    max-width: 3rem;
+    max-height: 3rem;
     text-align: center;
+    transition: transform ease-in-out 0.2s;
 }
 
 .value-row {

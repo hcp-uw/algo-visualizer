@@ -1,0 +1,32 @@
+.element-container {
+    display: flex;
+    margin: 0px auto;
+    width: auto;
+    height: 200px;
+    outline: 1px dotted black;
+    overflow: hidden;
+}
+
+.reset-position-button > * {
+    font-size: 12px;
+    padding: 2px 4px;
+    border: none;
+    float: left;
+    position: relative;
+}
+
+.reset-position-button .fa {
+    margin: 0;
+}
+
+.wrapper {
+    margin: auto;
+}
+
+.container-children:hover {
+    cursor:grab
+}
+
+.container-children:active {
+    cursor: grabbing;
+}

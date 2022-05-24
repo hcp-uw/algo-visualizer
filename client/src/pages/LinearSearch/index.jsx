@@ -4,11 +4,13 @@ import "./LinearSearch.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
+import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { resetSteps } from "../../redux/stateSlice";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
+import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 
-const algorithmUrl = "searches/linearsearch/";
+const ALGORITHM_URL = "searches/linearsearch/";
+const ALGORITHM_NAME = "Linear Search";
 
 const LinearSearch = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -16,11 +18,15 @@ const LinearSearch = () => {
     const array = useSelector((state) => state.global.array);
     const inputBoxRef = useRef();
 
-    const [inputValue, setInputValue] = useState(array[12]);
+    const [numInput, setNumInput] = useState("");
+    const [currentTarget, setCurrentTarget] = useState("");
 
     const dispatch = useDispatch();
     // reset data upon exiting the page
     useEffect(() => {
+        // update the name on first load
+        dispatch(updateAlgorName(ALGORITHM_NAME));
+
         return () => {
             dispatch(resetSteps());
         };
@@ -29,7 +35,7 @@ const LinearSearch = () => {
     // function that update input box
     const updateTargetBoxValue = (e) => {
         inputBoxRef.current.value = e.target.innerHTML;
-        setInputValue(e.target.innerHTML);
+        setNumInput(e.target.innerHTML);
     };
 
     /**
@@ -117,6 +123,7 @@ const LinearSearch = () => {
                         />
                     </div>
                 </div>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -124,24 +131,31 @@ const LinearSearch = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <StepTracker />
 
+            <div className="centered">Current target: {currentTarget}</div>
             <div className="input-container">
                 <input
                     ref={inputBoxRef}
                     className="num-input"
                     type="number"
                     placeholder="Search for"
-                    defaultValue={inputValue}
+                    value={numInput}
                     onChange={(e) => {
-                        setInputValue(e.target.value);
+                        setNumInput(e.target.value);
                     }}
                 ></input>
             </div>
 
-            <Controls inputValue={inputValue} algorithmUrl={algorithmUrl} />
+            <Controls
+                numInput={numInput}
+                algorithmUrl={ALGORITHM_URL}
+                setCurrentTarget={setCurrentTarget}
+            />
         </div>
     );
 };

@@ -19,9 +19,10 @@ const makeRandomArray = (sort = false, size = 15, max = 99) => {
 
 const initialState = {
     algorSteps: { steps: [], success: false },
-    array: makeRandomArray(),
+    array: [],
     currentStep: 0,
     prevStep: -1,
+    algorithmName: "",
 };
 
 export const stateSlice = createSlice({
@@ -34,6 +35,9 @@ export const stateSlice = createSlice({
         // immutable state based off those changes
         updateArray: (state, action) => {
             state.array = action.payload;
+        },
+        updateAlgorName: (state, action) => {
+            state.algorithmName = action.payload;
         },
         // update algor steps usually come with reset current and previous steps
         updateAlgorSteps: (state, action) => {
@@ -60,6 +64,7 @@ export const {
     updateStep,
     initRandomArray,
     resetSteps,
+    updateAlgorName,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;
