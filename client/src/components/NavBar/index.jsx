@@ -75,10 +75,18 @@ const NavBar = () => {
                 <NavDropdown title="Pathfinding">
                     <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
                         <div style={invisBlock}>m</div>
-                        <NavDropdown.Item href="#">1st</NavDropdown.Item>
-                        <NavDropdown.Item href="#">2nd</NavDropdown.Item>
-                        <NavDropdown.Item href="#">3rd</NavDropdown.Item>
-                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                        <LinkContainer to="/breadth-first-search">
+                            <NavDropdown.Item>Breadth First Search</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/depth-first-search">
+                            <NavDropdown.Item>Depth First Search</NavDropdown.Item>
+                        </LinkContainer>
+                        {/* <LinkContainer to="/dijkstras>
+                            <NavDropdown.Item>Dijkstra's</NavDropdown.Item>
+                        </LinkContainer> */}
+                        <LinkContainer to="/a-star">
+                            <NavDropdown.Item>A*</NavDropdown.Item>
+                        </LinkContainer>
                     </div>
                 </NavDropdown>
             </Navbar>

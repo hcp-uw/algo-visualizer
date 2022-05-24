@@ -1,0 +1,11 @@
+.swap-counter-container {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.centered {
+    justify-content: center;
+}

@@ -1,0 +1,106 @@
+.board {
+    border: 1px solid black;
+    display: flex;
+    margin: auto;
+}
+
+.highlight {
+    background-color: #FCF5B9;
+}
+
+.highlight-success {
+    background-color: #96FA9A !important;
+}
+
+.highlight-error {
+    background-color: #fc7c76;
+}
+
+.highlight-domain {
+    background-color: #ffd0ce;
+}
+
+.highlight-minflag {
+    background-color: #b3beff;
+}
+
+.highlight-black {
+    background-color: #000000;
+}
+
+.highlight-gray {
+    background-color: #6c6c6c;
+}
+
+.table-container {
+    display: flex;
+    margin: 0px auto;
+    width: auto;
+    height: auto;
+    /* used to be height: 300px */
+    outline: 1px dotted black;
+    overflow: hidden;
+}
+
+.reset-position-button > * {
+    font-size: 12px;
+    padding: 2px 4px;
+    border: none;
+    float: left;
+    position: relative;
+}
+
+.reset-position-button .fa {
+    margin: 0;
+}
+
+.wrapper {
+    margin: auto;
+}
+
+.elements {
+    table-layout: fixed;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+}
+.elements:hover {
+    cursor:grab
+}
+
+.elements:active {
+    cursor: grabbing;
+}
+
+.elements td {
+    min-width: 3rem;
+    min-height: 3rem;
+    width: 3rem;
+    height: 3rem;
+    max-width: 3rem;
+    max-height: 3rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.value-row {
+    font-size: 20px;
+}
+
+.index-row {
+    font-size: 16px;
+}
+
+.value-block {
+    border: 2px solid black;
+    box-shadow: 2px 3px 3px #969696;
+}
+
+.dot {
+    border-radius: 50%;
+}
+
+.value-block:hover {
+    cursor: pointer;
+    background-color: #c8ffcb;
+}

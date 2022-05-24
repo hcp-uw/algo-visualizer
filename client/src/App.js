@@ -21,6 +21,9 @@ import BinarySearch from "./pages/BinarySearch";
 import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
+import BreadthFirstSearch from "./pages/BreadthFirstSearch";
+import AStar from "./pages/AStar";
+import DepthFirstSearch from "./pages/DepthFirstSearch";
 
 // necesary step to use these icons on other components
 library.add(
@@ -60,6 +63,21 @@ const App = () => {
                     exact
                     path="/selection-sort"
                     element={<SelectionSort />}
+                />
+                <Route
+                    exact
+                    path="/breadth-first-search"
+                    element={<BreadthFirstSearch />}
+                />
+                <Route
+                    exact
+                    path="/depth-first-search"
+                    element={<DepthFirstSearch />}
+                />
+                <Route
+                    exact
+                    path="/a-star"
+                    element={<AStar />}
                 />
             </Routes>
         </React.Fragment>
