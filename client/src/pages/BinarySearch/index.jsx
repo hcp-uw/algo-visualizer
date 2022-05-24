@@ -119,7 +119,7 @@ const BinarySearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                        <h2>{ALGORITHM_NAME}</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             <div>
                 <AlgorithmPopover 
