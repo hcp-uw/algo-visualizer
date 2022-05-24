@@ -24,29 +24,18 @@
     background-color: #b3beff;
 }
 
-.table-container {
-    display: flex;
-    margin: 0px auto;
-    width: auto;
-    height: 200px;
-    outline: 1px dotted black;
-    overflow: hidden;
+.highlight-compare {
+    animation: comparing 0.75s ease-in-out infinite alternate;
 }
 
-.reset-position-button > * {
-    font-size: 12px;
-    padding: 2px 4px;
-    border: none;
-    float: left;
-    position: relative;
-}
-
-.reset-position-button .fa {
-    margin: 0;
-}
-
-.wrapper {
-    margin: auto;
+@keyframes comparing {
+    from {
+        background-color: #f8e990;
+      }
+      
+      to {
+        background-color: #ffa58a;
+      }
 }
 
 .elements {
@@ -54,13 +43,6 @@
     margin: auto;
     border-collapse: separate;
     border-spacing: 10px 0;
-}
-.elements:hover {
-    cursor:grab
-}
-
-.elements:active {
-    cursor: grabbing;
 }
 
 .elements td {
@@ -71,7 +53,7 @@
     max-width: 3rem;
     max-height: 3rem;
     text-align: center;
-    overflow: hidden;
+    transition: transform ease-in-out 0.2s;
 }
 
 .value-row {

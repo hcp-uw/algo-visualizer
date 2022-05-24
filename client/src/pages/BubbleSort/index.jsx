@@ -7,9 +7,15 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
-import { updateAlgorSteps, resetSteps } from "../../redux/stateSlice";
+import {
+    updateAlgorSteps,
+    resetSteps,
+    updateAlgorName,
+} from "../../redux/stateSlice";
+import VisualizerContainer from "../../components/VisualizerContainer";
 
-const algorithmUrl = "sorts/bubblesort/";
+const ALGORITHM_URL = "sorts/bubblesort/";
+const ALGORITHM_NAME = "Bubble Sort";
 
 const BubbleSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -23,6 +29,9 @@ const BubbleSort = () => {
 
     // reset data upon exiting the page
     useEffect(() => {
+        // update the name on first load
+        dispatch(updateAlgorName(ALGORITHM_NAME));
+
         return () => {
             dispatch(resetSteps());
         };
@@ -34,7 +43,7 @@ const BubbleSort = () => {
         let data = { array: arr };
 
         try {
-            let response = await AlgoFetcher.post(algorithmUrl, data);
+            let response = await AlgoFetcher.post(ALGORITHM_URL, data);
             // update swap
             let c = 0;
             let s = [];
@@ -151,7 +160,7 @@ const BubbleSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>Bubble Sort</h2>
+                <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
                 <div className="info">
@@ -159,7 +168,9 @@ const BubbleSort = () => {
                 </div>
                 */}
 
-            <Array1D drawBlocks={drawBlocks} />
+            <VisualizerContainer>
+                <Array1D drawBlocks={drawBlocks} />
+            </VisualizerContainer>
 
             <div className="swap-counter-container">
                 <span>
@@ -172,7 +183,7 @@ const BubbleSort = () => {
 
             <StepTracker></StepTracker>
 
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={algorithmUrl} />
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
         </div>
     );
 };

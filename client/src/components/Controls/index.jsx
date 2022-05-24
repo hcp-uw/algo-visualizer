@@ -309,17 +309,13 @@ const Controls = (props) => {
 // and NOT sorted by default
 const makeRandomArray = (sort = false, size = 15, max = 99) => {
     var rands = [];
-    var result = [];
     while (rands.length < size) {
         var n = 1 + Math.floor(Math.random() * max);
         rands.push(n);
     }
     if (sort) rands.sort((a, b) => a - b);
 
-    for (var i = 0; i < size; i++) {
-        result.push(rands[i]);
-    }
-    return result;
+    return rands;
 };
 
 export default Controls;

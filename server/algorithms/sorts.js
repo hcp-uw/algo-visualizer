@@ -289,8 +289,218 @@ function selectionSort(arr) {
     return r;
 }
 
+//----------------------------------MERGE SORT----------------------------------------------
+
+function mergeSort(arr) {
+    let r = { steps: [], compareCount: 0 };
+    let positions = [];
+    let ids = [...Array(arr.length).keys()];
+
+    for (let i = 0; i < arr.length; i++) {
+        positions[i] = {
+            level: 0,
+            treePos: 0,
+            pos: i,
+        };
+    }
+
+    r.steps.push({
+        positions: copyOject(positions),
+        highlight: [],
+        compareCount: r.compareCount,
+        description: "Starting merge sort...",
+    });
+
+    mergeSortHelper(arr, ids, r, positions, 0, 0);
+
+    r.steps.push({
+        positions: copyOject(positions),
+        highlight: [],
+        compareCount: r.compareCount,
+        sorted: true,
+        description: "Array is sorted!",
+    });
+
+    return r;
+}
+
+function mergeSortHelper(arr, ids, r, positions, level, treePos) {
+    let n = ids.length;
+    if (n == 1) return ids;
+
+    // split array to two halfs
+    let mid = Math.floor(n / 2);
+    let ids1 = ids.slice(0, mid);
+    let ids2 = ids.slice(mid, n);
+
+    // adding step
+    fillSubarrayPositions(ids1, ids2, positions, level, treePos);
+    let step = {
+        positions: copyOject(positions),
+        highlight: ids1.concat(ids2),
+        compareCount: r.compareCount,
+        description: `Splitting array into subarrays...`,
+    };
+    r.steps.push(step);
+
+    // in the case of only 2 elements, split and merge is redundant
+    if (ids1.length > 1 || ids2.length > 1) {
+        // split themselves
+        ids1 = mergeSortHelper(
+            arr,
+            ids1,
+            r,
+            positions,
+            level + 1,
+            2 * treePos + 1
+        );
+        ids2 = mergeSortHelper(
+            arr,
+            ids2,
+            r,
+            positions,
+            level + 1,
+            2 * (treePos + 1)
+        );
+
+        // adding step
+        fillSubarrayPositions(ids1, ids2, positions, level, treePos);
+        step = {
+            positions: copyOject(positions),
+            highlight: ids1.concat(ids2),
+            compareCount: r.compareCount,
+            description: `Merging subarrays...`,
+        };
+        r.steps.push(step);
+    }
+
+    // merge them together
+    return mergeHelper(arr, ids1, ids2, r, positions, level, treePos);
+}
+
+function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
+    let ids3 = [];
+
+    // compare and add the front element of each array until one is empty
+    while (ids1.length > 0 && ids2.length > 0) {
+        // add step for comparing
+        fillSubarrayPositions(ids1, ids2, positions, level, treePos);
+        let step = {
+            positions: copyOject(positions),
+            highlight: [ids1[0], ids2[0]],
+            comparing: true,
+            compareCount: r.compareCount,
+            description: `Comparing ${arr[ids1[0]]} and ${arr[ids2[0]]}...`,
+        };
+
+        r.steps.push(step);
+
+        // comparing the front elements
+        let description = "";
+        let highlighted = [ids1[0], ids2[0]];
+        if (arr[ids1[0]] > arr[ids2[0]]) {
+            description = `${arr[ids2[0]]} < ${arr[ids1[0]]}. Pushing ${
+                arr[ids2[0]]
+            } to merged array.`;
+            ids3.push(ids2[0]);
+            ids2 = ids2.slice(1, ids2.length);
+        } else {
+            // case that two elements are equal
+            if (arr[ids1[0]] === arr[ids2[0]]) {
+                description = `${arr[ids1[0]]} = ${arr[ids2[0]]}. Pushing ${
+                    arr[ids1[0]]
+                } to merged array.`;
+            } else {
+                description = `${arr[ids1[0]]} < ${arr[ids2[0]]}. Pushing ${
+                    arr[ids1[0]]
+                } to merged array.`;
+            }
+            ids3.push(ids1[0]);
+            ids1 = ids1.slice(1, ids1.length);
+        }
+        r.compareCount++;
+
+        // add step for swapping
+        fillSubarrayPositions(ids1, ids2, positions, level, treePos);
+        for (let i = 0; i < ids3.length; i++) {
+            positions[ids3[i]] = {
+                level: level,
+                treePos: treePos,
+                pos: i,
+            };
+        }
+        step = {
+            positions: copyOject(positions),
+            highlight: highlighted,
+            swapped: true,
+            compareCount: r.compareCount,
+            description: description,
+        };
+        r.steps.push(step);
+    }
+
+    // add the remaining leftover elements
+    // it is guaranteed that at least 1 element will be leftover in either array
+    let description =
+        ids1.length > 0
+            ? `Moving remaining elements from left array`
+            : `Moving remaining elements from right array`;
+
+    while (ids1.length > 0) {
+        ids3.push(ids1[0]);
+        ids1 = ids1.slice(1, ids1.length);
+    }
+
+    while (ids2.length > 0) {
+        ids3.push(ids2[0]);
+        ids2 = ids2.slice(1, ids2.length);
+    }
+
+    // adding a step for adding remainders
+
+    for (let i = 0; i < ids3.length; i++) {
+        positions[ids3[i]] = {
+            level: level,
+            treePos: treePos,
+            pos: i,
+        };
+    }
+    step = {
+        positions: copyOject(positions),
+        highlight: ids3,
+        compareCount: r.compareCount,
+        description: description,
+    };
+    r.steps.push(step);
+
+    return ids3;
+}
+
+function fillSubarrayPositions(ids1, ids2, positions, level, treePos) {
+    for (let i = 0; i < ids1.length; i++) {
+        positions[ids1[i]] = {
+            level: level + 1,
+            treePos: 2 * treePos + 1,
+            pos: i,
+        };
+    }
+    for (let i = 0; i < ids2.length; i++) {
+        positions[ids2[i]] = {
+            level: level + 1,
+            treePos: 2 * (treePos + 1),
+            pos: i,
+        };
+    }
+}
+
+function copyOject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+//-----------------------------------------------------------------------------------------
+
 module.exports = {
     bubbleSort,
     insertionSort,
     selectionSort,
+    mergeSort,
 };
