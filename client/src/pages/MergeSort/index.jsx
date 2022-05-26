@@ -168,7 +168,7 @@ const MergeSort = () => {
             <VisualizerContainer
                 height={400}
                 scale={0.7}
-                initPosition={{ x: -28, y: -200 }}
+                //initPosition={{ x: -28, y: -200 }}
             >
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>

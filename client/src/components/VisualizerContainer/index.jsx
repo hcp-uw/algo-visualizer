@@ -7,16 +7,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
 
+const SCALE_LIMIT = 0.5;
+
 const VisualizerContainer = (props) => {
     let s = props.scale ? props.scale : 1;
 
     let initPosition = props.initPosition ? props.initPosition : { x: 0, y: 0 };
 
-    const [scale, setScale] = useState(Math.min(1.5, Math.max(0.5, s)));
+    const [scale, setScale] = useState(
+        Math.min(1 + SCALE_LIMIT, Math.max(1 - SCALE_LIMIT, s))
+    );
 
     // these two states are for position reset
     const [position, setPosition] = useState(initPosition);
     const [key, setKey] = useState(1);
+    const [lock, setLock] = useState(false);
 
     // call back for position reset
     // when to reset the position of a Draggable, we set its position props
@@ -42,25 +47,33 @@ const VisualizerContainer = (props) => {
 
     // handle scale change on mouse wheel scroll
     const handleScaleChange = (event) => {
-        let d = 0;
+        if (!lock) {
+            let d = 0;
 
-        if (event.deltaY > 0) {
-            d = Math.max(0.5, scale + (0.1 * event.deltaY) / -100);
-        } else {
-            d = Math.min(1.5, scale + (0.1 * event.deltaY) / -100);
+            if (event.deltaY > 0) {
+                d = Math.max(
+                    1 - SCALE_LIMIT,
+                    scale + (0.1 * event.deltaY) / -100
+                );
+            } else {
+                d = Math.min(
+                    1 + SCALE_LIMIT,
+                    scale + (0.1 * event.deltaY) / -100
+                );
+            }
+            setScale(d);
         }
-        setScale(d);
     };
 
     return (
         <div
-            className="element-container"
+            className={"element-container " + (lock ? "red-outline" : "")}
             onWheel={(e) => {
                 handleScaleChange(e);
             }}
             style={{ height: `${props.height}px` }}
         >
-            <div className="reset-position-button">
+            <div className="container-buttons">
                 <button
                     className="btn"
                     onClick={() => {
@@ -69,10 +82,34 @@ const VisualizerContainer = (props) => {
                         setScale(s);
                         setKey(key + 1);
                     }}
-                    title="Reset array position"
+                    title="Re-center array"
                 >
-                    <FontAwesomeIcon icon="fa-arrows-rotate" className="fa" />
+                    <FontAwesomeIcon
+                        icon="fa-down-left-and-up-right-to-center "
+                        className="fa"
+                    />
                 </button>
+                {lock ? (
+                    <button
+                        className="btn"
+                        onClick={() => {
+                            setLock(!lock);
+                        }}
+                        title="Unlock pan & zoom"
+                    >
+                        <FontAwesomeIcon icon="fa-unlock" className="fa" />
+                    </button>
+                ) : (
+                    <button
+                        className="btn"
+                        onClick={() => {
+                            setLock(!lock);
+                        }}
+                        title="Lock pan & zoom"
+                    >
+                        <FontAwesomeIcon icon="fa-lock" className="fa" />
+                    </button>
+                )}
             </div>
 
             <div className="wrapper" style={style}>
@@ -81,9 +118,10 @@ const VisualizerContainer = (props) => {
                     scale={scale}
                     key={key}
                     position={position}
+                    disabled={lock}
                 >
                     {/* Children are rendered within this component */}
-                    <div ref={nodeRef} className="container-children">
+                    <div ref={nodeRef} className="children-container noselect">
                         {props.children}
                     </div>
                 </Draggable>
