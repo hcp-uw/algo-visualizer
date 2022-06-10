@@ -26,6 +26,7 @@ import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
+//import Test from "./pages/Test";
 
 // necesary step to use these icons on other components
 library.add(

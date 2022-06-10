@@ -1,0 +1,61 @@
+.nodes {
+    z-index: 2;
+}
+
+.edges {
+    z-index: 1;
+}
+
+.graph-canvas {
+    border: 1px solid black;
+    z-index: -1;
+}
+
+.canvas-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+circle {
+    stroke: #6e3294;
+    fill: #dcacfa;
+    stroke-width: 3;
+}
+
+.node:active circle, .active-node {
+    stroke: #CC5E4F;
+}
+
+.edges {
+    cursor: pointer;
+}
+
+.nodes > * {
+    cursor: pointer;
+}
+
+.nodes > *:active {
+    cursor: grabbing;
+}
+
+.nodes > *:active {
+    cursor: grabbing;
+}
+
+line {
+    stroke-width: 2;
+}
+
+g > text {
+    fill: black;
+    font-size: 14px;
+    font-family: Helvetica,Arial,sans-serif;
+    margin: 10px;
+}
+
+.weight-input {
+    position: absolute;
+    font-size: 14px;
+    width: 42px;
+}

@@ -122,7 +122,7 @@ const VisualizerContainer = (props) => {
                 >
                     {/* Children are rendered within this component */}
                     <div ref={nodeRef} className="children-container noselect">
-                        {props.children}
+                        <div style={{ margin: "auto" }}>{props.children}</div>
                     </div>
                 </Draggable>
             </div>
