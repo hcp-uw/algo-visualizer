@@ -20,6 +20,7 @@ const MergeSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
     const currentStep = useSelector((state) => state.global.currentStep);
     const array = useSelector((state) => state.global.array);
+    const currentName = useSelector((state) => state.global.algorithmName);
     const dispatch = useDispatch();
 
     // swaps[i] is the boolean if a swap is happening at step i
@@ -83,7 +84,11 @@ const MergeSort = () => {
     const drawBlocks = () => {
         // when page loaded at first or in case steps are missing
         const step = algorSteps.steps[currentStep - 1];
-        let isStepAvailable = step != null && step.positions != null;
+        let isStepAvailable =
+            step != null &&
+            step.positions != null &&
+            // IF THE CURRENT ALGORITHM NAME IS MATCHING
+            currentName === ALGORITHM_NAME;
 
         if (isStepAvailable) {
             var highlight = step.highlight;

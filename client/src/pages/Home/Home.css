@@ -110,8 +110,10 @@
     margin-top: 20px;
 }
 
+
+
 @keyframes stroke-anim {
-    to {
+    100% {
         stroke-dashoffset: 0;
     }
 }

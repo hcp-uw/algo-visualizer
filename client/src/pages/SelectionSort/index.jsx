@@ -22,6 +22,7 @@ const SelectionSort = () => {
     const currentStep = useSelector((state) => state.global.currentStep);
     const prevStep = useSelector((state) => state.global.prevStep);
     const array = useSelector((state) => state.global.array);
+    const currentName = useSelector((state) => state.global.algorithmName);
     const dispatch = useDispatch();
 
     // swaps[i] is the boolean if a swap is happening at step i
@@ -90,9 +91,8 @@ const SelectionSort = () => {
             algorSteps.steps.length > 0 &&
             // if the algorithm is in progress (step 0: default state)
             currentStep > 0 &&
-            // if the steps are in the correct format
-            algorSteps.steps[0].highlight != null &&
-            algorSteps.steps[0].min != null;
+            // IF THE CURRENT ALGORITHM NAME IS MATCHING
+            currentName === ALGORITHM_NAME;
 
         if (isStepAvailable) {
             var steps = algorSteps.steps;

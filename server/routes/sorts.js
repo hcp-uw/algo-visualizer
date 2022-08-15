@@ -11,6 +11,7 @@ router.use(express.json());
 
 router.post("/bubblesort", (req, res) => {
     var r = sorts.bubbleSort(req.body.array);
+    r.url = "sorts/bubblesort/";
     res.status(200).send({
         result: r,
     });
@@ -18,6 +19,7 @@ router.post("/bubblesort", (req, res) => {
 
 router.post("/insertionsort", (req, res) => {
     var r = sorts.insertionSort(req.body.array);
+    r.url = "sorts/insertionsort/";
     res.status(200).send({
         result: r,
     });
@@ -25,6 +27,7 @@ router.post("/insertionsort", (req, res) => {
 
 router.post("/selectionsort", (req, res) => {
     var r = sorts.selectionSort(req.body.array);
+    r.url = "sorts/selectionsort/";
     res.status(200).send({
         result: r,
     });
@@ -32,6 +35,7 @@ router.post("/selectionsort", (req, res) => {
 
 router.post("/mergesort", (req, res) => {
     var r = sorts.mergeSort(req.body.array);
+    r.url = "sorts/mergesort/";
     res.status(200).send({
         result: r,
     });
