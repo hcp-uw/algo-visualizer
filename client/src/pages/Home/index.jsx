@@ -13,10 +13,10 @@ const Home = () => {
                     width="695.807787pt"
                     height="130.974817pt"
                     viewBox="-3 0 695.807787 121.974817"
+                    id="logo"
                 >
                     <g
                         transform="translate(-48.137632,284.000000) scale(0.100000,-0.100000)"
-                        id="logo"
                         fill="none"
                         stroke="black"
                     >
