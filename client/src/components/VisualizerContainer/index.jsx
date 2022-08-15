@@ -46,20 +46,17 @@ const VisualizerContainer = (props) => {
     };
 
     // handle scale change on mouse wheel scroll
-    const handleScaleChange = (event) => {
+    // 1 for increasing scale and -1 for decreasing
+    const handleScaleChange = (delta) => {
         if (!lock) {
             let d = 0;
 
-            if (event.deltaY > 0) {
-                d = Math.max(
-                    1 - SCALE_LIMIT,
-                    scale + (0.1 * event.deltaY) / -100
-                );
+            // increase scale
+            if (delta > 0) {
+                d = Math.min(1 + SCALE_LIMIT, scale + delta / 10);
             } else {
-                d = Math.min(
-                    1 + SCALE_LIMIT,
-                    scale + (0.1 * event.deltaY) / -100
-                );
+                // decrease scale
+                d = Math.max(1 - SCALE_LIMIT, scale + delta / 10);
             }
             setScale(d);
         }
@@ -68,9 +65,6 @@ const VisualizerContainer = (props) => {
     return (
         <div
             className={"element-container " + (lock ? "red-outline" : "")}
-            onWheel={(e) => {
-                handleScaleChange(e);
-            }}
             style={{ height: `${props.height}px` }}
         >
             <div className="container-buttons">
@@ -103,6 +97,7 @@ const VisualizerContainer = (props) => {
                     <button
                         className="btn"
                         onClick={() => {
+                            // lock
                             setLock(!lock);
                         }}
                         title="Lock pan & zoom"
@@ -110,6 +105,32 @@ const VisualizerContainer = (props) => {
                         <FontAwesomeIcon icon="fa-lock" className="fa" />
                     </button>
                 )}
+                <button
+                    className="btn"
+                    onClick={() => {
+                        // decrease scale
+                        handleScaleChange(-1);
+                    }}
+                    title="Zoom out"
+                >
+                    <FontAwesomeIcon
+                        icon="fa-magnifying-glass-minus"
+                        className="fa"
+                    />
+                </button>
+                <button
+                    className="btn"
+                    onClick={() => {
+                        // increase scale
+                        handleScaleChange(1);
+                    }}
+                    title="Zoom in"
+                >
+                    <FontAwesomeIcon
+                        icon="fa-magnifying-glass-plus"
+                        className="fa"
+                    />
+                </button>
             </div>
 
             <div className="wrapper" style={style}>

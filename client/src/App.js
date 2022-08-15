@@ -16,6 +16,8 @@ import {
     faLock,
     faUnlock,
     faDownLeftAndUpRightToCenter,
+    faMagnifyingGlassMinus,
+    faMagnifyingGlassPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Route, Routes } from "react-router-dom";
@@ -40,7 +42,9 @@ library.add(
     faBug,
     faLock,
     faUnlock,
-    faDownLeftAndUpRightToCenter
+    faDownLeftAndUpRightToCenter,
+    faMagnifyingGlassMinus,
+    faMagnifyingGlassPlus
 );
 
 const App = () => {
