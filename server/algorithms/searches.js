@@ -20,12 +20,13 @@
  * @returns r the result object
  */
 function linearSearch(arr, target) {
-    var r = { steps: [], success: false, target: target };
+    var r = { steps: [], success: false, target: target, foundIndex: -1 };
 
     for (var i = 0; i < arr.length; i++) {
         r.steps.push({ element: i, description: `Checking index ${i}` });
         if (arr[i] === target) {
             r.success = true;
+            r.foundIndex = i;
             break;
         }
     }
@@ -33,7 +34,7 @@ function linearSearch(arr, target) {
     r.steps.push({
         element: -1,
         description: r.success
-            ? `Element found at index ${r.steps[r.steps.length - 1].element}!`
+            ? `Element found at index ${r.foundIndex}!`
             : `Element not found!`,
     });
     return r;
@@ -44,7 +45,7 @@ function linearSearch(arr, target) {
  * for extra visuals.
  */
 function binarySearch(arr, target) {
-    var result = { steps: [], success: false, target: target };
+    var result = { steps: [], success: false, target: target, foundIndex: -1 };
     var l = 0,
         r = arr.length - 1;
 
@@ -75,6 +76,7 @@ function binarySearch(arr, target) {
             l = m;
             r = m;
             result.success = true;
+            result.foundIndex = m;
             break;
         }
 
@@ -98,9 +100,7 @@ function binarySearch(arr, target) {
         l: l,
         r: r,
         description: result.success
-            ? `Element found at index ${
-                  result.steps[result.steps.length - 1].step
-              }!`
+            ? `Element found at index ${result.foundIndex}!`
             : `Element not found!`,
     });
     return result;
