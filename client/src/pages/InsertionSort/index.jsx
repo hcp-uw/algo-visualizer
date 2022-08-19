@@ -7,6 +7,7 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
+import AlgorithmPopover from "../../components/AlgorithmPopover"
 import {
     updateAlgorSteps,
     resetSteps,
@@ -134,6 +135,29 @@ const InsertionSort = () => {
     return (
         <div className="content">
             <div className="centered">
+            <div className="container">
+                    <div className="row">
+                        <div className="col-10">
+                            <h2>Insertion Sort</h2>
+                        </div>
+                        <AlgorithmPopover 
+                            data = {
+                                {
+                                    algorithm: "Insertion Sort",
+                                    title : "Insertion sort builds a final sorted array one at a time by taking one entry from the unsorted partition and placing it in the sorted partition",
+                                    description : [
+                                        "Worst Complexity: O(n^2)",
+                                        "In Practice Complexity: O(n^2)",
+                                        "Best Complexity: O(n)",
+                                        "Space Complexity: O(1)",
+                                        "Stable: Yes"
+                                    ]
+                                }
+
+                            }
+                        />
+                    </div>
+                </div>
                 <h2>{ALGORITHM_NAME}</h2>
             </div>
             {/*
