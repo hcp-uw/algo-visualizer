@@ -7,15 +7,15 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import AlgorithmPopover from "../../components/AlgorithmPopover"
+import AlgorithmPopover from "../../components/AlgorithmPopover";
 import {
     updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
+import { insertionSortDesc } from "../../assets/algorithm-information.js";
 
 const ALGORITHM_URL = "sorts/insertionsort/";
-const ALGORITHM_NAME = "Insertion Sort";
 
 const InsertionSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -30,7 +30,7 @@ const InsertionSort = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(ALGORITHM_NAME));
+        dispatch(updateAlgorName(insertionSortDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -90,7 +90,7 @@ const InsertionSort = () => {
             // if the algorithm is in progress (step 0: default state)
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
-            currentName === ALGORITHM_NAME;
+            currentName === insertionSortDesc.algorithm;
 
         if (isStepAvailable) {
             var steps = algorSteps.steps;
@@ -135,36 +135,8 @@ const InsertionSort = () => {
     return (
         <div className="content">
             <div className="centered">
-            <div className="container">
-                    <div className="row">
-                        <div className="col-10">
-                            <h2>Insertion Sort</h2>
-                        </div>
-                        <AlgorithmPopover 
-                            data = {
-                                {
-                                    algorithm: "Insertion Sort",
-                                    title : "Insertion sort builds a final sorted array one at a time by taking one entry from the unsorted partition and placing it in the sorted partition",
-                                    description : [
-                                        "Worst Complexity: O(n^2)",
-                                        "In Practice Complexity: O(n^2)",
-                                        "Best Complexity: O(n)",
-                                        "Space Complexity: O(1)",
-                                        "Stable: Yes"
-                                    ]
-                                }
-
-                            }
-                        />
-                    </div>
-                </div>
-                <h2>{ALGORITHM_NAME}</h2>
+                <AlgorithmPopover data={insertionSortDesc} />
             </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
-                </div>
-                */}
 
             <VisualizerContainer>
                 <Array1D drawBlocks={drawBlocks} />

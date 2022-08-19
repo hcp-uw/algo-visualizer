@@ -3,45 +3,57 @@
  */
 
 import React, { useState } from "react";
-import "./AlgorithmPopover.css"
-
+import "./AlgorithmPopover.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const AlgorithmDescription = (props) => {
-    const [displayModal, setDisplayModal] = useState(false)
+    const [displayModal, setDisplayModal] = useState(false);
 
     const handleClick = () => {
-        setDisplayModal(!displayModal)
-    }
+        setDisplayModal(!displayModal);
+    };
 
-    const algorithm = props.data.algorithm
-    const algorithmTitle = props.data.title
-    const algorithmDescription = props.data.description.map((listItem) => {
-        let listField = <li>{listItem}</li>;
+    const algorithmName = props.data.algorithm;
+    const algorithmDesc = props.data.title;
+    const algorithmTimeComplx = props.data.description.map((listItem, i) => {
+        let listField = <li key={i}>{listItem}</li>;
         return listField;
-    })
+    });
 
     return (
         <>
-            <div className="col-2">
-                <button className="popover-button" onClick={handleClick}>Information on algorithm / tutorial</button>
-                <div className={"algo-modal" + (displayModal ? "-block" : "")} id="algo-modal">
-                    <div className="algo-modal-header">
-                        <div className="algo-title">{algorithm}</div>
-                        <button className="algo-close-button" onClick={handleClick}>&times;</button>
-                    </div>
-                    <div className="algo-modal-body">
-                        <p className="algo-desc">
-                            {algorithmTitle}
-                        </p>
-                        <ul>
-                            {algorithmDescription}
-                        </ul>
-                    </div>
+            <h2>
+                {algorithmName}
+                {"  "}
+                <FontAwesomeIcon
+                    onClick={handleClick}
+                    icon="fa-circle-info"
+                    className="fa"
+                    id="info-icon"
+                />
+            </h2>
+
+            <div className={displayModal ? "info-modal" : "hidden"}>
+                {/* The popup overlay */}
+                <div className="overlay" onClick={handleClick}></div>
+
+                {/* The popup card */}
+                <div className="info-popup">
+                    {/* Header of card */}
+                    <header>
+                        <div className="close" onClick={handleClick}></div>
+                        <span>{algorithmName}</span>
+                    </header>
+
+                    {/* Body of card */}
+                    <section>
+                        <p className="info-desc">{algorithmDesc}</p>
+                        <ul>{algorithmTimeComplx}</ul>
+                    </section>
                 </div>
             </div>
-            <div className={"overlay-toggler" + (displayModal ? "-block" : "")} onClick={handleClick}></div>
         </>
     );
-}
+};
 
-export default AlgorithmDescription
+export default AlgorithmDescription;

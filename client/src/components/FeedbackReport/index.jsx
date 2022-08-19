@@ -44,7 +44,7 @@ const FeedbackReport = (props) => {
             // clear string in input box
             inputRef.current.value = "";
             // close the popup
-            setActive(!active);
+            swapActive(!active);
         }
     };
 

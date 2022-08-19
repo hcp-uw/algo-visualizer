@@ -13,9 +13,9 @@ import {
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
+import { selectionSortDesc } from "../../assets/algorithm-information.js";
 
 const ALGORITHM_URL = "sorts/selectionsort/";
-const ALGORITHM_NAME = "Selection Sort";
 
 const SelectionSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -31,7 +31,7 @@ const SelectionSort = () => {
     useEffect(() => {
         return () => {
             // update the name on first load
-            dispatch(updateAlgorName(ALGORITHM_NAME));
+            dispatch(updateAlgorName(selectionSortDesc.algorithm));
 
             dispatch(resetSteps());
         };
@@ -91,7 +91,7 @@ const SelectionSort = () => {
             // if the algorithm is in progress (step 0: default state)
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
-            currentName === ALGORITHM_NAME;
+            currentName === selectionSortDesc.algorithm;
 
         if (isStepAvailable) {
             var steps = algorSteps.steps;
@@ -139,35 +139,7 @@ const SelectionSort = () => {
     return (
         <div className="content">
             <div className="centered">
-            <div className="container">
-                    <div className="row">
-                        <div className="col-10">
-                            <h2>Selection Sort</h2>
-                        </div>
-                        <AlgorithmPopover 
-                            data = {
-                                {
-                                    algorithm: "Selection Sort",
-                                    title : "Selection Sort is an in-place sorting algorithm that selects the smallest element of an unsorted list and places it in the beginning of the unsorted partition",
-                                    description : [
-                                        "Worst Complexity: O(n^2)",
-                                        "In Practice Complexity: O(n^2)",
-                                        "Best Complexity: O(n^2)",
-                                        "Space Complexity: O(1)",
-                                        "Stable: No"
-                                    ]
-                                }
-
-                            }
-                        />
-                    </div>
-                <h2>{ALGORITHM_NAME}</h2>
-            </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
-
-                </div>
+                <AlgorithmPopover data={selectionSortDesc} />
             </div>
 
             <VisualizerContainer>

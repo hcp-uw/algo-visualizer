@@ -13,8 +13,10 @@ import {
     updateAlgorName,
 } from "../../redux/stateSlice";
 
+import AlgorithmPopover from "../../components/AlgorithmPopover";
+import { mergeSortDesc } from "../../assets/algorithm-information";
+
 const ALGORITHM_URL = "sorts/mergesort/";
-const ALGORITHM_NAME = "Merge Sort";
 
 const MergeSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -29,7 +31,7 @@ const MergeSort = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(ALGORITHM_NAME));
+        dispatch(updateAlgorName(mergeSortDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -88,7 +90,7 @@ const MergeSort = () => {
             step != null &&
             step.positions != null &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
-            currentName === ALGORITHM_NAME;
+            currentName === mergeSortDesc.algorithm;
 
         if (isStepAvailable) {
             var highlight = step.highlight;
@@ -162,7 +164,7 @@ const MergeSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <h2>{ALGORITHM_NAME}</h2>
+                <AlgorithmPopover data={mergeSortDesc} />
             </div>
             {/*
                 <div className="info">

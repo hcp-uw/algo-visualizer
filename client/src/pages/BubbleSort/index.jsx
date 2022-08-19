@@ -6,16 +6,16 @@ import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import { useSelector, useDispatch } from "react-redux";
-import AlgorithmPopover from "../../components/AlgorithmPopover"
+import AlgorithmPopover from "../../components/AlgorithmPopover";
 import {
     updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
 import VisualizerContainer from "../../components/VisualizerContainer";
+import { bubbleSortDesc } from "../../assets/algorithm-information.js";
 
 const ALGORITHM_URL = "sorts/bubblesort/";
-const ALGORITHM_NAME = "Bubble Sort";
 
 const BubbleSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -30,7 +30,7 @@ const BubbleSort = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(ALGORITHM_NAME));
+        dispatch(updateAlgorName(bubbleSortDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -90,7 +90,7 @@ const BubbleSort = () => {
             // if the algorithm is in progress (step 0: default state)
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
-            currentName === ALGORITHM_NAME;
+            currentName === bubbleSortDesc.algorithm;
 
         if (isStepAvailable) {
             var steps = algorSteps.steps;
@@ -136,34 +136,7 @@ const BubbleSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-10">
-                            <h2>Bubble Sort</h2>
-                        </div>
-                        <AlgorithmPopover 
-                            data = {
-                                {
-                                    algorithm: "Bubble Sort",
-                                    title : "Bubble Sort compares adjacent elements and swaps them if they are in the wrong order",
-                                    description : [
-                                        "Worst Complexity: O(n^2)",
-                                        "In Practice Complexity: O(n^2)",
-                                        "Best Complexity: O(n)",
-                                        "Space Complexity: O(1)",
-                                        "Stable: Yes"
-                                    ]
-                                }
-
-                            }
-                        />
-                    </div>
-                <h2>{ALGORITHM_NAME}</h2>
-            </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
-                </div>
+                <AlgorithmPopover data={bubbleSortDesc} />
             </div>
 
             <VisualizerContainer>

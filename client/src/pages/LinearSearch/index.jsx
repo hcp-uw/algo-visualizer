@@ -8,10 +8,9 @@ import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
-import { randInt } from "../../utilities/utilities";
+import { linearSearchDesc } from "../../assets/algorithm-information.js";
 
 const ALGORITHM_URL = "searches/linearsearch/";
-const ALGORITHM_NAME = "Linear Search";
 
 const LinearSearch = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
@@ -26,7 +25,7 @@ const LinearSearch = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(ALGORITHM_NAME));
+        dispatch(updateAlgorName(linearSearchDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -102,35 +101,8 @@ const LinearSearch = () => {
     return (
         <div className="content">
             <div className="centered">
-            <div className="container">
-                    <div className="row">
-                        <div className="col-10">
-                            <h2>Linear Search</h2>
-                        </div>
-                        <AlgorithmPopover 
-                            data = {
-                                {
-                                    algorithm: "Linear Search",
-                                    title : "Linear search checks each element of the list until a match is found or the whole list is exhausted",
-                                    description : [
-                                        "Worst Complexity: O(n)",
-                                        "In Practice Complexity: O(n)",
-                                        "Best Complexity: O(1)",
-                                        "Space Complexity: O(1)"
-                                    ]
-                                }
-
-                            }
-                        />
-                    </div>
-                </div>
-                <h2>{ALGORITHM_NAME}</h2>
+                <AlgorithmPopover data={linearSearchDesc} />
             </div>
-            {/*
-                <div className="info">
-                    <button className="btn">Extra Info right here</button>
-                </div>
-                */}
 
             <VisualizerContainer>
                 <Array1D drawBlocks={drawBlocks} />
