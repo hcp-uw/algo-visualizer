@@ -21,8 +21,8 @@ const BinarySearch = () => {
     const array = useSelector((state) => state.global.array);
     const inputBoxRef = useRef();
 
-    const [numInput, setNumInput] = useState("");
-    const [currentTarget, setCurrentTarget] = useState("");
+    const [numInput, setNumInput] = useState();
+    const [currentTarget, setCurrentTarget] = useState();
 
     const dispatch = useDispatch();
     // reset data upon exiting the page
@@ -104,7 +104,7 @@ const BinarySearch = () => {
             // return a react component
             return (
                 <td
-                    className={"value-block" + style}
+                    className={"value-block value-block-hover" + style}
                     key={id}
                     id={id}
                     onClick={updateTargetBoxValue.bind(this)}

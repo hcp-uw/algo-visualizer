@@ -6,7 +6,6 @@ import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
-import { animated, Transition } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import {
     updateAlgorSteps,
@@ -20,7 +19,6 @@ const ALGORITHM_NAME = "Insertion Sort";
 const InsertionSort = () => {
     const algorSteps = useSelector((state) => state.global.algorSteps);
     const currentStep = useSelector((state) => state.global.currentStep);
-    const prevStep = useSelector((state) => state.global.prevStep);
     const array = useSelector((state) => state.global.array);
     const currentName = useSelector((state) => state.global.algorithmName);
     const dispatch = useDispatch();
@@ -116,44 +114,19 @@ const InsertionSort = () => {
                     style = " highlight-domain";
                 }
             }
-            let m = arr.indexOf(id) - id;
-            let prev =
-                isStepAvailable && prevStep - 1 >= 0
-                    ? steps[prevStep - 1].array.indexOf(id) - id
-                    : 0;
+            let x = arr.indexOf(id) - id;
 
             return (
-                <Transition
-                    items={value}
-                    // default value is 170/26
-                    config={{
-                        tension: 170 * 1.5,
-                        friction: 26,
+                <td
+                    className={"value-block" + style}
+                    key={id}
+                    id={id}
+                    style={{
+                        transform: `translate(${x * 58}px, 0px)`,
                     }}
-                    enter={{ transform: prev }}
-                    update={{ transform: m }}
-                    key={"t" + id * id}
                 >
-                    {({ transform }) => {
-                        return (
-                            <animated.td
-                                className={"value-block" + style}
-                                key={id}
-                                id={id}
-                                style={{
-                                    transform: transform
-                                        .to({
-                                            range: [prev, m],
-                                            output: [prev * 58, m * 58],
-                                        })
-                                        .to((x) => `translate3d(${x}px, 0, 0)`),
-                                }}
-                            >
-                                {value}
-                            </animated.td>
-                        );
-                    }}
-                </Transition>
+                    {value}
+                </td>
             );
         });
     };

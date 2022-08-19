@@ -96,6 +96,7 @@ const Controls = (props) => {
               dispatch(updateArray(arr));
               let input =
                   props.numInput != null ? parseInt(props.numInput) : arr[12];
+
               let data = { array: arr, target: input };
 
               try {
