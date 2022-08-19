@@ -57,7 +57,7 @@ export const selectionSortDesc = {
 
 export const mergeSortDesc = {
     algorithm: "Merge Sort",
-    title: "Selection Sort is a divide and conquer algorithm that recursively divides the array in half to the smallest subarrays, then gradually sorts and merges them until it reaches the original array.",
+    title: "Merge Sort is a divide and conquer algorithm that recursively divides the array in half to the smallest subarrays, then gradually sorts and merges adjacent subarrays until it reaches the original array size.",
     description: [
         "Worst Complexity: O(nlog(n))",
         "In Practice Complexity: O(nlog(n))",

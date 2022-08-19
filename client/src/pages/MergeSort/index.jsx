@@ -30,6 +30,7 @@ const MergeSort = () => {
 
     // reset data upon exiting the page
     useEffect(() => {
+        console.log("GOT HERE");
         // update the name on first load
         dispatch(updateAlgorName(mergeSortDesc.algorithm));
 

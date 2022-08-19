@@ -7,13 +7,14 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import AlgorithmPopover from "../../components/AlgorithmPopover";
 import {
     updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
-import { selectionSortDesc } from "../../assets/algorithm-information.js";
+
+import AlgorithmPopover from "../../components/AlgorithmPopover";
+import { selectionSortDesc } from "../../assets/algorithm-information";
 
 const ALGORITHM_URL = "sorts/selectionsort/";
 
@@ -29,10 +30,10 @@ const SelectionSort = () => {
 
     // reset data upon exiting the page
     useEffect(() => {
-        return () => {
-            // update the name on first load
-            dispatch(updateAlgorName(selectionSortDesc.algorithm));
+        // update the name on first load
+        dispatch(updateAlgorName(selectionSortDesc.algorithm));
 
+        return () => {
             dispatch(resetSteps());
         };
     }, []);
