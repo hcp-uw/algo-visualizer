@@ -147,6 +147,8 @@ const SelectionSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
+
             <div className="swap-counter-container">
                 <span>
                     Swaps:{" "}
@@ -157,8 +159,6 @@ const SelectionSort = () => {
             </div>
 
             <StepTracker></StepTracker>
-
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
         </div>
     );
 };

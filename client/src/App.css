@@ -21,18 +21,21 @@
 
 .input-container {
     border: 1px solid black;
-    display: inline-block;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 5px 5px 5px;
     text-align: center;
-    display: table;
     margin: auto;
+    margin-right: 5px;
     border-radius: 0.5rem;
 }
 
 .num-input {
     border: none;
-    width: 10rem;
+    max-width: 3rem;
     text-align: center;
+}
+
+.num-input::placeholder {
+    font-size: 14px;
 }
 
 /* maybe find a better way instead of forcing absolute positioning*/

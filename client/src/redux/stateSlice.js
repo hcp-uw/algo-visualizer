@@ -1,22 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// return a random array of length 15, range 0-99, allows duplicate,
-// and NOT sorted by default
-const makeRandomArray = (sort = false, size = 15, max = 99) => {
-    var rands = [];
-    var result = [];
-    while (rands.length < size) {
-        var n = Math.floor(Math.random() * (max + 1));
-        rands.push(n);
-    }
-    if (sort) rands.sort((a, b) => a - b);
-
-    for (var i = 0; i < size; i++) {
-        result.push(rands[i]);
-    }
-    return result;
-};
-
 const initialState = {
     algorSteps: { steps: [], success: false },
     array: [],

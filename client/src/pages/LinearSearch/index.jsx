@@ -108,27 +108,27 @@ const LinearSearch = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
-            <StepTracker />
-
-            <div className="centered">Current target: {currentTarget}</div>
-            <div className="input-container">
-                <input
-                    ref={inputBoxRef}
-                    className="num-input"
-                    type="number"
-                    placeholder="Search for"
-                    value={numInput}
-                    onChange={(e) => {
-                        setNumInput(e.target.value);
-                    }}
-                ></input>
-            </div>
-
             <Controls
                 numInput={numInput}
                 algorithmUrl={ALGORITHM_URL}
                 setCurrentTarget={setCurrentTarget}
+                searchInputBox={
+                    <div className="input-container">
+                        <input
+                            ref={inputBoxRef}
+                            className="num-input"
+                            type="number"
+                            placeholder="Search for"
+                            value={numInput}
+                            onChange={(e) => {
+                                setNumInput(e.target.value);
+                            }}
+                        ></input>
+                    </div>
+                }
             />
+            <div className="centered">Current target: {currentTarget}</div>
+            <StepTracker />
         </div>
     );
 };

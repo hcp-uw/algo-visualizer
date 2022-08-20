@@ -1,16 +1,24 @@
-.controls .btn {
+.controls {
+    display: flex;
     margin: 10px;
-}
+    justify-content: center;
+} 
 
 .btn .fa {
-    margin-left: 0.5rem;
     color: var(--purple);
     transition-duration: 0.1s;
 }
 
+
 .btn {
     border: 2px solid black;
-    transition-duration: 0.1s;
+    margin-left: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.controls .btn, .array-input-container .btn {
+    width: 2.75rem;
+    margin: 5px;
 }
 
 .btn:hover {
@@ -26,7 +34,7 @@
     text-align: center;
     border-radius: 0.5rem;
     margin: 5px 0px;
-    padding: 6px 12px;
+    padding: 6px 30px 6px 8px;
     border: 1px solid rgba(180, 88, 24, 0.8);
     width: 100%;
     background-color: rgba(180, 88, 24, 0.2);
@@ -37,23 +45,33 @@
 }
 
 /* https://blog.logrocket.com/creating-beautiful-tooltips-with-only-css/ */
-.array-input-tooltip {
+.array-input-container {
     position:relative; /* making the .tooltip span a container for the tooltip text */
-    width: 50%;
+    width: 95%;
+    max-width: 40em;
     margin: auto;
     padding: 0;
+    display: flex;
 }
 
-.array-input-tooltip::before {
+#warning-icon {
+    position: absolute;
+    right: 60px;
+    top: 16px;
+    font-size: 16px;
+    color: rgb(241, 74, 23)
+}
+
+#warning-icon::before {
     content: attr(data-text); /* here's the magic */
-    position:absolute;
+    position: absolute;
     
-    left: 30%;
-    top: -150%;
+    left: -8em;
+    top: -4em;
     margin-left:15px; /* and add a small left margin */
     
     /* basic styles */
-    width:80%;
+    width: 14em;
     padding:10px;
     border-radius:10px;
     background:rgb(40, 39, 41, 0.9);
@@ -62,13 +80,11 @@
     font-size: 16px;
   
     visibility: hidden;
-    opacity: 0;
-    transition: opacity .3s;
   }
 
-  .array-input-tooltip:hover::before {
+  #warning-icon:hover::before {
     visibility: visible;
-    animation: tooltip 1s;
+    animation: tooltip 0.5s;
     animation-fill-mode: forwards;
   }
 
@@ -84,6 +100,10 @@
     box-shadow: 0 0 5px 3px rgb(185, 160, 207) !important;
 }
 
+.build-glow-border {
+    box-shadow: 0 0 7px 4px rgb(165, 111, 175) !important;
+}
+
 .glow-border-anim {
     animation: glow 0.75s ease-in-out infinite alternate;
 }
@@ -91,6 +111,55 @@
 .disabled {
     pointer-events: none;
     opacity: 0.5;
+}
+
+.step-highlight-border {
+    border: 1px rgb(121, 121, 121);
+    border-style: groove;
+    border-radius: 8px;
+}
+
+#speed-slider-container {
+    margin: 0;
+}
+
+.step-progress-bar {
+    top: 5px;
+    height: 2em;
+    width: 10em;
+    background-color: #36117e;
+    margin: 0 5px;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: 1px solid black;
+    overflow: hidden;
+}
+
+.step-progress {
+    background-color: #71b418;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    transition: width ease-in-out 0.1s;
+    border-radius: 5px;
+}
+
+.step-label {
+    z-index: 3;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    user-select: none;
+}
+
+.step-progress-bar > * {
+    pointer-events: none;
 }
 
 @keyframes glow {
@@ -104,6 +173,6 @@
 }
 
 @keyframes tooltip {
-    85% {opacity: 0}
+    0% {opacity: 0}
     100% { opacity: 1}
 }

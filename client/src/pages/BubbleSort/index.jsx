@@ -143,6 +143,8 @@ const BubbleSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
+            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
+
             <div className="swap-counter-container">
                 <span>
                     Swaps:{" "}
@@ -153,8 +155,6 @@ const BubbleSort = () => {
             </div>
 
             <StepTracker></StepTracker>
-
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
         </div>
     );
 };

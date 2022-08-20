@@ -3,7 +3,7 @@
  * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
     updateStep,
 } from "../../redux/stateSlice";
 import useInterval from "../hooks/useInterval";
+import { makeRandomArray } from "../../utilities/utilities";
 
 const Controls = (props) => {
     // global state variables we pull from redux store
@@ -32,11 +33,13 @@ const Controls = (props) => {
 
     // states related to array input box
     const [prevArrayInput, setPrevArrayInput] = useState(array);
-    const [arrayInput, setArrayInput] = useState(array);
+    const [arrayInput, setArrayInput] = useState(array); // string
     const [validInput, setValidInput] = useState(true);
+    const [validInputCode, setValidInputCode] = useState([]);
 
     // miscellaneous variables
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
+    const totalStep = algorSteps.steps.length ? algorSteps.steps.length : -1;
     const dispatch = useDispatch();
 
     // set up the loop for automatic play
@@ -47,6 +50,17 @@ const Controls = (props) => {
         },
         playing ? interval : null
     );
+
+    const handleProgressBarClick = (e) => {
+        const offset = Math.max(e.nativeEvent.offsetX, 0);
+        const width = e.nativeEvent.target.clientWidth;
+        const step = Math.round((offset / width) * totalStep);
+        dispatch(updateStep({ currentStep: step, prevStep: step }));
+    };
+
+    const randomizeArrayInput = (sorted) => {
+        setArrayInput(makeRandomArray(sorted).toString());
+    };
 
     // step forward the algorithm, use for button
     const stepForward = () => {
@@ -162,14 +176,17 @@ const Controls = (props) => {
     };
 
     const checkArrayInput = (arr) => {
+        let code = [];
         // 5 to 20 elements, range 1-99
-        if (arr.length < 5 || arr.length > 20) return false;
+        if (arr.length < 5 || arr.length > 20) code.push(1);
 
         for (let i = 0; i < arr.length; i++) {
-            if (arr[i] < 1 || arr[i] > 99) return false;
+            if (arr[i] === "" && !code.includes(3)) code.push(3);
+            else if ((arr[i] < 1 || arr[i] > 99) && !code.includes(2))
+                code.push(2);
         }
 
-        return true;
+        return { status: code.length === 0, code: code };
     };
 
     // do the algorithm once every time the page load
@@ -186,76 +203,100 @@ const Controls = (props) => {
         doAlgorithm(tempArray);
     }, []);
 
+    const getWarningText = () => {
+        let warningText = "";
+        if (validInputCode.includes(1))
+            warningText += "Array must have 5-20 elements. ";
+        if (validInputCode.includes(2) || validInputCode.includes(3)) {
+            warningText += "Elements must be ";
+            if (validInputCode.includes(2)) {
+                warningText += "in range 1-99";
+                if (validInputCode.includes(3)) {
+                    warningText += " and comma-separated";
+                }
+            } else {
+                warningText += "comma-separated";
+            }
+            warningText += ".";
+        }
+        return warningText;
+    };
+
     return (
         <React.Fragment>
             <div className="centered">
                 {/* Array Input */}
-                <div
-                    className="array-input-tooltip"
-                    data-text="Array must have 5-20 elements, range 1-99, comma-separated"
-                >
+                <div className="array-input-container">
+                    {/* search input box (if applied) */}
+                    {props.searchInputBox}
+
+                    {/* array input box  */}
                     <input
                         className={
                             "array-input " + (validInput ? "" : "warning")
                         }
                         placeholder="Array"
                         value={arrayInput}
+                        onKeyDown={(e) => {
+                            // preventing invalid inputs here, or else the cursor will
+                            // move to the end whenever user type wrong input
+                            const allowedKeys = [
+                                "backspace",
+                                "arrowleft",
+                                "arrowright",
+                                "delete",
+                            ];
+                            if (
+                                /[^\d,]/g.test(e.key) &&
+                                !e.ctrlKey &&
+                                !allowedKeys.includes(e.key.toLowerCase())
+                            ) {
+                                e.preventDefault();
+                            }
+                        }}
                         onChange={(e) => {
-                            // only allow digits and single comma
+                            // a second input check here whenever user copy paste input
+                            // behavior: only keep the digits/comma portion of the pasted input
                             let newText = e.target.value.replace(/[^\d,]/g, "");
                             setArrayInput(newText);
-                            setValidInput(checkArrayInput(newText.split(",")));
+                            let t = checkArrayInput(newText.split(","));
+                            setValidInput(t.status);
+                            setValidInputCode(t.code);
                         }}
                     ></input>
-                </div>
-                {/* speed slider */}
-                <div>
-                    <label htmlFor="speed-slider">Speed:&nbsp;</label>
-                    <input
-                        id="speed-slider"
-                        type="range"
-                        min="2"
-                        max="10"
-                        defaultValue={5}
-                        onChange={(e) => updateSpeed(e.target.value)}
-                    ></input>
+                    {validInput ? null : (
+                        <div id="warning-icon" data-text={getWarningText()}>
+                            <FontAwesomeIcon
+                                icon="fa-triangle-exclamation"
+                                className="fa"
+                            />
+                        </div>
+                    )}
+
+                    {/* Randomize button*/}
+                    <button
+                        className="btn"
+                        title="Randomize input"
+                        onClick={() =>
+                            randomizeArrayInput(props.requestSortedArray)
+                        }
+                    >
+                        <FontAwesomeIcon icon="fa-shuffle" className="fa" />
+                    </button>
                 </div>
 
                 {/* wrapper for the buttons */}
                 <div className="controls">
-                    {/* build button that request the backend to perform algorithm */}
-                    <button
-                        className={
-                            "btn" +
-                            ((props.numInput !== prevNumInput ||
-                                arrayInput !== prevArrayInput) &&
-                            validInput
-                                ? " glow-border"
-                                : " disabled")
-                        }
-                        title="do algorithm"
-                        onClick={() =>
-                            doAlgorithm(
-                                arrayInput.split(",").map((e) => parseInt(e))
-                            )
-                        }
-                    >
-                        <span>Build</span>
-                        <FontAwesomeIcon icon="fa-wrench" className="fa" />
-                    </button>
-
                     {/* play/pause button, conditioned by the 'playing' state */}
                     {playing ? (
                         <button
                             className="btn glow-border-anim"
                             onClick={doPause}
                         >
-                            <span>Pause</span>
                             <FontAwesomeIcon icon="fa-pause" className="fa" />
                         </button>
                     ) : (
                         <button className="btn glow-border" onClick={doPlay}>
-                            <span>Play</span>
                             <FontAwesomeIcon icon="fa-play" className="fa" />
                         </button>
                     )}
@@ -266,12 +307,30 @@ const Controls = (props) => {
                         title="step backward once"
                         onClick={stepBackward}
                     >
-                        <span>Backward</span>
                         <FontAwesomeIcon
                             icon="fa-backward-step"
                             className="fa"
                         />
                     </button>
+
+                    {/* Progress bar */}
+                    <div
+                        onClick={(e) => handleProgressBarClick(e)}
+                        className="step-progress-bar"
+                    >
+                        <div
+                            className="step-progress"
+                            style={{
+                                width: `${(currentStep / totalStep) * 100}%`,
+                            }}
+                        ></div>
+                        <span className="step-label">
+                            <b>{currentStep}</b>/
+                            {algorSteps.steps.length
+                                ? algorSteps.steps.length
+                                : 0}
+                        </span>
+                    </div>
 
                     {/* step forward button */}
                     <button
@@ -284,7 +343,6 @@ const Controls = (props) => {
                         title="step forward once"
                         onClick={stepForward}
                     >
-                        <span>Forward</span>
                         <FontAwesomeIcon
                             icon="fa-forward-step"
                             className="fa"
@@ -297,26 +355,45 @@ const Controls = (props) => {
                         title="restart algorithm"
                         onClick={doReset}
                     >
-                        <span>Reset</span>
                         <FontAwesomeIcon icon="fa-rotate-left" className="fa" />
                     </button>
                 </div>
+
+                {/* speed slider */}
+                <div id="speed-slider-container">
+                    <label htmlFor="speed-slider">Speed:&nbsp;</label>
+                    <input
+                        id="speed-slider"
+                        type="range"
+                        min="2"
+                        max="10"
+                        defaultValue={5}
+                        onChange={(e) => updateSpeed(e.target.value)}
+                    ></input>
+                </div>
+
+                {/* build button that request the backend to perform algorithm */}
+                <button
+                    className={
+                        "btn" +
+                        ((props.numInput !== prevNumInput ||
+                            arrayInput !== prevArrayInput) &&
+                        validInput
+                            ? " build-glow-border"
+                            : " disabled")
+                    }
+                    title="do algorithm"
+                    onClick={() =>
+                        doAlgorithm(
+                            arrayInput.split(",").map((e) => parseInt(e))
+                        )
+                    }
+                >
+                    <span>Fetch Algorithm </span>
+                    <FontAwesomeIcon icon="fa-wrench" className="fa" />
+                </button>
             </div>
         </React.Fragment>
     );
 };
-
-// return a random array of length 15, range 1-99, allows duplicate,
-// and NOT sorted by default
-const makeRandomArray = (sort = false, size = 15, max = 99) => {
-    var rands = [];
-    while (rands.length < size) {
-        var n = 1 + Math.floor(Math.random() * max);
-        rands.push(n);
-    }
-    if (sort) rands.sort((a, b) => a - b);
-
-    return rands;
-};
-
 export default Controls;
