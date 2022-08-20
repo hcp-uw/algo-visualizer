@@ -27,6 +27,7 @@
     border: none;
     float: left;
     position: relative;
+    margin-top: 0;
 }
 
 .container-buttons .fa {

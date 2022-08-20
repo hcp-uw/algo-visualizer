@@ -1,6 +1,6 @@
 .step-tracker-container {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
     margin-bottom: 5px;
 }
 
@@ -9,10 +9,35 @@
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     overflow-y: scroll;
-    width: 50%;
+    width: 90%;
+    max-width: 40em;
     border: 1px solid gray;
     font-size: 16px;
-    height: 15em;
-    max-height: 15em;
     line-height: 1.5em;
+    transition: height 0.25s ease-in-out;
+    scroll-behavior: smooth;
+    border-radius: 5px;
+}
+
+#pin-icon {
+    font-size: 18px;
+    position: relative;
+    top: 4px;
+    right: -4px;
+    float: right;
+    color: var(--purple);
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+#pin-icon:hover {
+    color: #4e3abe;
+}
+
+.console {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.console::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }

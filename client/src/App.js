@@ -21,6 +21,7 @@ import {
     faCircleInfo,
     faShuffle,
     faTriangleExclamation,
+    faThumbTack,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Route, Routes } from "react-router-dom";
@@ -50,7 +51,8 @@ library.add(
     faMagnifyingGlassPlus,
     faCircleInfo,
     faShuffle,
-    faTriangleExclamation
+    faTriangleExclamation,
+    faThumbTack
 );
 
 const App = () => {
