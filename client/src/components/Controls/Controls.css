@@ -62,32 +62,6 @@
     color: rgb(241, 74, 23)
 }
 
-#warning-icon::before {
-    content: attr(data-text); /* here's the magic */
-    position: absolute;
-    
-    left: -8em;
-    top: -4em;
-    margin-left:15px; /* and add a small left margin */
-    
-    /* basic styles */
-    width: 14em;
-    padding:10px;
-    border-radius:10px;
-    background:rgb(40, 39, 41, 0.9);
-    color: rgb(255, 255, 255);
-    text-align:center;
-    font-size: 16px;
-  
-    visibility: hidden;
-  }
-
-  #warning-icon:hover::before {
-    visibility: visible;
-    animation: tooltip 0.5s;
-    animation-fill-mode: forwards;
-  }
-
 .warning {
     border: 1px solid red;
 }

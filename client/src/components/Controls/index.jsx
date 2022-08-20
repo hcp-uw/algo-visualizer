@@ -15,6 +15,7 @@ import {
 } from "../../redux/stateSlice";
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const Controls = (props) => {
     // global state variables we pull from redux store
@@ -204,22 +205,14 @@ const Controls = (props) => {
     }, []);
 
     const getWarningText = () => {
-        let warningText = "";
+        let warnings = [];
         if (validInputCode.includes(1))
-            warningText += "Array must have 5-20 elements. ";
-        if (validInputCode.includes(2) || validInputCode.includes(3)) {
-            warningText += "Elements must be ";
-            if (validInputCode.includes(2)) {
-                warningText += "in range 1-99";
-                if (validInputCode.includes(3)) {
-                    warningText += " and comma-separated";
-                }
-            } else {
-                warningText += "comma-separated";
-            }
-            warningText += ".";
-        }
-        return warningText;
+            warnings.push("Array must have 5-20 elements.");
+        if (validInputCode.includes(2))
+            warnings.push("Elements must be in range 1-99.");
+        if (validInputCode.includes(3))
+            warnings.push("Elements must be comma-separated.");
+        return warnings;
     };
 
     return (
@@ -265,12 +258,24 @@ const Controls = (props) => {
                         }}
                     ></input>
                     {validInput ? null : (
-                        <div id="warning-icon" data-text={getWarningText()}>
-                            <FontAwesomeIcon
-                                icon="fa-triangle-exclamation"
-                                className="fa"
-                            />
-                        </div>
+                        <OverlayTrigger
+                            key="top"
+                            placement="top"
+                            overlay={
+                                <Tooltip id="tooltip-top">
+                                    {getWarningText().map((w) => (
+                                        <li key={w}>{w}</li>
+                                    ))}
+                                </Tooltip>
+                            }
+                        >
+                            <div id="warning-icon">
+                                <FontAwesomeIcon
+                                    icon="fa-triangle-exclamation"
+                                    className="fa"
+                                />
+                            </div>
+                        </OverlayTrigger>
                     )}
 
                     {/* Randomize button*/}
