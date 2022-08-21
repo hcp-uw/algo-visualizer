@@ -1,6 +1,6 @@
 const { linearSearch, binarySearch } = require("./searches");
 
-test("Linear Search basic case", () => {
+test("Linear Search basic cases", () => {
     // a success case
     let array = [1, 2, 3];
     let target = 2;
@@ -44,7 +44,7 @@ test("Linear Search edge cases", () => {
     expect(searchResult.foundIndex).toBe(3);
 });
 
-test("Binary Search basic case", () => {
+test("Binary Search basic cases", () => {
     // a success case
     let array = [1, 2, 3];
     let target = 2;

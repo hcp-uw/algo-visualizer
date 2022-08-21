@@ -44,14 +44,14 @@ function swap(array, i, j) {
  *              }
  */
 function bubbleSort(arr, descending = false) {
-    if (arr.length <= 1) return;
+    if (arr.length <= 1) return "Array is empty!";
     var r = { steps: [] };
 
     // multiplier for ascending/descending sort
     var mul = descending ? 1 : -1;
 
     // flag for if a swap happened in one whole iteration
-    var swapped = true;
+    var swapped = false;
     var sorted = [];
     var swapCount = 0;
     var ids = [...Array(arr.length).keys()];
@@ -127,7 +127,7 @@ function bubbleSort(arr, descending = false) {
  *              }
  */
 function insertionSort(arr) {
-    if (arr.length <= 1) return;
+    if (arr.length <= 1) return "Array is empty!";
 
     var r = { steps: [] };
     var sorted = [];
@@ -209,7 +209,7 @@ function insertionSort(arr) {
  *              }
  */
 function selectionSort(arr) {
-    if (arr.length <= 1) return;
+    if (arr.length <= 1) return "Array is empty!";
 
     var r = { steps: [] };
     var sorted = [];
@@ -292,6 +292,8 @@ function selectionSort(arr) {
 //----------------------------------MERGE SORT----------------------------------------------
 
 function mergeSort(arr) {
+    if (arr.length <= 1) return "Array is empty!";
+
     let r = { steps: [], compareCount: 0 };
     let positions = [];
     let ids = [...Array(arr.length).keys()];
