@@ -9,6 +9,10 @@ const BASE_CASE = [
     70, 63, 66, 28, 51, 18, 3, 79, 5, 88, 11, 37, 22, 94, 25, 32, 30, 89, 92, 7,
 ];
 
+const ODD_NUM_ELEMENTS = [
+    53, 37, 11, 17, 6, 56, 75, 0, 61, 94, 91, 51, 5, 58, 36, 100, 74, 27, 92,
+];
+
 const INCLUDE_DUPS_CASE = [
     41, 21, 83, 87, 41, 4, 55, 74, 68, 5, 82, 35, 21, 13, 43, 84, 55, 46, 15,
     69,
@@ -186,6 +190,9 @@ test("Selection Sort edge cases", () => {
 test("Merge Sort base cases", () => {
     // base case
     mergeSortTest(BASE_CASE);
+
+    // odd number of elements case
+    mergeSortTest(ODD_NUM_ELEMENTS);
 });
 
 test("Merge Sort edge cases", () => {
