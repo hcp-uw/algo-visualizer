@@ -136,6 +136,17 @@
     pointer-events: none;
 }
 
+#loading-spinner {
+    color:#36117e;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    border-width: 0.2rem;
+    position: absolute;
+    float: right;
+}
+
 @keyframes glow {
     from {
         box-shadow: 0 0 5px 2px rgb(190, 174, 204);

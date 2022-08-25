@@ -85,7 +85,7 @@ const NavBar = () => {
                                     Selection Sort
                                 </NavDropdown.Item>
                             </LinkContainer>
-                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
+
                             <LinkContainer to="/merge-sort">
                                 <NavDropdown.Item>Merge Sort</NavDropdown.Item>
                             </LinkContainer>
@@ -93,7 +93,7 @@ const NavBar = () => {
                     </NavDropdown>
 
                     {/* pathfinding dropdown */}
-                    <NavDropdown title="Pathfinding">
+                    <NavDropdown title="Pathfinding" disabled>
                         <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
                             <div style={invisBlock}>m</div>
                             <NavDropdown.Item href="#">1st</NavDropdown.Item>

@@ -15,7 +15,7 @@ import {
 } from "../../redux/stateSlice";
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
 
 const Controls = (props) => {
     // global state variables we pull from redux store
@@ -28,6 +28,7 @@ const Controls = (props) => {
     // a 'playing' flag is necessary since clearing play interval alone
     // does not trigger a component rerender
     const [playing, setPlaying] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // saving a previous value for input box, for glowing animation of buttons
     const [prevNumInput, setPrevNumInput] = useState(props.numInput);
@@ -100,14 +101,17 @@ const Controls = (props) => {
         ? async (arr) => {
               // since the parent page doesnt have the doPause function, we just call it here
               doPause();
+              setLoading(true);
               dispatch(updateArray(arr));
               props.doAlgorithm(arr);
               setPrevNumInput(props.numInput);
               setPrevArrayInput(arr.toString());
+              setLoading(false);
           }
         : async (arr) => {
               // default function
               doPause();
+              setLoading(true);
               dispatch(updateArray(arr));
               let input =
                   props.numInput != null ? parseInt(props.numInput) : arr[12];
@@ -135,6 +139,7 @@ const Controls = (props) => {
               } catch (err) {
                   console.log(err);
               }
+              setLoading(false);
           };
 
     // reset the current step back to 0
@@ -377,26 +382,35 @@ const Controls = (props) => {
                     ></input>
                 </div>
 
-                {/* build button that request the backend to perform algorithm */}
-                <button
-                    className={
-                        "btn" +
-                        ((props.numInput !== prevNumInput ||
-                            arrayInput !== prevArrayInput) &&
-                        validInput
-                            ? " build-glow-border"
-                            : " disabled")
-                    }
-                    title="do algorithm"
-                    onClick={() =>
-                        doAlgorithm(
-                            arrayInput.split(",").map((e) => parseInt(e))
-                        )
-                    }
-                >
-                    <span>Fetch Algorithm </span>
-                    <FontAwesomeIcon icon="fa-wrench" className="fa" />
-                </button>
+                <div style={{ margin: "0px" }}>
+                    {/* build button that request the backend to perform algorithm */}
+                    <button
+                        className={
+                            "btn" +
+                            ((props.numInput !== prevNumInput ||
+                                arrayInput !== prevArrayInput) &&
+                            validInput
+                                ? " build-glow-border"
+                                : " disabled")
+                        }
+                        title="do algorithm"
+                        onClick={() =>
+                            doAlgorithm(
+                                arrayInput.split(",").map((e) => parseInt(e))
+                            )
+                        }
+                    >
+                        <span>Fetch Algorithm </span>
+                        <FontAwesomeIcon icon="fa-wrench" className="fa" />
+                    </button>
+                    {loading ? (
+                        <Spinner
+                            animation="border"
+                            id="loading-spinner"
+                            role="status"
+                        ></Spinner>
+                    ) : null}
+                </div>
             </div>
         </React.Fragment>
     );
