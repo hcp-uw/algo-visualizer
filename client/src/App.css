@@ -7,6 +7,7 @@
 .content {
     padding: 20px 40px 40px 40px;
     font-size: 20px;
+    animation: page-fade-in ease-in-out 0.25s;
 }
 
 .centered {
@@ -65,6 +66,15 @@ input::-webkit-inner-spin-button {
     scrollbar-width: none;  /* Firefox */
   }
 
+
+@keyframes page-fade-in {
+    0% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 
 @keyframes pop-in {
