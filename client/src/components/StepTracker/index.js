@@ -23,7 +23,11 @@ const StepTracker = (props) => {
             (expanded ? 1 : 0);
 
         if (consoleRef.current.children[toScroll])
-            consoleRef.current.children[toScroll].scrollIntoView();
+            consoleRef.current.scrollTo({
+                top:
+                    consoleRef.current.children[toScroll].offsetTop -
+                    consoleRef.current.offsetTop,
+            });
     }, [currentStep, expanded]);
 
     return (
