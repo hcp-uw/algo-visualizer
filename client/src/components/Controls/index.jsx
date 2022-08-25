@@ -28,7 +28,7 @@ const Controls = (props) => {
     // a 'playing' flag is necessary since clearing play interval alone
     // does not trigger a component rerender
     const [playing, setPlaying] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // saving a previous value for input box, for glowing animation of buttons
     const [prevNumInput, setPrevNumInput] = useState(props.numInput);
@@ -103,7 +103,7 @@ const Controls = (props) => {
               doPause();
               setLoading(true);
               dispatch(updateArray(arr));
-              props.doAlgorithm(arr);
+              await props.doAlgorithm(arr);
               setPrevNumInput(props.numInput);
               setPrevArrayInput(arr.toString());
               setLoading(false);
@@ -139,6 +139,7 @@ const Controls = (props) => {
               } catch (err) {
                   console.log(err);
               }
+              //setTimeout(() => setLoading(false), 1000);
               setLoading(false);
           };
 
@@ -403,13 +404,13 @@ const Controls = (props) => {
                         <span>Fetch Algorithm </span>
                         <FontAwesomeIcon icon="fa-wrench" className="fa" />
                     </button>
-                    {loading ? (
-                        <Spinner
-                            animation="border"
-                            id="loading-spinner"
-                            role="status"
-                        ></Spinner>
-                    ) : null}
+
+                    <Spinner
+                        animation="border"
+                        className={loading ? "loading-spinner-show" : ""}
+                        id="loading-spinner"
+                        role="status"
+                    ></Spinner>
                 </div>
             </div>
         </React.Fragment>

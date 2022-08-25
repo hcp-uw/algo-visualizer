@@ -145,6 +145,12 @@
     border-width: 0.2rem;
     position: absolute;
     float: right;
+    opacity: 0;
+    transition: opacity ease-in-out 0.15s;
+}
+
+.loading-spinner-show {
+    opacity: 1 !important;
 }
 
 @keyframes glow {
