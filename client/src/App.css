@@ -7,7 +7,7 @@
 .content {
     padding: 20px 40px 40px 40px;
     font-size: 20px;
-    animation: page-fade-in ease-in-out 0.25s;
+    animation: page-fade-in ease-in-out 0.15s;
 }
 
 .centered {
@@ -69,7 +69,7 @@ input::-webkit-inner-spin-button {
 
 @keyframes page-fade-in {
     0% {
-        opacity: 0.25;
+        opacity: 0.5;
     }
     100% {
         opacity: 1;
