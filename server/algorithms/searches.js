@@ -11,6 +11,10 @@
  *              }
  */
 
+function copyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 /**
  * Search for value by going through the array
  * one-by-one in order.
@@ -106,7 +110,76 @@ function binarySearch(arr, target) {
     return result;
 }
 
+function depthFirstSearch(nodes, edges, start) {
+    if (nodes.length === 0) return [];
+
+    let result = { steps: [] };
+    let adjacencyMap = [];
+    let stack = [];
+    let visited = [];
+    let visitedEdges = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+        adjacencyMap[i] = [];
+    }
+
+    // build adjacency map
+    for (let i = 0; i < edges.length; i++) {
+        // add to front so we search from left to right
+        adjacencyMap[edges[i].n1].unshift(edges[i].n2);
+        adjacencyMap[edges[i].n2].unshift(edges[i].n1);
+    }
+
+    stack.push(start);
+
+    result.steps.push({
+        stack: copyObject(stack),
+        currentNode: [],
+        visitedNode: copyObject(visited),
+        visitedEdges: copyObject(visitedEdges),
+        description: `Starting from node ${start}`,
+    });
+
+    // dfs
+    while (stack.length > 0) {
+        let node = stack.pop();
+        visited.push(node);
+        // add visited edge
+
+        result.steps.push({
+            stack: copyObject(stack),
+            currentNode: [node],
+            visitedNode: copyObject(visited),
+            visitedEdges: copyObject(visitedEdges),
+            description: `Visiting node ${node}`,
+        });
+
+        for (const n of adjacencyMap[node]) {
+            if (!visited.includes(n)) stack.push(n);
+        }
+
+        result.steps.push({
+            stack: copyObject(stack),
+            currentNode: [],
+            visitedNode: copyObject(visited),
+            visitedEdges: copyObject(visitedEdges),
+            description: `Finished visiting node ${node}`,
+        });
+    }
+
+    result.steps.push({
+        stack: copyObject(stack),
+        currentNode: [],
+        visitedNode: copyObject(visited),
+        visitedEdges: copyObject(visitedEdges),
+        description: `Graph traversed.`,
+    });
+    result.traversalResult = visited;
+    return result;
+}
+
 module.exports = {
     linearSearch,
     binarySearch,
+    depthFirstSearch,
 };

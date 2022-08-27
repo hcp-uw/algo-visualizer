@@ -143,7 +143,19 @@ const VisualizerContainer = (props) => {
                 >
                     {/* Children are rendered within this component */}
                     <div ref={nodeRef} className="children-container noselect">
-                        <div style={{ margin: "auto" }}>{props.children}</div>
+                        <div style={{ margin: "auto" }}>
+                            {
+                                // cloning child to pass props
+                                React.cloneElement(props.children, {
+                                    scale,
+                                    center: {
+                                        x: -initPosition.x,
+                                        y: -initPosition.y,
+                                    },
+                                })
+                                // props.children
+                            }
+                        </div>
                     </div>
                 </Draggable>
             </div>

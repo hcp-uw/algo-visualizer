@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.post("/binarysearch", (req, res) => {
-    var r = searches.binarySearch(req.body.array, req.body.target);
+    let r = searches.binarySearch(req.body.array, req.body.target);
     r.url = "searches/binarysearch/";
     res.status(200).send({
         result: r,
@@ -18,8 +18,16 @@ router.post("/binarysearch", (req, res) => {
 });
 
 router.post("/linearsearch", (req, res) => {
-    var r = searches.linearSearch(req.body.array, req.body.target);
+    let r = searches.linearSearch(req.body.array, req.body.target);
     r.url = "searches/linearsearch/";
+    res.status(200).send({
+        result: r,
+    });
+});
+
+router.post("/depthfirstsearch", (req, res) => {
+    let r = searches.depthFirstSearch(req.body.array, req.body.target);
+    r.url = "searches/depthfirstsearch/";
     res.status(200).send({
         result: r,
     });

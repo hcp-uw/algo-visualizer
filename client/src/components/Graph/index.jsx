@@ -11,20 +11,46 @@ import Draggable from "react-draggable";
 import { useState } from "react";
 
 // default values for variables
-const NODES = [
-    { init: { x: 60, y: 50 }, x: 0, y: 0 },
-    { init: { x: 150, y: 90 }, x: 0, y: 0 },
-    { init: { x: 340, y: 90 }, x: 0, y: 0 },
-    { init: { x: 50, y: 240 }, x: 0, y: 0 },
-];
+
+// const EDGES = [
+//     { n1: 0, n2: 1, weight: randInt(1, 100) },
+//     { n1: 1, n2: 2, weight: randInt(1, 100) },
+//     { n1: 1, n2: 3, weight: randInt(1, 100) },
+// ];
+
+// const NODES = [
+//     {
+//         init: { x: 60 + center.x, y: 50 + center.y },
+//         x: 0,
+//         y: 0,
+//     },
+//     {
+//         init: { x: 150 + center.x, y: 90 + center.y },
+//         x: 0,
+//         y: 0,
+//     },
+//     {
+//         init: { x: 340 + center.x, y: 90 + center.y },
+//         x: 0,
+//         y: 0,
+//     },
+//     {
+//         init: { x: 50 + center.x, y: 240 + center.y },
+//         x: 0,
+//         y: 0,
+//     },
+// ];
 
 const EDGES = [
-    { n1: 0, n2: 1, weight: randInt(1, 100) },
-    { n1: 1, n2: 2, weight: randInt(1, 100) },
-    { n1: 1, n2: 3, weight: randInt(1, 100) },
+    { n1: 0, n2: 1 },
+    { n1: 0, n2: 2 },
+    { n1: 1, n2: 3 },
+    { n1: 1, n2: 4 },
+    { n1: 4, n2: 5 },
+    { n1: 2, n2: 6 },
 ];
 
-const DEFAULT_WIDTH = 700;
+const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = 500;
 const NODE_RADIUS = 18;
 const EDGE_WIDTH = 2;
@@ -54,7 +80,51 @@ const getEdgeTextStyle = (n1, n2) => {
 // ----------------------------------------------
 
 // component
-const Graph = (props) => {
+const Graph = ({
+    center = { x: 0, y: 0 },
+    containerWidth = DEFAULT_WIDTH,
+    containerHeight = DEFAULT_HEIGHT,
+    scale = 1,
+    ...props
+}) => {
+    const NODES = [
+        {
+            init: { x: 400 + center.x, y: 50 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 300 + center.x, y: 100 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 500 + center.x, y: 100 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 250 + center.x, y: 150 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 350 + center.x, y: 150 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 400 + center.x, y: 200 + center.y },
+            x: 0,
+            y: 0,
+        },
+        {
+            init: { x: 450 + center.x, y: 150 + center.y },
+            x: 0,
+            y: 0,
+        },
+    ];
+
     const [nodes, setNodes] = useState(NODES);
     const [edges, setEdges] = useState(EDGES);
     const [activeNode, setActiveNode] = useState(null);
@@ -148,8 +218,8 @@ const Graph = (props) => {
 
     const calculateBound = (initPos) => {
         // bounds in format of Draggable object
-        const width = props.width ? props.width : DEFAULT_WIDTH;
-        const height = props.height ? props.height : DEFAULT_HEIGHT;
+        const width = containerWidth;
+        const height = containerHeight;
         const pad = NODE_RADIUS + 3; // depends on node radius
         return {
             top: 0 - initPos.y + pad,
@@ -160,12 +230,13 @@ const Graph = (props) => {
     };
 
     return (
-        <>
+        // this outter div act as an anchor for any absolute positioned elements
+        <div style={{ position: "relative" }}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox={`0 0 ${DEFAULT_WIDTH} ${DEFAULT_HEIGHT}`}
-                width={props.width ? props.width : DEFAULT_WIDTH}
-                height={props.height ? props.height : DEFAULT_HEIGHT}
+                viewBox={`0 0 ${containerWidth} ${containerHeight}`}
+                width={containerWidth}
+                height={containerHeight}
                 style={{ overflow: "inherit" }}
                 onDoubleClick={(e) => {
                     addNode(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
@@ -202,13 +273,14 @@ const Graph = (props) => {
                             return (
                                 <g
                                     onDoubleClick={(e) => {
-                                        e.stopPropagation();
+                                        // show weight input box
                                         setWeightInputState({
                                             show: true,
-                                            x: e.clientX,
-                                            y: e.clientY,
+                                            x: e.nativeEvent.offsetX,
+                                            y: e.nativeEvent.offsetY,
                                             target: index,
                                         });
+                                        e.stopPropagation();
                                     }}
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -270,6 +342,9 @@ const Graph = (props) => {
                         return node != null ? (
                             <Draggable
                                 onDrag={(e, data) => {
+                                    // this stop propergation prevent it from overlapping with the container's draggable
+                                    e.stopImmediatePropagation();
+                                    e.stopPropagation();
                                     hideWeightInputBox();
                                     if (!isDragging) setisDragging(true);
                                     let copy = copyObject(nodes);
@@ -295,6 +370,7 @@ const Graph = (props) => {
                                 // to make connecting nodes smoother
                                 disabled={activeNode != null ? true : false}
                                 bounds={calculateBound(node.init)}
+                                scale={scale}
                             >
                                 <g
                                     id={index}
@@ -374,10 +450,14 @@ const Graph = (props) => {
                             );
                         }
                     }}
+                    // disable dragging on input box
+                    onMouseDown={(e) => {
+                        e.stopPropagation();
+                    }}
                     autoFocus
                 />
             ) : null}
-        </>
+        </div>
     );
 };
 

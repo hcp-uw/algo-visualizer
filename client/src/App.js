@@ -32,6 +32,7 @@ import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
+import DepthFirstSearch from "./pages/DepthFirstSearch/DepthFirstSearch";
 
 //import Test from "./pages/Test";
 
@@ -85,6 +86,11 @@ const App = () => {
                     element={<SelectionSort />}
                 />
                 <Route exact path="/merge-sort" element={<MergeSort />} />
+                <Route
+                    exact
+                    path="/depth-first-search"
+                    element={<DepthFirstSearch />}
+                />
             </Routes>
         </React.Fragment>
     );
