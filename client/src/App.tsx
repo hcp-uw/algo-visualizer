@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import NavBar from "./components/NavBar/";
+import NavBar from "./components/NavBar";
 
 // for icons
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { IconDefinition, library } from "@fortawesome/fontawesome-svg-core";
 import {
     faPlay,
     faForwardStep,
@@ -38,23 +38,23 @@ import DepthFirstSearch from "./pages/DepthFirstSearch/DepthFirstSearch";
 
 // necesary step to use these icons on other components
 library.add(
-    faPlay,
-    faForwardStep,
-    faBackwardStep,
-    faRotateLeft,
-    faPause,
-    faWrench,
-    faArrowsRotate,
-    faBug,
-    faLock,
-    faUnlock,
-    faDownLeftAndUpRightToCenter,
-    faMagnifyingGlassMinus,
-    faMagnifyingGlassPlus,
-    faCircleInfo,
-    faShuffle,
-    faTriangleExclamation,
-    faThumbTack
+    faPlay as IconDefinition,
+    faForwardStep as IconDefinition,
+    faBackwardStep as IconDefinition,
+    faRotateLeft as IconDefinition,
+    faPause as IconDefinition,
+    faWrench as IconDefinition,
+    faArrowsRotate as IconDefinition,
+    faBug as IconDefinition,
+    faLock as IconDefinition,
+    faUnlock as IconDefinition,
+    faDownLeftAndUpRightToCenter as IconDefinition,
+    faMagnifyingGlassMinus as IconDefinition,
+    faMagnifyingGlassPlus as IconDefinition,
+    faCircleInfo as IconDefinition,
+    faShuffle as IconDefinition,
+    faTriangleExclamation as IconDefinition, 
+    faThumbTack as IconDefinition
 );
 
 const App = () => {
@@ -63,31 +63,26 @@ const App = () => {
             <NavBar />
             {/* These determines the page hrefs for the app */}
             <Routes>
-                <Route exact path="/" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route
-                    exact
                     path="/linear-search"
-                    element={<LinearSearch sort={true} />}
+                    element={<LinearSearch />}
                 />
                 <Route
-                    exact
                     path="/binary-search"
-                    element={<BinarySearch sort={true} />}
+                    element={<BinarySearch />}
                 />
-                <Route exact path="/bubble-sort" element={<BubbleSort />} />
+                <Route path="/bubble-sort" element={<BubbleSort />} />
                 <Route
-                    exact
                     path="/insertion-sort"
                     element={<InsertionSort />}
                 />
                 <Route
-                    exact
                     path="/selection-sort"
                     element={<SelectionSort />}
                 />
-                <Route exact path="/merge-sort" element={<MergeSort />} />
+                <Route path="/merge-sort" element={<MergeSort />} />
                 <Route
-                    exact
                     path="/depth-first-search"
                     element={<DepthFirstSearch />}
                 />

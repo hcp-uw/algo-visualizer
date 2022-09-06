@@ -11,7 +11,9 @@
  *              }
  */
 
-function copyObject(obj) {
+import { BinarySearchResultType, LinearSearchResultType } from "../AlgoResultTypes";
+
+function copyObject(obj:Object):Object {
     return JSON.parse(JSON.stringify(obj));
 }
 
@@ -23,10 +25,10 @@ function copyObject(obj) {
  * @param {*} target
  * @returns r the result object
  */
-function linearSearch(arr, target) {
-    var r = { steps: [], success: false, target: target, foundIndex: -1 };
+function linearSearch(arr:number[], target:number) {
+    let r:LinearSearchResultType = { steps: [], success: false, target: target, foundIndex: -1 };
 
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         r.steps.push({ element: i, description: `Checking index ${i}` });
         if (arr[i] === target) {
             r.success = true;
@@ -48,9 +50,9 @@ function linearSearch(arr, target) {
  * The steps in binary search also return the left and right boundary
  * for extra visuals.
  */
-function binarySearch(arr, target) {
-    var result = { steps: [], success: false, target: target, foundIndex: -1 };
-    var l = 0,
+function binarySearch(arr:number[], target:number) {
+    let result:BinarySearchResultType = { steps: [], success: false, target: target, foundIndex: -1 };
+    let l = 0,
         r = arr.length - 1;
 
     // array is not sorted
@@ -68,7 +70,7 @@ function binarySearch(arr, target) {
 
     while (l <= r) {
         // calculate middle index
-        var m = Math.floor((l + r) / 2);
+        let m = Math.floor((l + r) / 2);
         result.steps.push({
             step: m,
             l: l,
@@ -110,14 +112,14 @@ function binarySearch(arr, target) {
     return result;
 }
 
-function depthFirstSearch(nodes, edges, start) {
+function depthFirstSearch(nodes:any, edges:any, start:any) {
     if (nodes.length === 0) return [];
 
-    let result = { steps: [] };
-    let adjacencyMap = [];
-    let stack = [];
-    let visited = [];
-    let visitedEdges = [];
+    let result:any = { steps: [] };
+    let adjacencyMap:any = [];
+    let stack:any = [];
+    let visited:any = [];
+    let visitedEdges:any = [];
 
     for (let i = 0; i < nodes.length; i++) {
         adjacencyMap[i] = [];
@@ -178,7 +180,7 @@ function depthFirstSearch(nodes, edges, start) {
     return result;
 }
 
-module.exports = {
+export {
     linearSearch,
     binarySearch,
     depthFirstSearch,

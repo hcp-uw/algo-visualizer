@@ -6,14 +6,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "../../redux/configureStore";
 import "./StepTracker.css";
 
-const StepTracker = (props) => {
-    const currentStep = useSelector((state) => state.global.currentStep);
-    const algorSteps = useSelector((state) => state.global.algorSteps);
+const StepTracker = ({...props}) => {
+    const currentStep = useSelector((state:RootState) => state.global.currentStep);
+    const algorSteps = useSelector((state:RootState) => state.global.algorSteps);
     const [expanded, setExpanded] = useState(false);
     const [pinned, setPinned] = useState(false);
-    const consoleRef = useRef();
+    const consoleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // handle automatic scroll
@@ -22,12 +23,15 @@ const StepTracker = (props) => {
             1 -
             (expanded ? 1 : 0);
 
-        if (consoleRef.current.children[toScroll])
+        if (consoleRef.current && consoleRef.current.children[toScroll]) {
+            let targetChild = consoleRef.current.children[toScroll] as HTMLDivElement;
             consoleRef.current.scrollTo({
                 top:
-                    consoleRef.current.children[toScroll].offsetTop -
+                    targetChild.offsetTop -
                     consoleRef.current.offsetTop,
             });
+        }
+            
     }, [currentStep, expanded]);
 
     return (
@@ -46,25 +50,24 @@ const StepTracker = (props) => {
             >
                 {algorSteps.steps.map((e, i) => {
                     // string to return
-                    let s = `${i + 1}`.padStart(4, " ") + `. ${e.description}`;
+                    let s:any = `${i + 1}`.padStart(4, " ") + `. ${e.description}`;
                     // mark and bold the line if it is the current step
                     if (currentStep === i + 1) {
                         s = (
                             <b
-                            //className="step-highlight-border"
                             >
                                 {" > " + s}
                             </b>
                         );
                     } else {
-                        s = "   " + s;
+                        s = ("   " + s);
                     }
                     return <div key={i}>{s}</div>;
                 })}
             </div>
             <FontAwesomeIcon
                 id="pin-icon"
-                icon="fa-solid fa-thumbtack"
+                icon={["fas", "thumbtack"]} 
                 onClick={() => {
                     if (!pinned) {
                         setPinned(true);
@@ -80,8 +83,8 @@ const StepTracker = (props) => {
                               transform: "rotate(80deg)",
                               right: "2px",
                               top: "6px",
-                          }
-                        : null
+                          } as React.CSSProperties
+                        : undefined
                 }
             />
         </div>

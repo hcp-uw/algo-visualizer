@@ -12,6 +12,8 @@
  *              }
  */
 
+import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
+
 /**
  * Helper function to swap two elements in an array.
  *
@@ -19,8 +21,8 @@
  * @param {integer} i first index
  * @param {integer} j second index
  */
-function swap(array, i, j) {
-    var t = array[i];
+function swap(array:number[], i:number, j:number) {
+    let t = array[i];
     array[i] = array[j];
     array[j] = t;
 }
@@ -29,8 +31,8 @@ function swap(array, i, j) {
  * until the entire array is sorted.
  * At the end of one iteration, at least one element is sorted.
  *
- * @param {*} arr array of numbers
- * @param {*} descending // unused option for sorting array descending
+ * @param arr array of numbers
+ * @param descending // unused option for sorting array descending
  * @returns json object in format mentioned above. The step object is in format:
  *              {
  *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
@@ -43,20 +45,20 @@ function swap(array, i, j) {
  *                  description(String): something about whats happening
  *              }
  */
-function bubbleSort(arr, descending = false) {
+function bubbleSort(arr:number[], descending = false) {
     if (arr.length <= 1) return "Array is empty!";
-    var r = { steps: [] };
+    let r:BubbleSortResultType = { steps: [] };
 
     // multiplier for ascending/descending sort
-    var mul = descending ? 1 : -1;
+    let mul = descending ? 1 : -1;
 
     // flag for if a swap happened in one whole iteration
-    var swapped = false;
-    var sorted = [];
-    var swapCount = 0;
-    var ids = [...Array(arr.length).keys()];
-    for (var i = 0; i < arr.length; i++) {
-        for (var j = 0; j < arr.length - 1 - i; j++) {
+    let swapped = false;
+    let sorted:number[] = [];
+    let swapCount = 0;
+    let ids = [...Array(arr.length).keys()];
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - 1 - i; j++) {
             r.steps.push({
                 array: [...ids],
                 highlight: [ids[j], ids[j + 1]],
@@ -112,8 +114,7 @@ function bubbleSort(arr, descending = false) {
  * Insertion sort. Build the sorted array one at a time by sliding an element to one
  * end of the array until they are in order.
  *
- * @param {*} arr array of numbers
- * @param {*} descending // unused option for sorting array descending
+ * @param arr array of numbers
  * @returns json object in format mentioned above. The step object is in format:
  *              {
  *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
@@ -126,13 +127,13 @@ function bubbleSort(arr, descending = false) {
  *                  description(String): something about whats happening
  *              }
  */
-function insertionSort(arr) {
+function insertionSort(arr:number[]) {
     if (arr.length <= 1) return "Array is empty!";
 
-    var r = { steps: [] };
-    var sorted = [];
-    var swapCount = 0;
-    var ids = [...Array(arr.length).keys()];
+    let r:InsertionSortResultType = { steps: [] };
+    let sorted:number[] = [];
+    let swapCount = 0;
+    let ids = [...Array(arr.length).keys()];
 
     // first element is sorted always
     sorted.push(ids[0]);
@@ -144,8 +145,8 @@ function insertionSort(arr) {
         swapCount: swapCount,
         description: "First element is sorted",
     });
-    var p = 1;
-    var i = 1;
+    let p = 1;
+    let i = 1;
     while (i < arr.length) {
         // start pushing the ith index to the sorted partition
         r.steps.push({
@@ -193,8 +194,7 @@ function insertionSort(arr) {
  * Selection Sort. Build the sorted array one at a time by finding the minimum value among the
  * unsorted values and put it at the end of the sorted partition.
  *
- * @param {*} arr array of numbers
- * @param {*} descending // unused option for sorting array descending
+ * @param arr array of numbers
  * @returns json object in format mentioned above. The step object is in format:
  *              {
  *                  array (Array[Numbers]): The indexes of elements, aka the state of the entire array at a given step
@@ -208,15 +208,15 @@ function insertionSort(arr) {
  *                  description(String): something about whats happening
  *              }
  */
-function selectionSort(arr) {
+function selectionSort(arr:number[]) {
     if (arr.length <= 1) return "Array is empty!";
 
-    var r = { steps: [] };
-    var sorted = [];
-    var swapCount = 0;
-    var ids = [...Array(arr.length).keys()];
-    var minI = 0;
-    for (var i = 0; i < arr.length; i++) {
+    let r:SelectionSortResultType = { steps: [] };
+    let sorted:number[] = [];
+    let swapCount = 0;
+    let ids = [...Array(arr.length).keys()];
+    let minI = 0;
+    for (let i = 0; i < arr.length; i++) {
         minI = i;
         // start of new iteration
         r.steps.push({
@@ -229,7 +229,7 @@ function selectionSort(arr) {
             description:
                 `Starting iteration #${i + 1}. New minima is ` + arr[ids[i]],
         });
-        for (var j = i + 1; j < arr.length; j++) {
+        for (let j = i + 1; j < arr.length; j++) {
             // start traversing the rest of array
             r.steps.push({
                 array: [...ids],
@@ -291,11 +291,17 @@ function selectionSort(arr) {
 
 //----------------------------------MERGE SORT----------------------------------------------
 
-function mergeSort(arr) {
+type Position = {
+    level: number,
+    treePos: number,
+    pos: number
+}
+
+function mergeSort(arr:number[]) {
     if (arr.length <= 1) return "Array is empty!";
 
-    let r = { steps: [], compareCount: 0 };
-    let positions = [];
+    let r:MergeSortResultType = { steps: [], compareCount: 0 };
+    let positions:Position[] = [];
     let ids = [...Array(arr.length).keys()];
 
     for (let i = 0; i < arr.length; i++) {
@@ -307,26 +313,31 @@ function mergeSort(arr) {
     }
 
     r.steps.push({
-        positions: copyOject(positions),
+        positions: copyOject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         description: "Starting merge sort...",
+        swapped: false,
+        sorted: false,
+        comparing: false
     });
 
     mergeSortHelper(arr, ids, r, positions, 0, 0);
 
     r.steps.push({
-        positions: copyOject(positions),
+        positions: copyOject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         sorted: true,
         description: "Array is sorted!",
+        swapped: false,
+        comparing: false
     });
 
     return r;
 }
 
-function mergeSortHelper(arr, ids, r, positions, level, treePos) {
+function mergeSortHelper(arr:number[], ids:number[], r:MergeSortResultType, positions:Position[], level: number, treePos:number) {
     let n = ids.length;
     if (n == 1) return ids;
 
@@ -338,10 +349,13 @@ function mergeSortHelper(arr, ids, r, positions, level, treePos) {
     // adding step
     fillSubarrayPositions(ids1, ids2, positions, level, treePos);
     let step = {
-        positions: copyOject(positions),
+        positions: copyOject(positions) as Position[],
         highlight: ids1.concat(ids2),
         compareCount: r.compareCount,
         description: `Splitting array into subarrays...`,
+        swapped: false,
+        sorted: false,
+        comparing: false
     };
     r.steps.push(step);
 
@@ -368,10 +382,13 @@ function mergeSortHelper(arr, ids, r, positions, level, treePos) {
         // adding step
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         step = {
-            positions: copyOject(positions),
+            positions: copyOject(positions) as Position[],
             highlight: ids1.concat(ids2),
             compareCount: r.compareCount,
             description: `Merging subarrays...`,
+            swapped: false,
+            sorted: false,
+            comparing: false
         };
         r.steps.push(step);
     }
@@ -380,19 +397,21 @@ function mergeSortHelper(arr, ids, r, positions, level, treePos) {
     return mergeHelper(arr, ids1, ids2, r, positions, level, treePos);
 }
 
-function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
-    let ids3 = [];
+function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResultType, positions:Position[], level:number, treePos:number) {
+    let ids3:number[] = [];
 
     // compare and add the front element of each array until one is empty
     while (ids1.length > 0 && ids2.length > 0) {
         // add step for comparing
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         let step = {
-            positions: copyOject(positions),
+            positions: copyOject(positions) as Position[],
             highlight: [ids1[0], ids2[0]],
             comparing: true,
             compareCount: r.compareCount,
             description: `Comparing ${arr[ids1[0]]} and ${arr[ids2[0]]}...`,
+            swapped: false,
+            sorted: false,
         };
 
         r.steps.push(step);
@@ -432,11 +451,13 @@ function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
             };
         }
         step = {
-            positions: copyOject(positions),
+            positions: copyOject(positions) as Position[],
             highlight: highlighted,
             swapped: true,
             compareCount: r.compareCount,
             description: description,
+            sorted: false,
+            comparing: false
         };
         r.steps.push(step);
     }
@@ -467,18 +488,21 @@ function mergeHelper(arr, ids1, ids2, r, positions, level, treePos) {
             pos: i,
         };
     }
-    step = {
-        positions: copyOject(positions),
+    let step = {
+        positions: copyOject(positions) as Position[],
         highlight: ids3,
         compareCount: r.compareCount,
         description: description,
+        swapped: false,
+        sorted: false,
+        comparing: false
     };
     r.steps.push(step);
 
     return ids3;
 }
 
-function fillSubarrayPositions(ids1, ids2, positions, level, treePos) {
+function fillSubarrayPositions(ids1:number[], ids2:number[], positions:Position[], level:number, treePos:number) {
     for (let i = 0; i < ids1.length; i++) {
         positions[ids1[i]] = {
             level: level + 1,
@@ -495,12 +519,12 @@ function fillSubarrayPositions(ids1, ids2, positions, level, treePos) {
     }
 }
 
-function copyOject(obj) {
+function copyOject(obj:Object):Object {
     return JSON.parse(JSON.stringify(obj));
 }
 //-----------------------------------------------------------------------------------------
 
-module.exports = {
+export {
     bubbleSort,
     insertionSort,
     selectionSort,

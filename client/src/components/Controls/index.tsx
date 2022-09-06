@@ -16,28 +16,29 @@ import {
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
 import { OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
+import { RootState } from "../../redux/configureStore";
 
-const Controls = (props) => {
+const Controls = ({ ...props }) => {
     // global state variables we pull from redux store
-    let currentStep = useSelector((state) => state.global.currentStep);
-    const algorSteps = useSelector((state) => state.global.algorSteps);
-    const array = useSelector((state) => state.global.array);
+    let currentStep = useSelector((state:RootState) => state.global.currentStep);
+    const algorSteps = useSelector((state:RootState) => state.global.algorSteps);
+    const array = useSelector((state:RootState) => state.global.array);
 
     // local state variables
-    const [playSpeed, setSpeed] = useState(5);
+    const [playSpeed, setSpeed] = useState<number>(5);
     // a 'playing' flag is necessary since clearing play interval alone
     // does not trigger a component rerender
-    const [playing, setPlaying] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [playing, setPlaying] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // saving a previous value for input box, for glowing animation of buttons
     const [prevNumInput, setPrevNumInput] = useState(props.numInput);
 
     // states related to array input box
-    const [prevArrayInput, setPrevArrayInput] = useState(array);
-    const [arrayInput, setArrayInput] = useState(array); // string
-    const [validInput, setValidInput] = useState(true);
-    const [validInputCode, setValidInputCode] = useState([]);
+    const [prevArrayInput, setPrevArrayInput] = useState<string>(array.toString());
+    const [arrayInput, setArrayInput] = useState<string>(array.toString()); // string
+    const [validInput, setValidInput] = useState<boolean>(true);
+    const [validInputCode, setValidInputCode] = useState<number[]>([]);
 
     // miscellaneous variables
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
@@ -53,14 +54,18 @@ const Controls = (props) => {
         playing ? interval : null
     );
 
-    const handleProgressBarClick = (e) => {
-        const offset = Math.max(e.nativeEvent.offsetX, 0);
-        const width = e.nativeEvent.target.clientWidth;
-        const step = Math.round((offset / width) * totalStep);
-        dispatch(updateStep({ currentStep: step, prevStep: step }));
+    const handleProgressBarClick = (e: 
+        React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        let target = e.nativeEvent.target as HTMLDivElement; 
+        if (target) {
+            const offset = Math.max(e.nativeEvent.offsetX, 0);
+            const width = target.clientWidth;
+            const step = Math.round((offset / width) * totalStep);
+            dispatch(updateStep({ currentStep: step }));
+        }
     };
 
-    const randomizeArrayInput = (sorted) => {
+    const randomizeArrayInput = (sorted:boolean) => {
         setArrayInput(makeRandomArray(sorted).toString());
     };
 
@@ -70,7 +75,6 @@ const Controls = (props) => {
         if (newStep !== currentStep) {
             dispatch(
                 updateStep({
-                    prevStep: currentStep,
                     currentStep: newStep,
                 })
             );
@@ -86,7 +90,6 @@ const Controls = (props) => {
         if (newStep !== currentStep) {
             dispatch(
                 updateStep({
-                    prevStep: currentStep,
                     currentStep: newStep,
                 })
             );
@@ -98,7 +101,7 @@ const Controls = (props) => {
     // the parent page have the option to provide a custom doAlgorithm thru props
     // in that case we use that function instead of the default
     const doAlgorithm = props.doAlgorithm
-        ? async (arr) => {
+        ? async (arr:number[]) => {
               // since the parent page doesnt have the doPause function, we just call it here
               doPause();
               setLoading(true);
@@ -108,7 +111,7 @@ const Controls = (props) => {
               setPrevArrayInput(arr.toString());
               setLoading(false);
           }
-        : async (arr) => {
+        : async (arr: Number[]) => {
               // default function
               doPause();
               setLoading(true);
@@ -145,7 +148,7 @@ const Controls = (props) => {
 
     // reset the current step back to 0
     const doReset = () => {
-        dispatch(updateStep({ currentStep: 0, prevStep: -1 }));
+        dispatch(updateStep({ currentStep: 0 }));
         doPause();
     };
 
@@ -157,7 +160,7 @@ const Controls = (props) => {
     const doPlay = () => {
         // restart the current step if the user press play at last step
         if (currentStep === algorSteps.steps.length) {
-            dispatch(updateStep({ currentStep: 0, prevStep: -1 }));
+            dispatch(updateStep({ currentStep: 0 }));
             //setPlaying(false);
         }
 
@@ -175,21 +178,21 @@ const Controls = (props) => {
     /**
      * For the speed slider.
      *
-     * @param {*} speed parse from the slider element
+     * @param {number} speed parse from the slider element
      */
-    const updateSpeed = (speed) => {
-        speed = parseInt(speed);
-        setSpeed(speed);
+    const updateSpeed = (speed:string):void => {
+        let spd = parseInt(speed);
+        setSpeed(spd);
     };
 
-    const checkArrayInput = (arr) => {
+    const checkArrayInput = (arr:string[]) => {
         let code = [];
         // 5 to 20 elements, range 1-99
         if (arr.length < 5 || arr.length > 20) code.push(1);
 
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] === "" && !code.includes(3)) code.push(3);
-            else if ((arr[i] < 1 || arr[i] > 99) && !code.includes(2))
+            else if ((parseInt(arr[i]) < 1 || parseInt(arr[i]) > 99) && !code.includes(2))
                 code.push(2);
         }
 
@@ -277,7 +280,7 @@ const Controls = (props) => {
                         >
                             <div id="warning-icon">
                                 <FontAwesomeIcon
-                                    icon="fa-triangle-exclamation"
+                                    icon={["fas", "triangle-exclamation"]} 
                                     className="fa"
                                 />
                             </div>
@@ -292,7 +295,7 @@ const Controls = (props) => {
                             randomizeArrayInput(props.requestSortedArray)
                         }
                     >
-                        <FontAwesomeIcon icon="fa-shuffle" className="fa" />
+                        <FontAwesomeIcon icon={["fas", "shuffle"]}  className="fa" />
                     </button>
                 </div>
 
@@ -304,11 +307,11 @@ const Controls = (props) => {
                             className="btn glow-border-anim"
                             onClick={doPause}
                         >
-                            <FontAwesomeIcon icon="fa-pause" className="fa" />
+                            <FontAwesomeIcon icon={["fas", "pause"]} className="fa" />
                         </button>
                     ) : (
                         <button className="btn glow-border" onClick={doPlay}>
-                            <FontAwesomeIcon icon="fa-play" className="fa" />
+                            <FontAwesomeIcon icon={["fas", "play"]} className="fa" />
                         </button>
                     )}
 
@@ -319,7 +322,7 @@ const Controls = (props) => {
                         onClick={stepBackward}
                     >
                         <FontAwesomeIcon
-                            icon="fa-backward-step"
+                            icon={["fas", "backward-step"]}
                             className="fa"
                         />
                     </button>
@@ -355,7 +358,7 @@ const Controls = (props) => {
                         onClick={stepForward}
                     >
                         <FontAwesomeIcon
-                            icon="fa-forward-step"
+                            icon={["fas", "forward-step"]}
                             className="fa"
                         />
                     </button>
@@ -366,7 +369,7 @@ const Controls = (props) => {
                         title="restart algorithm"
                         onClick={doReset}
                     >
-                        <FontAwesomeIcon icon="fa-rotate-left" className="fa" />
+                        <FontAwesomeIcon icon={["fas", "rotate-left"]} className="fa" />
                     </button>
                 </div>
 
@@ -402,7 +405,7 @@ const Controls = (props) => {
                         }
                     >
                         <span>Fetch Algorithm </span>
-                        <FontAwesomeIcon icon="fa-wrench" className="fa" />
+                        <FontAwesomeIcon icon={["fas", "wrench"]} className="fa" />
                     </button>
 
                     <Spinner

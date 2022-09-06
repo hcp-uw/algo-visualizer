@@ -9,10 +9,10 @@ import Draggable from "react-draggable";
 
 const SCALE_LIMIT = 0.5;
 
-const VisualizerContainer = (props) => {
-    let s = props.scale ? props.scale : 1;
+const VisualizerContainer = ({...props}) => {
+    let s = props.scale || 1;
 
-    let initPosition = props.initPosition ? props.initPosition : { x: 0, y: 0 };
+    let initPosition = props.initPosition || { x: 0, y: 0 };
 
     const [scale, setScale] = useState(
         Math.min(1 + SCALE_LIMIT, Math.max(1 - SCALE_LIMIT, s))
@@ -47,7 +47,7 @@ const VisualizerContainer = (props) => {
 
     // handle scale change on mouse wheel scroll
     // 1 for increasing scale and -1 for decreasing
-    const handleScaleChange = (delta) => {
+    const handleScaleChange = (delta: 1 | -1) => {
         if (!lock) {
             let d = 0;
 
@@ -79,7 +79,7 @@ const VisualizerContainer = (props) => {
                     title="Re-center array"
                 >
                     <FontAwesomeIcon
-                        icon="fa-down-left-and-up-right-to-center "
+                        icon={["fas", "down-left-and-up-right-to-center"]}
                         className="fa"
                     />
                 </button>
@@ -91,7 +91,7 @@ const VisualizerContainer = (props) => {
                         }}
                         title="Unlock pan & zoom"
                     >
-                        <FontAwesomeIcon icon="fa-unlock" className="fa" />
+                        <FontAwesomeIcon icon={["fas", "unlock"]} className="fa" />
                     </button>
                 ) : (
                     <button
@@ -102,7 +102,7 @@ const VisualizerContainer = (props) => {
                         }}
                         title="Lock pan & zoom"
                     >
-                        <FontAwesomeIcon icon="fa-lock" className="fa" />
+                        <FontAwesomeIcon icon={["fas", "lock"]} className="fa" />
                     </button>
                 )}
                 <button
@@ -114,7 +114,7 @@ const VisualizerContainer = (props) => {
                     title="Zoom out"
                 >
                     <FontAwesomeIcon
-                        icon="fa-magnifying-glass-minus"
+                        icon={["fas", "magnifying-glass-minus"]}
                         className="fa"
                     />
                 </button>
@@ -127,7 +127,7 @@ const VisualizerContainer = (props) => {
                     title="Zoom in"
                 >
                     <FontAwesomeIcon
-                        icon="fa-magnifying-glass-plus"
+                        icon={["fas", "magnifying-glass-plus"]}
                         className="fa"
                     />
                 </button>

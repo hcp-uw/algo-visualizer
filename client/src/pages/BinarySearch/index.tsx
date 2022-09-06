@@ -13,17 +13,19 @@ import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { binarySearchDesc } from "../../assets/algorithm-information.js";
+import { RootState } from "../../redux/configureStore";
+import { BinarySearchResultType } from "../../AlgoResultTypes";
 
 const ALGORITHM_URL = "searches/binarysearch/";
 
 const BinarySearch = () => {
-    const algorSteps = useSelector((state) => state.global.algorSteps);
-    const currentStep = useSelector((state) => state.global.currentStep);
-    const array = useSelector((state) => state.global.array);
-    const inputBoxRef = useRef();
+    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as BinarySearchResultType;
+    const currentStep = useSelector((state:RootState) => state.global.currentStep);
+    const array = useSelector((state:RootState) => state.global.array);
+    const inputBoxRef = useRef<HTMLInputElement>(null);
 
-    const [numInput, setNumInput] = useState();
-    const [currentTarget, setCurrentTarget] = useState();
+    const [numInput, setNumInput] = useState<string>("");
+    const [currentTarget, setCurrentTarget] = useState<number>();
 
     const dispatch = useDispatch();
     // reset data upon exiting the page
@@ -37,9 +39,12 @@ const BinarySearch = () => {
     }, []);
 
     // function that update input box
-    const updateTargetBoxValue = (e) => {
-        inputBoxRef.current.value = e.target.innerHTML;
-        setNumInput(e.target.innerHTML);
+    const updateTargetBoxValue = (e: React.MouseEvent<HTMLElement>) => {
+        let inputBox = e.target as HTMLInputElement;
+        if (inputBoxRef.current) {
+            inputBoxRef.current.value = inputBox.innerHTML;
+            setNumInput(inputBox.innerHTML);
+        }
     };
 
     /**
@@ -107,7 +112,7 @@ const BinarySearch = () => {
                 <td
                     className={"value-block value-block-hover" + style}
                     key={id}
-                    id={id}
+                    id={id.toString()}
                     onClick={updateTargetBoxValue.bind(this)}
                 >
                     {value}

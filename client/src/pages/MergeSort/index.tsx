@@ -15,18 +15,20 @@ import {
 
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { mergeSortDesc } from "../../assets/algorithm-information";
+import { RootState } from "../../redux/configureStore";
+import { MergeSortResultType } from "../../AlgoResultTypes";
 
 const ALGORITHM_URL = "sorts/mergesort/";
 
 const MergeSort = () => {
-    const algorSteps = useSelector((state) => state.global.algorSteps);
-    const currentStep = useSelector((state) => state.global.currentStep);
-    const array = useSelector((state) => state.global.array);
-    const currentName = useSelector((state) => state.global.algorithmName);
+    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as MergeSortResultType;
+    const currentStep = useSelector((state:RootState) => state.global.currentStep);
+    const array = useSelector((state:RootState) => state.global.array);
+    const currentName = useSelector((state:RootState) => state.global.algorithmName);
     const dispatch = useDispatch();
 
-    // swaps[i] is the boolean if a swap is happening at step i
-    const [compares, setCompares] = useState([]);
+    // compares[i] is the number of swaps at step i
+    const [compares, setCompares] = useState<number[]>([]);
 
     // reset data upon exiting the page
     useEffect(() => {
@@ -40,7 +42,7 @@ const MergeSort = () => {
 
     // slightly different from the prototype: update swap count after receiving
     // response from backend
-    const doAlgorithm = async (arr) => {
+    const doAlgorithm = async (arr:number[]) => {
         let data = { array: arr };
 
         try {
@@ -135,7 +137,7 @@ const MergeSort = () => {
             return (
                 <td
                     className={"value-block" + style}
-                    id={id}
+                    id={id.toString()}
                     key={id}
                     style={{
                         transform: `translate(${(x - id) * 58}px, ${y * 95}px)`,

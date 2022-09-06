@@ -4,9 +4,10 @@
 
 import "./Array1D.css";
 import { useSelector } from "react-redux";
+import { RootState } from "../../redux/configureStore";
 
-const Array1D = (props) => {
-    const array = useSelector((state) => state.global.array);
+const Array1D = ({...props}) => {
+    const array = useSelector((state:RootState) => state.global.array);
 
     return (
         <table className="elements">

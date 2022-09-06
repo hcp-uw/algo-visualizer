@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { AlgorithmResultType } from "../AlgoResultTypes";
 
-const initialState = {
+const initialState: {
+    algorSteps: AlgorithmResultType,
+    array: number[],
+    currentStep: number,
+    algorithmName: string
+} = {
     algorSteps: { steps: [], success: false },
     array: [],
     currentStep: 0,
-    prevStep: -1,
     algorithmName: "",
 };
 
@@ -26,16 +31,13 @@ export const stateSlice = createSlice({
         updateAlgorSteps: (state, action) => {
             state.algorSteps = action.payload.algorSteps;
             state.currentStep = 0;
-            state.prevStep = -1;
         },
         updateStep: (state, action) => {
             state.currentStep = action.payload.currentStep;
-            state.prevStep = action.payload.prevStep;
         },
         resetSteps: (state) => {
             state.algorSteps = { steps: [], success: false };
             state.currentStep = 0;
-            state.prevStep = -1;
         },
     },
 });
@@ -45,7 +47,6 @@ export const {
     updateArray,
     updateAlgorSteps,
     updateStep,
-    initRandomArray,
     resetSteps,
     updateAlgorName,
 } = stateSlice.actions;

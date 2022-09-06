@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import "./AlgorithmPopover.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const AlgorithmDescription = (props) => {
+const AlgorithmDescription = ({...props}) => {
     const [displayModal, setDisplayModal] = useState(false);
 
     const handleClick = () => {
@@ -15,7 +15,7 @@ const AlgorithmDescription = (props) => {
 
     const algorithmName = props.data.algorithm;
     const algorithmDesc = props.data.title;
-    const algorithmTimeComplx = props.data.description.map((listItem, i) => {
+    const algorithmTimeComplx = props.data.description.map((listItem:string, i:number) => {
         let listField = <li key={i}>{listItem}</li>;
         return listField;
     });
@@ -27,7 +27,7 @@ const AlgorithmDescription = (props) => {
                 {"  "}
                 <FontAwesomeIcon
                     onClick={handleClick}
-                    icon="fa-circle-info"
+                    icon={["fas", "circle-info"]} 
                     className="fa"
                     id="info-icon"
                 />

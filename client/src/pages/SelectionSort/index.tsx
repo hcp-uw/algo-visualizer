@@ -1,36 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./BubbleSort.css";
+import "./SelectionSort.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
+import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import AlgorithmPopover from "../../components/AlgorithmPopover";
 import {
     updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
-import VisualizerContainer from "../../components/VisualizerContainer";
-import { bubbleSortDesc } from "../../assets/algorithm-information.js";
 
-const ALGORITHM_URL = "sorts/bubblesort/";
+import AlgorithmPopover from "../../components/AlgorithmPopover";
+import { selectionSortDesc } from "../../assets/algorithm-information";
+import { RootState } from "../../redux/configureStore";
+import { SelectionSortResultType } from "../../AlgoResultTypes";
 
-const BubbleSort = () => {
-    const algorSteps = useSelector((state) => state.global.algorSteps);
-    const currentStep = useSelector((state) => state.global.currentStep);
-    const array = useSelector((state) => state.global.array);
-    const currentName = useSelector((state) => state.global.algorithmName);
+const ALGORITHM_URL = "sorts/selectionsort/";
+
+const SelectionSort = () => {
+    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as SelectionSortResultType;
+    const currentStep = useSelector((state:RootState) => state.global.currentStep);
+    const array = useSelector((state:RootState) => state.global.array);
+    const currentName = useSelector((state:RootState) => state.global.algorithmName);
     const dispatch = useDispatch();
 
-    // swaps[i] is the boolean if a swap is happening at step i
-    const [swaps, setSwaps] = useState([]);
+    // swaps[i] is number of swaps at step i
+    const [swaps, setSwaps] = useState<number[]>([]);
 
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(bubbleSortDesc.algorithm));
+        dispatch(updateAlgorName(selectionSortDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -39,7 +42,7 @@ const BubbleSort = () => {
 
     // slightly different from the prototype: update swap count after receiving
     // response from backend
-    const doAlgorithm = async (arr) => {
+    const doAlgorithm = async (arr:number[]) => {
         let data = { array: arr };
 
         try {
@@ -78,6 +81,7 @@ const BubbleSort = () => {
      *                              sorted(Array): the indexes of elements that are sorted
      *                              swapped(Bool): mark if the ith step is swapping two elements
      *                              swapCount(Number): the count of total swaps up to step ith
+     *                              min(Number): the index of the minimum value at step ith
      *                          }
      *
      * @returns react components
@@ -90,7 +94,7 @@ const BubbleSort = () => {
             // if the algorithm is in progress (step 0: default state)
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
-            currentName === bubbleSortDesc.algorithm;
+            currentName === selectionSortDesc.algorithm;
 
         if (isStepAvailable) {
             var steps = algorSteps.steps;
@@ -99,8 +103,9 @@ const BubbleSort = () => {
             var highlight = steps[currentArrayStep].highlight;
             var swapped = steps[currentArrayStep].swapped;
             var sorted = steps[currentArrayStep].sorted;
+            var min = steps[currentArrayStep].min;
         } else {
-            // default array from contianing numbers from 0 to array.length -1
+            // default array from contianing numbers from 0 to array.length - 1
             arr = [...Array(array.length).keys()];
         }
         // for each element in the array at the current step
@@ -109,20 +114,21 @@ const BubbleSort = () => {
             if (isStepAvailable) {
                 if (highlight.includes(id)) {
                     style = swapped ? " highlight-error" : " highlight";
+                } else if (id === min) {
+                    style = " highlight-minflag";
                 } else if (sorted.includes(id)) {
                     style = " highlight-success";
                 } else {
                     style = " highlight-domain";
                 }
             }
-
             let x = arr.indexOf(id) - id;
 
             return (
                 <td
                     className={"value-block" + style}
                     key={id}
-                    id={id}
+                    id={id.toString()}
                     style={{
                         transform: `translate(${x * 58}px, 0px)`,
                     }}
@@ -136,7 +142,7 @@ const BubbleSort = () => {
     return (
         <div className="content">
             <div className="centered">
-                <AlgorithmPopover data={bubbleSortDesc} />
+                <AlgorithmPopover data={selectionSortDesc} />
             </div>
 
             <VisualizerContainer>
@@ -159,4 +165,4 @@ const BubbleSort = () => {
     );
 };
 
-export default BubbleSort;
+export default SelectionSort;
