@@ -8,14 +8,23 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter } from "react-router-dom";
 import { store } from "./redux/configureStore";
 import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Provider>
+            {process.env.NODE_ENV !== "production" ? (
+                <ReactQueryDevtools initialIsOpen={false} />
+            ) : null}
+        </QueryClientProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );

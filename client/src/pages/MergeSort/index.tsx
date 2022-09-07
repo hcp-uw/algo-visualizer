@@ -3,12 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./MergeSort.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
-import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
@@ -17,6 +15,7 @@ import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { mergeSortDesc } from "../../assets/algorithm-information";
 import { RootState } from "../../redux/configureStore";
 import { MergeSortResultType } from "../../AlgoResultTypes";
+import { ExtraData } from "../../CommonTypes";
 
 const ALGORITHM_URL = "sorts/mergesort/";
 
@@ -30,6 +29,8 @@ const MergeSort = () => {
     // compares[i] is the number of swaps at step i
     const [compares, setCompares] = useState<number[]>([]);
 
+    const extraData:ExtraData = [{key: 'compares', data: compares, updater: setCompares}];
+
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
@@ -39,28 +40,6 @@ const MergeSort = () => {
             dispatch(resetSteps());
         };
     }, []);
-
-    // slightly different from the prototype: update swap count after receiving
-    // response from backend
-    const doAlgorithm = async (arr:number[]) => {
-        let data = { array: arr };
-
-        try {
-            let response = await AlgoFetcher.post(ALGORITHM_URL, data);
-            // update compareCount
-            let c = 0;
-            let s = [];
-            for (let i = 0; i < response.data.result.steps.length; i++) {
-                c += response.data.result.steps[i].swapped ? 1 : 0;
-                s.push(c);
-            }
-            s[-1] = 0;
-            setCompares(s);
-            dispatch(updateAlgorSteps({ algorSteps: response.data.result }));
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     /**
      * Decide how to draw blocks on the array.
@@ -182,7 +161,7 @@ const MergeSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
+            <Controls extraData={extraData} algorithmUrl={ALGORITHM_URL} />
 
             <div className="swap-counter-container">
                 <span>

@@ -3,12 +3,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./BubbleSort.css";
 import Controls from "../../components/Controls";
 import Array1D from "../../components/Array1D";
-import AlgoFetcher from "../../apis/AlgoFetcher";
 import StepTracker from "../../components/StepTracker";
 import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import {
-    updateAlgorSteps,
     resetSteps,
     updateAlgorName,
 } from "../../redux/stateSlice";
@@ -16,18 +14,21 @@ import VisualizerContainer from "../../components/VisualizerContainer";
 import { bubbleSortDesc } from "../../assets/algorithm-information.js";
 import { RootState } from "../../redux/configureStore";
 import { BubbleSortResultType } from "../../AlgoResultTypes";
+import { ExtraData } from "../../CommonTypes";
 
 const ALGORITHM_URL = "sorts/bubblesort/";
 
 const BubbleSort = () => {
-    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as BubbleSortResultType;
-    const currentStep = useSelector((state:RootState) => state.global.currentStep);
-    const array = useSelector((state:RootState) => state.global.array);
-    const currentName = useSelector((state:RootState) => state.global.algorithmName);
+    const algorSteps = useSelector((state: RootState) => state.global.algorSteps) as BubbleSortResultType;
+    const currentStep = useSelector((state: RootState) => state.global.currentStep);
+    const array = useSelector((state: RootState) => state.global.array);
+    const currentName = useSelector((state: RootState) => state.global.algorithmName);
     const dispatch = useDispatch();
 
     // swaps[i] is the number of swaps at step i
     const [swaps, setSwaps] = useState<Number[]>([]);
+
+    const extraData: ExtraData = [{ key: 'swap', data: swaps, updater: setSwaps }];
 
     // reset data upon exiting the page
     useEffect(() => {
@@ -38,28 +39,6 @@ const BubbleSort = () => {
             dispatch(resetSteps());
         };
     }, []);
-
-    // slightly different from the prototype: update swap count after receiving
-    // response from backend
-    const doAlgorithm = async (arr:Number[]) => {
-        let data = { array: arr };
-
-        try {
-            let response = await AlgoFetcher.post(ALGORITHM_URL, data);
-            // update swap
-            let c = 0;
-            let s = [];
-            for (let i = 0; i < response.data.result.steps.length; i++) {
-                c += response.data.result.steps[i].swapped ? 1 : 0;
-                s.push(c);
-            }
-            s[-1] = 0;
-            setSwaps(s);
-            dispatch(updateAlgorSteps({ algorSteps: response.data.result }));
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
     /**
      * Decide how to draw blocks on the array.
@@ -145,7 +124,7 @@ const BubbleSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
-            <Controls doAlgorithm={doAlgorithm} algorithmUrl={ALGORITHM_URL} />
+            <Controls extraData={extraData} algorithmUrl={ALGORITHM_URL} />
 
             <div className="swap-counter-container">
                 <span>

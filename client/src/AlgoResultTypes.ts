@@ -62,10 +62,14 @@ type MergeSortResultType = {
     compareCount: number
 }
 
-type AlgorithmResultType = LinearSearchResultType | BinarySearchResultType | BubbleSortResultType
- | InsertionSortResultType | SelectionSortResultType | MergeSortResultType;
+type SearchAlgorithmResultType = LinearSearchResultType | BinarySearchResultType;
+
+type SortAlgorithmResultType = BubbleSortResultType
+| InsertionSortResultType | SelectionSortResultType | MergeSortResultType;
+
+type AlgorithmResultType = SearchAlgorithmResultType | SortAlgorithmResultType;
 
 export { LinearSearchResultType, BinarySearchResultType
     , BubbleSortResultType, InsertionSortResultType
     , SelectionSortResultType, MergeSortResultType
-    , AlgorithmResultType };
+    , AlgorithmResultType, SearchAlgorithmResultType, SortAlgorithmResultType };

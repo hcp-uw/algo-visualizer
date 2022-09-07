@@ -11,17 +11,24 @@ import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import { linearSearchDesc } from "../../assets/algorithm-information.js";
 import { RootState } from "../../redux/configureStore";
 import { LinearSearchResultType } from "../../AlgoResultTypes";
+import { ExtraData } from "../../CommonTypes";
 
 const ALGORITHM_URL = "searches/linearsearch/";
 
 const LinearSearch = () => {
-    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as LinearSearchResultType;
-    const currentStep = useSelector((state:RootState) => state.global.currentStep);
-    const array = useSelector((state:RootState) => state.global.array);
-    const inputBoxRef = useRef<HTMLInputElement>(null);
+    const algorSteps = useSelector(
+        (state: RootState) => state.global.algorSteps
+    ) as LinearSearchResultType;
+    const currentStep = useSelector(
+        (state: RootState) => state.global.currentStep
+    );
+    const array = useSelector((state: RootState) => state.global.array);
 
-    const [numInput, setNumInput] = useState<string>("");
     const [currentTarget, setCurrentTarget] = useState<number>();
+
+    const extraData: ExtraData = [
+        { key: "target", data: currentTarget, updater: setCurrentTarget },
+    ];
 
     const dispatch = useDispatch();
     // reset data upon exiting the page
@@ -33,15 +40,6 @@ const LinearSearch = () => {
             dispatch(resetSteps());
         };
     }, []);
-    
-    // function that update input box
-    const updateTargetBoxValue = (e: React.MouseEvent<HTMLElement>) => {
-        let inputBox = e.target as HTMLInputElement;
-        if (inputBoxRef.current) {
-            inputBoxRef.current.value = inputBox.innerHTML;
-            setNumInput(inputBox.innerHTML);
-        }
-    };
 
     /**
      * Decide how to draw blocks on the array.
@@ -92,10 +90,10 @@ const LinearSearch = () => {
             // return a react component
             return (
                 <td
-                    className={"value-block value-block-hover" + style}
+                    className={"value-block" + style}
                     key={id}
                     id={id.toString()}
-                    onClick={updateTargetBoxValue.bind(this)}
+                    // onClick={updateTargetBoxValue.bind(this)}
                 >
                     {value}
                 </td>
@@ -114,23 +112,9 @@ const LinearSearch = () => {
             </VisualizerContainer>
 
             <Controls
-                numInput={numInput}
                 algorithmUrl={ALGORITHM_URL}
-                setCurrentTarget={setCurrentTarget}
-                searchInputBox={
-                    <div className="input-container">
-                        <input
-                            ref={inputBoxRef}
-                            className="num-input"
-                            type="number"
-                            placeholder="Search for"
-                            value={numInput}
-                            onChange={(e) => {
-                                setNumInput(e.target.value);
-                            }}
-                        ></input>
-                    </div>
-                }
+                require={["singleInput"]}
+                extraData={extraData}
             />
             <div className="centered">Current target: {currentTarget}</div>
             <StepTracker />
