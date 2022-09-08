@@ -24,6 +24,7 @@ import {
     SortAlgorithmResultType,
 } from "../../AlgoResultTypes";
 import { ExtraData } from "../../CommonTypes";
+import { toast } from "react-toastify";
 
 const Controls = ({ ...props }) => {
     const extraData: ExtraData = props.extraData || [];
@@ -171,11 +172,31 @@ const Controls = ({ ...props }) => {
                 extraData[i].updater(numInput);
             }
         }
+
+        // trigger a toast
+        toast.success("Algorithm fetched!", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     };
 
     const onError = (error: any) => {
+        // trigger a toast
+        toast.error(error.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
         console.log(error);
-        // trigger a toast or something
     };
 
     /**
@@ -204,6 +225,8 @@ const Controls = ({ ...props }) => {
             onSuccess: onAlgorithmFetched,
             onError,
             enabled: true, // triggered once on page load
+            refetchOnWindowFocus: false,
+            retry: false,
             // cacheTime: 1000
         }
     );

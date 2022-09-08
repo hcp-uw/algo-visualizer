@@ -10,6 +10,8 @@ import { store } from "./redux/configureStore";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,7 @@ ReactDOM.render(
             <Provider store={store}>
                 <BrowserRouter>
                     <App />
+                    <ToastContainer limit={5} />
                 </BrowserRouter>
             </Provider>
             {process.env.NODE_ENV !== "production" ? (
