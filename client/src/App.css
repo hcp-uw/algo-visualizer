@@ -20,25 +20,6 @@
     display: none;
 }
 
-.input-container {
-    border: 1px solid black;
-    padding: 5px 5px 5px 5px;
-    text-align: center;
-    margin: auto;
-    margin-right: 5px;
-    border-radius: 0.5rem;
-}
-
-.num-input {
-    border: none;
-    max-width: 3rem;
-    text-align: center;
-}
-
-.num-input::placeholder {
-    font-size: 14px;
-}
-
 /* maybe find a better way instead of forcing absolute positioning*/
 .info {
     position: absolute;

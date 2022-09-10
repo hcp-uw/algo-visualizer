@@ -132,7 +132,7 @@ const BinarySearch = () => {
             <Controls
                 requestSortedArray={true}
                 algorithmUrl={ALGORITHM_URL}
-                require={["singleInput"]}
+                require={["singleInput", "arrayInput"]}
                 extraData={extraData}
             />
             <div className="centered">Current target: {currentTarget}</div>

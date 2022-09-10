@@ -6,10 +6,7 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    resetSteps,
-    updateAlgorName,
-} from "../../redux/stateSlice";
+import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { selectionSortDesc } from "../../assets/algorithm-information";
@@ -20,16 +17,24 @@ import { ExtraData } from "../../CommonTypes";
 const ALGORITHM_URL = "sorts/selectionsort/";
 
 const SelectionSort = () => {
-    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as SelectionSortResultType;
-    const currentStep = useSelector((state:RootState) => state.global.currentStep);
-    const array = useSelector((state:RootState) => state.global.array);
-    const currentName = useSelector((state:RootState) => state.global.algorithmName);
+    const algorSteps = useSelector(
+        (state: RootState) => state.global.algorSteps
+    ) as SelectionSortResultType;
+    const currentStep = useSelector(
+        (state: RootState) => state.global.currentStep
+    );
+    const array = useSelector((state: RootState) => state.global.array);
+    const currentName = useSelector(
+        (state: RootState) => state.global.algorithmName
+    );
     const dispatch = useDispatch();
 
     // swaps[i] is number of swaps at step i
     const [swaps, setSwaps] = useState<number[]>([]);
 
-    const extraData:ExtraData = [{key: 'swap', data: swaps, updater: setSwaps}];
+    const extraData: ExtraData = [
+        { key: "swap", data: swaps, updater: setSwaps },
+    ];
 
     // reset data upon exiting the page
     useEffect(() => {
@@ -128,7 +133,11 @@ const SelectionSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
-            <Controls extraData={extraData} algorithmUrl={ALGORITHM_URL} />
+            <Controls
+                extraData={extraData}
+                algorithmUrl={ALGORITHM_URL}
+                require={["arrayInput"]}
+            />
 
             <div className="swap-counter-container">
                 <span>

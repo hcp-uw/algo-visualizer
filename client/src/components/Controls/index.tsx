@@ -3,7 +3,7 @@
  * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
  */
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,11 @@ import {
     updateArray,
     updateStep,
 } from "../../redux/stateSlice";
+import {
+    updateArrayInput,
+    updatePrevArrayInput,
+    updatePrevSingleInput,
+} from "../../redux/inputStateSlice";
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
 import { OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
@@ -25,6 +30,8 @@ import {
 } from "../../AlgoResultTypes";
 import { ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
+import SingleInput from "../SingleInput";
+import ArrayInput from "../ArrayInput";
 
 const Controls = ({ ...props }) => {
     const extraData: ExtraData = props.extraData || [];
@@ -46,17 +53,25 @@ const Controls = ({ ...props }) => {
     const [playing, setPlaying] = useState<boolean>(false);
 
     // saving a previous value for input box, for glowing animation of buttons
-    const [numInput, setNumInput] = useState("");
-    const [prevNumInput, setPrevNumInput] = useState("");
-    const inputBoxRef = useRef<HTMLInputElement>(null);
+    const singleInput = useSelector(
+        (state: RootState) => state.input.singleInput
+    );
+    const prevSingleInput = useSelector(
+        (state: RootState) => state.input.prevSingleInput
+    );
 
     // states related to array input box
-    const [prevArrayInput, setPrevArrayInput] = useState<string>(
-        array.toString()
+    const prevArrayInput = useSelector(
+        (state: RootState) => state.input.prevArrayInput
     );
-    const [arrayInput, setArrayInput] = useState<string>(array.toString()); // string
-    const [validInput, setValidInput] = useState<boolean>(true);
-    const [validInputCode, setValidInputCode] = useState<number[]>([]);
+
+    const arrayInput = useSelector(
+        (state: RootState) => state.input.arrayInput
+    );
+
+    const isArrayInputValid = useSelector(
+        (state: RootState) => state.input.isArrayInputValid
+    );
 
     // miscellaneous variables
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
@@ -72,15 +87,6 @@ const Controls = ({ ...props }) => {
         playing ? interval : null
     );
 
-    // // function that update input box
-    // const updateTargetBoxValue = (e: React.MouseEvent<HTMLElement>) => {
-    //     let inputBox = e.target as HTMLInputElement;
-    //     if (inputBoxRef.current) {
-    //         inputBoxRef.current.value = inputBox.innerHTML;
-    //         setNumInput(inputBox.innerHTML);
-    //     }
-    // };
-
     const handleProgressBarClick = (
         e: React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => {
@@ -91,10 +97,6 @@ const Controls = ({ ...props }) => {
             const step = Math.round((offset / width) * totalStep);
             dispatch(updateStep({ currentStep: step }));
         }
-    };
-
-    const randomizeArrayInput = (sorted: boolean) => {
-        setArrayInput(makeRandomArray(sorted).toString());
     };
 
     // step forward the algorithm, use for button
@@ -142,8 +144,8 @@ const Controls = ({ ...props }) => {
             })
         );
         // set previous variables to most updated value used in the algorithm request
-        setPrevNumInput(numInput);
-        setPrevArrayInput(array.toString());
+        dispatch(updatePrevSingleInput(singleInput));
+        dispatch(updatePrevArrayInput(array.toString()));
 
         // update any miscellaneous data if available
         for (let i = 0; i < extraData.length; i++) {
@@ -169,7 +171,7 @@ const Controls = ({ ...props }) => {
                 s[-1] = 0;
                 extraData[i].updater(s);
             } else if (extraData[i].key === "target") {
-                extraData[i].updater(numInput);
+                extraData[i].updater(singleInput);
             }
         }
 
@@ -188,7 +190,7 @@ const Controls = ({ ...props }) => {
     const onError = (error: any) => {
         // trigger a toast
         toast.error(error.message, {
-            position: "top-right",
+            position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -211,10 +213,10 @@ const Controls = ({ ...props }) => {
             : makeRandomArray(props.requestSortedArray || false);
 
         dispatch(updateArray(arrInput));
-        setArrayInput(arrInput.toString());
+        dispatch(updateArrayInput(arrInput.toString()));
         return AlgoFetcher.post(props.algorithmUrl, {
             data: arrInput,
-            target: parseInt(numInput),
+            target: parseInt(singleInput),
         });
     };
 
@@ -270,34 +272,6 @@ const Controls = ({ ...props }) => {
         setSpeed(spd);
     };
 
-    const checkArrayInput = (arr: string[]) => {
-        let code = [];
-        // 5 to 20 elements, range 1-99
-        if (arr.length < 5 || arr.length > 20) code.push(1);
-
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i] === "" && !code.includes(3)) code.push(3);
-            else if (
-                (parseInt(arr[i]) < 1 || parseInt(arr[i]) > 99) &&
-                !code.includes(2)
-            )
-                code.push(2);
-        }
-
-        return { status: code.length === 0, code: code };
-    };
-
-    const getWarningText = () => {
-        let warnings = [];
-        if (validInputCode.includes(1))
-            warnings.push("Array must have 5-20 elements.");
-        if (validInputCode.includes(2))
-            warnings.push("Elements must be in range 1-99.");
-        if (validInputCode.includes(3))
-            warnings.push("Elements must be comma-separated.");
-        return warnings;
-    };
-
     return (
         <React.Fragment>
             <div className="centered">
@@ -305,88 +279,14 @@ const Controls = ({ ...props }) => {
                 <div className="array-input-container">
                     {/* search input box (if applied) */}
                     {require.includes("singleInput") ? (
-                        <div className="input-container">
-                            <input
-                                ref={inputBoxRef}
-                                className="num-input"
-                                type="number"
-                                placeholder="Search for"
-                                value={numInput}
-                                onChange={(e) => {
-                                    setNumInput(e.target.value);
-                                }}
-                            ></input>
-                        </div>
+                        <SingleInput></SingleInput>
                     ) : null}
 
-                    {/* array input box  */}
-                    <input
-                        className={
-                            "array-input " + (validInput ? "" : "warning")
-                        }
-                        placeholder="Array"
-                        value={arrayInput}
-                        onKeyDown={(e) => {
-                            // preventing invalid inputs here, or else the cursor will
-                            // move to the end whenever user type wrong input
-                            const allowedKeys = [
-                                "backspace",
-                                "arrowleft",
-                                "arrowright",
-                                "delete",
-                            ];
-                            if (
-                                /[^\d,]/g.test(e.key) &&
-                                !e.ctrlKey &&
-                                !allowedKeys.includes(e.key.toLowerCase())
-                            ) {
-                                e.preventDefault();
-                            }
-                        }}
-                        onChange={(e) => {
-                            // a second input check here whenever user copy paste input
-                            // behavior: only keep the digits/comma portion of the pasted input
-                            let newText = e.target.value.replace(/[^\d,]/g, "");
-                            setArrayInput(newText);
-                            let t = checkArrayInput(newText.split(","));
-                            setValidInput(t.status);
-                            setValidInputCode(t.code);
-                        }}
-                    ></input>
-                    {validInput ? null : (
-                        <OverlayTrigger
-                            key="top"
-                            placement="top"
-                            overlay={
-                                <Tooltip id="tooltip-top">
-                                    {getWarningText().map((w) => (
-                                        <li key={w}>{w}</li>
-                                    ))}
-                                </Tooltip>
-                            }
-                        >
-                            <div id="warning-icon">
-                                <FontAwesomeIcon
-                                    icon={["fas", "triangle-exclamation"]}
-                                    className="fa"
-                                />
-                            </div>
-                        </OverlayTrigger>
-                    )}
-
-                    {/* Randomize button*/}
-                    <button
-                        className="btn"
-                        title="Randomize input"
-                        onClick={() =>
-                            randomizeArrayInput(props.requestSortedArray)
-                        }
-                    >
-                        <FontAwesomeIcon
-                            icon={["fas", "shuffle"]}
-                            className="fa"
-                        />
-                    </button>
+                    {require.includes("arrayInput") ? (
+                        <ArrayInput
+                            requestSortedArray={props.requestSortedArray}
+                        ></ArrayInput>
+                    ) : null}
                 </div>
 
                 {/* wrapper for the buttons */}
@@ -490,9 +390,9 @@ const Controls = ({ ...props }) => {
                     <button
                         className={
                             "btn" +
-                            ((numInput !== prevNumInput ||
+                            ((singleInput !== prevSingleInput ||
                                 arrayInput !== prevArrayInput) &&
-                            validInput
+                            isArrayInputValid
                                 ? " build-glow-border"
                                 : " disabled")
                         }

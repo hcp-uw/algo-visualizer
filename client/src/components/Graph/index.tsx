@@ -8,7 +8,7 @@
 import "./Graph.css";
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 
 // default values for variables
 
@@ -56,33 +56,36 @@ const NODE_RADIUS = 18;
 const EDGE_WIDTH = 2;
 
 type Coordinate = {
-    x: number,
-    y: number
-}
+    x: number;
+    y: number;
+};
 
 type Node = {
-    init: Coordinate,
-    x: number,
-    y: number
-}
+    init: Coordinate;
+    x: number;
+    y: number;
+};
 
 type Edge = {
-    n1: number,
-    n2: number,
-    weight?: number
-}
+    n1: number;
+    n2: number;
+    weight?: number | string;
+};
 
 type WeightInputState = {
-    show: boolean,
-    x: number,
-    y: number,
-    target: number | null
-}
+    show: boolean;
+    x: number;
+    y: number;
+    target: number | null;
+};
 
 // ----------------------------------------------
 
 // helper functions independent of the component
-const getEdgeTextStyle = (n1:Coordinate, n2:Coordinate):[string, { textAnchor: string}] => {
+const getEdgeTextStyle = (
+    n1: Coordinate,
+    n2: Coordinate
+): [string, { textAnchor: string }] => {
     let first = undefined;
     let second = undefined;
 
@@ -151,7 +154,7 @@ const Graph = ({
 
     const [nodes, setNodes] = useState<Node[]>(NODES);
     const [edges, setEdges] = useState<Edge[]>(EDGES);
-    const [activeNode, setActiveNode] = useState<number|null>(null);
+    const [activeNode, setActiveNode] = useState<number | null>(null);
     const [cursorPos, setCursorPos] = useState<Coordinate>({ x: 0, y: 0 }); // relative to svg element
     const [weightInputState, setWeightInputState] = useState<WeightInputState>({
         show: false,
@@ -165,15 +168,15 @@ const Graph = ({
     // and the click after a drag
     const [isDragging, setisDragging] = useState(false);
 
-    const addNode = (initX:number, initY:number) => {
-        let newNode:Node = { init: { x: initX, y: initY }, x: 0, y: 0 };
+    const addNode = (initX: number, initY: number) => {
+        let newNode: Node = { init: { x: initX, y: initY }, x: 0, y: 0 };
         setNodes([...nodes, newNode]);
     };
 
-    const removeNode = (node:Node) => {
+    const removeNode = (node: Node) => {
         // remove the node and any edges connected with it
-        let copy = copyObject(nodes) as (Node|null)[];
-        let edgesToRemove:number[] = [];
+        let copy = copyObject(nodes) as (Node | null)[];
+        let edgesToRemove: number[] = [];
 
         // node at target index is set to null as a deletion
         // all other node indexes are kept the same
@@ -194,8 +197,8 @@ const Graph = ({
      *
      * @param {Array} edgesToRemove array of edges (index) to remove
      */
-    const removeEdges = (edgesToRemove:number[]) => {
-        let copy:Edge[] = [];
+    const removeEdges = (edgesToRemove: number[]) => {
+        let copy: Edge[] = [];
         for (let i = 0; i < edges.length; i++) {
             if (!edgesToRemove.includes(i)) {
                 copy.push(edges[i]);
@@ -210,7 +213,7 @@ const Graph = ({
      * @param {Number} n2 index of node 2
      * @param {Number} weight
      */
-    const addEdge = (n1:number, n2:number, weight:number) => {
+    const addEdge = (n1: number, n2: number, weight: number) => {
         // check if trying to add edge to the same node
         if (n1 === n2) return;
         // check if edge already exist
@@ -224,7 +227,7 @@ const Graph = ({
         setEdges([...edges, { n1, n2, weight }]);
     };
 
-    const modifyEdgeValue = (index:number, value:number) => {
+    const modifyEdgeValue = (index: number, value: number) => {
         let copy = copyObject(edges) as Edge[];
         copy[index].weight = value;
         setEdges(copy);
@@ -240,7 +243,7 @@ const Graph = ({
             });
     };
 
-    const calculateBound = (initPos:Coordinate) => {
+    const calculateBound = (initPos: Coordinate) => {
         // bounds in format of Draggable object
         const width = containerWidth;
         const height = containerHeight;
@@ -331,7 +334,7 @@ const Graph = ({
                                         dominantBaseline={dominantBaseline}
                                         style={style as React.CSSProperties}
                                     >
-                                        {edge.weight}
+                                        {edge.weight || ""}
                                     </text>
                                 </g>
                             );

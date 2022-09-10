@@ -6,10 +6,7 @@ import Array1D from "../../components/Array1D";
 import StepTracker from "../../components/StepTracker";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    resetSteps,
-    updateAlgorName,
-} from "../../redux/stateSlice";
+import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { mergeSortDesc } from "../../assets/algorithm-information";
@@ -20,16 +17,24 @@ import { ExtraData } from "../../CommonTypes";
 const ALGORITHM_URL = "sorts/mergesort/";
 
 const MergeSort = () => {
-    const algorSteps = useSelector((state:RootState) => state.global.algorSteps) as MergeSortResultType;
-    const currentStep = useSelector((state:RootState) => state.global.currentStep);
-    const array = useSelector((state:RootState) => state.global.array);
-    const currentName = useSelector((state:RootState) => state.global.algorithmName);
+    const algorSteps = useSelector(
+        (state: RootState) => state.global.algorSteps
+    ) as MergeSortResultType;
+    const currentStep = useSelector(
+        (state: RootState) => state.global.currentStep
+    );
+    const array = useSelector((state: RootState) => state.global.array);
+    const currentName = useSelector(
+        (state: RootState) => state.global.algorithmName
+    );
     const dispatch = useDispatch();
 
     // compares[i] is the number of swaps at step i
     const [compares, setCompares] = useState<number[]>([]);
 
-    const extraData:ExtraData = [{key: 'compares', data: compares, updater: setCompares}];
+    const extraData: ExtraData = [
+        { key: "compares", data: compares, updater: setCompares },
+    ];
 
     // reset data upon exiting the page
     useEffect(() => {
@@ -161,7 +166,11 @@ const MergeSort = () => {
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
-            <Controls extraData={extraData} algorithmUrl={ALGORITHM_URL} />
+            <Controls
+                extraData={extraData}
+                algorithmUrl={ALGORITHM_URL}
+                require={["arrayInput"]}
+            />
 
             <div className="swap-counter-container">
                 <span>

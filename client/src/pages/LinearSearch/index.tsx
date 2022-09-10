@@ -113,7 +113,7 @@ const LinearSearch = () => {
 
             <Controls
                 algorithmUrl={ALGORITHM_URL}
-                require={["singleInput"]}
+                require={["singleInput", "arrayInput"]}
                 extraData={extraData}
             />
             <div className="centered">Current target: {currentTarget}</div>
