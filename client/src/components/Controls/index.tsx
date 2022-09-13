@@ -49,7 +49,6 @@ const Controls = ({ ...props }) => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
     );
-    const array = useSelector((state: RootState) => state.global.array);
 
     // local state variables
     const [playSpeed, setSpeed] = useState<number>(5);
@@ -322,6 +321,23 @@ const Controls = ({ ...props }) => {
         setSpeed(spd);
     };
 
+    const algorithmFetchAvailable =
+        (singleInput !== prevSingleInput ||
+            arrayInput !== prevArrayInput ||
+            isGraphInputChanged) &&
+        isArrayInputValid;
+    // spawn a toast when change is available
+    if (algorithmFetchAvailable) {
+        toast.info("Algorithm fetch available!", {
+            toastId: "algorithm-change",
+            position: "top-right",
+            autoClose: false,
+            theme: "colored",
+        });
+    } else {
+        toast.dismiss("algorithm-change");
+    }
+
     return (
         <React.Fragment>
             <div className="centered">
@@ -440,10 +456,7 @@ const Controls = ({ ...props }) => {
                     <button
                         className={
                             "btn" +
-                            ((singleInput !== prevSingleInput ||
-                                arrayInput !== prevArrayInput ||
-                                isGraphInputChanged) &&
-                            isArrayInputValid
+                            (algorithmFetchAvailable
                                 ? " build-glow-border"
                                 : " disabled")
                         }
