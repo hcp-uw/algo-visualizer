@@ -3,9 +3,9 @@ import "./ArrayInput.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 import {
+    resetArrayInput,
     updateArrayInput,
     updateIsArrayInputValid,
-    updatePrevArrayInput,
 } from "../../redux/inputStateSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -60,8 +60,7 @@ const ArrayInput = ({ ...props }) => {
     useEffect(() => {
         return () => {
             // reset inputs on component unmount
-            dispatch(updateArrayInput(""));
-            dispatch(updatePrevArrayInput(""));
+            dispatch(resetArrayInput());
         };
     }, []);
 

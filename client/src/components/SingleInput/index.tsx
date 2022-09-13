@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import "./SingleInput.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 import {
-    updatePrevSingleInput,
+    resetSingleInput,
     updateSingleInput,
 } from "../../redux/inputStateSlice";
 
@@ -27,8 +27,7 @@ const SingleInput = ({ ...props }) => {
     useEffect(() => {
         return () => {
             // reset inputs on component unmount
-            dispatch(updateSingleInput(""));
-            dispatch(updatePrevSingleInput(""));
+            dispatch(resetSingleInput());
         };
     }, []);
 

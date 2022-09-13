@@ -9,11 +9,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 import "./StepTracker.css";
 
-const StepTracker = ({...props}) => {
-    const currentStep = useSelector((state:RootState) => state.global.currentStep);
-    const algorSteps = useSelector((state:RootState) => state.global.algorSteps);
-    const [expanded, setExpanded] = useState(false);
-    const [pinned, setPinned] = useState(false);
+const StepTracker = ({ ...props }) => {
+    const currentStep = useSelector(
+        (state: RootState) => state.global.currentStep
+    );
+    const algorSteps = useSelector(
+        (state: RootState) => state.global.algorSteps
+    );
+    const [expanded, setExpanded] = useState(true);
+    const [pinned, setPinned] = useState(true);
     const consoleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -24,14 +28,13 @@ const StepTracker = ({...props}) => {
             (expanded ? 1 : 0);
 
         if (consoleRef.current && consoleRef.current.children[toScroll]) {
-            let targetChild = consoleRef.current.children[toScroll] as HTMLDivElement;
+            let targetChild = consoleRef.current.children[
+                toScroll
+            ] as HTMLDivElement;
             consoleRef.current.scrollTo({
-                top:
-                    targetChild.offsetTop -
-                    consoleRef.current.offsetTop,
+                top: targetChild.offsetTop - consoleRef.current.offsetTop,
             });
         }
-            
     }, [currentStep, expanded]);
 
     return (
@@ -50,24 +53,20 @@ const StepTracker = ({...props}) => {
             >
                 {algorSteps.steps.map((e, i) => {
                     // string to return
-                    let s:any = `${i + 1}`.padStart(4, " ") + `. ${e.description}`;
+                    let s: any =
+                        `${i + 1}`.padStart(4, " ") + `. ${e.description}`;
                     // mark and bold the line if it is the current step
                     if (currentStep === i + 1) {
-                        s = (
-                            <b
-                            >
-                                {" > " + s}
-                            </b>
-                        );
+                        s = <b>{" > " + s}</b>;
                     } else {
-                        s = ("   " + s);
+                        s = "   " + s;
                     }
                     return <div key={i}>{s}</div>;
                 })}
             </div>
             <FontAwesomeIcon
                 id="pin-icon"
-                icon={["fas", "thumbtack"]} 
+                icon={["fas", "thumbtack"]}
                 onClick={() => {
                     if (!pinned) {
                         setPinned(true);
@@ -79,11 +78,11 @@ const StepTracker = ({...props}) => {
                 }}
                 style={
                     pinned
-                        ? {
+                        ? ({
                               transform: "rotate(80deg)",
                               right: "2px",
                               top: "6px",
-                          } as React.CSSProperties
+                          } as React.CSSProperties)
                         : undefined
                 }
             />

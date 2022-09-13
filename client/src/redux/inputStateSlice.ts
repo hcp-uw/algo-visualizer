@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Edge } from "../CommonTypes";
 
 const initialState: {
     singleInput: string;
@@ -6,16 +7,20 @@ const initialState: {
     arrayInput: string;
     prevArrayInput: string;
     isArrayInputValid: boolean;
-    graphInput: string;
-    prevGraphInput: string;
+    graphNodes: string[]; // array of node ids
+    graphEdges: Edge[];
+    isGraphInputChanged: boolean;
+    //prevGraphInput: string;
 } = {
     singleInput: "",
     prevSingleInput: "",
     arrayInput: "",
     prevArrayInput: "",
     isArrayInputValid: true,
-    graphInput: "",
-    prevGraphInput: "",
+    graphNodes: [],
+    graphEdges: [],
+    isGraphInputChanged: false,
+    //prevGraphInput: "",
 };
 
 export const inputStateSlice = createSlice({
@@ -32,6 +37,10 @@ export const inputStateSlice = createSlice({
         updatePrevSingleInput: (state, action) => {
             state.prevSingleInput = action.payload;
         },
+        resetSingleInput: (state) => {
+            state.singleInput = "";
+            state.prevSingleInput = "";
+        },
         updateArrayInput: (state, action) => {
             state.arrayInput = action.payload;
         },
@@ -41,12 +50,28 @@ export const inputStateSlice = createSlice({
         updateIsArrayInputValid: (state, action) => {
             state.isArrayInputValid = action.payload;
         },
-        updateGraphInput: (state, action) => {
-            state.graphInput = action.payload;
+        resetArrayInput: (state) => {
+            state.arrayInput = "";
+            state.prevArrayInput = "";
+            state.isArrayInputValid = true;
         },
-        updatePrevGraphInput: (state, action) => {
-            state.prevGraphInput = action.payload;
+        updateGraphNodes: (state, action) => {
+            state.graphNodes = action.payload;
         },
+        updateGraphEdges: (state, action) => {
+            state.graphEdges = action.payload;
+        },
+        updateIsGraphInputChanged: (state, action) => {
+            state.isGraphInputChanged = action.payload;
+        },
+        resetGraphInput: (state) => {
+            state.graphNodes = [];
+            state.graphEdges = [];
+            state.isGraphInputChanged = false;
+        },
+        // updatePrevGraphInput: (state, action) => {
+        //     state.prevGraphInput = action.payload;
+        // },
     },
 });
 
@@ -54,11 +79,15 @@ export const inputStateSlice = createSlice({
 export const {
     updateSingleInput,
     updatePrevSingleInput,
+    resetSingleInput,
     updateArrayInput,
     updatePrevArrayInput,
     updateIsArrayInputValid,
-    updateGraphInput,
-    updatePrevGraphInput,
+    resetArrayInput,
+    updateGraphNodes,
+    updateGraphEdges,
+    updateIsGraphInputChanged,
+    resetGraphInput,
 } = inputStateSlice.actions;
 
 export default inputStateSlice.reducer;

@@ -15,12 +15,15 @@ import {
 } from "../../redux/stateSlice";
 import {
     updateArrayInput,
+    updateGraphEdges,
+    updateGraphNodes,
+    updateIsGraphInputChanged,
     updatePrevArrayInput,
     updatePrevSingleInput,
 } from "../../redux/inputStateSlice";
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
-import { OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { RootState } from "../../redux/configureStore";
 import { useQuery } from "react-query";
 import {
@@ -28,14 +31,16 @@ import {
     MergeSortResultType,
     SortAlgorithmResultType,
 } from "../../AlgoResultTypes";
-import { ExtraData } from "../../CommonTypes";
+import { Edge, ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
 import SingleInput from "../SingleInput";
 import ArrayInput from "../ArrayInput";
 
+type AlgorithmType = "arrayInput" | "singleInput" | "graphInput";
+
 const Controls = ({ ...props }) => {
     const extraData: ExtraData = props.extraData || [];
-    const require: string[] = props.require || [];
+    const require: AlgorithmType[] = props.require || [];
 
     // global state variables we pull from redux store
     let currentStep = useSelector(
@@ -71,6 +76,14 @@ const Controls = ({ ...props }) => {
 
     const isArrayInputValid = useSelector(
         (state: RootState) => state.input.isArrayInputValid
+    );
+
+    const nodes = useSelector((state: RootState) => state.input.graphNodes);
+
+    const edges = useSelector((state: RootState) => state.input.graphEdges);
+
+    const isGraphInputChanged = useSelector(
+        (state: RootState) => state.input.isGraphInputChanged
     );
 
     // miscellaneous variables
@@ -144,8 +157,15 @@ const Controls = ({ ...props }) => {
             })
         );
         // set previous variables to most updated value used in the algorithm request
-        dispatch(updatePrevSingleInput(singleInput));
-        dispatch(updatePrevArrayInput(array.toString()));
+        if (require.includes("singleInput")) {
+            dispatch(updatePrevSingleInput(singleInput));
+        }
+        if (require.includes("arrayInput")) {
+            dispatch(updatePrevArrayInput(arrayInput));
+        }
+        if (require.includes("graphInput")) {
+            dispatch(updateIsGraphInputChanged(false));
+        }
 
         // update any miscellaneous data if available
         for (let i = 0; i < extraData.length; i++) {
@@ -178,7 +198,7 @@ const Controls = ({ ...props }) => {
         // trigger a toast
         toast.success("Algorithm fetched!", {
             position: "bottom-right",
-            autoClose: 3000,
+            autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -191,7 +211,7 @@ const Controls = ({ ...props }) => {
         // trigger a toast
         toast.error(error.message, {
             position: "bottom-right",
-            autoClose: 5000,
+            autoClose: 4000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -206,18 +226,47 @@ const Controls = ({ ...props }) => {
      */
     const fetchAlgorithm = () => {
         doPause();
-        // if the input array does not exist (case of error or new page load)
-        // the request is made on a random array instead
-        let arrInput: number[] = arrayInput
-            ? arrayInput.split(",").map((e) => parseInt(e))
-            : makeRandomArray(props.requestSortedArray || false);
+        let toSend: {
+            array?: number[];
+            target?: number;
+            nodes?: string[];
+            edges?: Edge[];
+        } = {};
+        if (require.includes("arrayInput")) {
+            // if the input array does not exist (case of error or new page load)
+            // the request is made on a random array instead
+            let arrInput: number[] = arrayInput
+                ? arrayInput.split(",").map((e) => parseInt(e))
+                : makeRandomArray(props.requestSortedArray || false);
+            dispatch(updateArray(arrInput));
+            dispatch(updateArrayInput(arrInput.toString()));
+            toSend.array = arrInput;
+        }
 
-        dispatch(updateArray(arrInput));
-        dispatch(updateArrayInput(arrInput.toString()));
-        return AlgoFetcher.post(props.algorithmUrl, {
-            data: arrInput,
-            target: parseInt(singleInput),
-        });
+        if (require.includes("singleInput")) {
+            toSend.target = parseInt(singleInput);
+        }
+
+        if (require.includes("graphInput")) {
+            // only sending the ids of nodes
+            if (nodes.length === 0 && edges.length === 0) {
+                // default values
+                toSend.nodes = ["0", "1", "2", "3", "4"];
+                toSend.edges = [
+                    { n1: "0", n2: "1" },
+                    { n1: "1", n2: "2" },
+                    { n1: "0", n2: "3" },
+                    { n1: "1", n2: "4" },
+                ];
+                dispatch(updateGraphNodes(toSend.nodes));
+                dispatch(updateGraphEdges(toSend.edges));
+            } else {
+                toSend.nodes = nodes;
+                toSend.edges = edges;
+            }
+        }
+
+        return AlgoFetcher.post(props.algorithmUrl, toSend);
     };
 
     const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
@@ -228,7 +277,8 @@ const Controls = ({ ...props }) => {
             onError,
             enabled: true, // triggered once on page load
             refetchOnWindowFocus: false,
-            retry: false,
+            retry: 1,
+
             // cacheTime: 1000
         }
     );
@@ -391,7 +441,8 @@ const Controls = ({ ...props }) => {
                         className={
                             "btn" +
                             ((singleInput !== prevSingleInput ||
-                                arrayInput !== prevArrayInput) &&
+                                arrayInput !== prevArrayInput ||
+                                isGraphInputChanged) &&
                             isArrayInputValid
                                 ? " build-glow-border"
                                 : " disabled")

@@ -11,9 +11,14 @@
  *              }
  */
 
-import { BinarySearchResultType, LinearSearchResultType } from "../AlgoResultTypes";
+import {
+    BinarySearchResultType,
+    DepthFirstSearchResultType,
+    LinearSearchResultType,
+} from "../AlgoResultTypes";
+import { Edge, NodeMap } from "../CommonTypes";
 
-function copyObject(obj:Object):Object {
+function copyObject(obj: Object): Object {
     return JSON.parse(JSON.stringify(obj));
 }
 
@@ -25,8 +30,13 @@ function copyObject(obj:Object):Object {
  * @param {*} target
  * @returns r the result object
  */
-function linearSearch(arr:number[], target:number) {
-    let r:LinearSearchResultType = { steps: [], success: false, target: target, foundIndex: -1 };
+function linearSearch(arr: number[], target: number) {
+    let r: LinearSearchResultType = {
+        steps: [],
+        success: false,
+        target: target,
+        foundIndex: -1,
+    };
 
     for (let i = 0; i < arr.length; i++) {
         r.steps.push({ element: i, description: `Checking index ${i}` });
@@ -50,8 +60,13 @@ function linearSearch(arr:number[], target:number) {
  * The steps in binary search also return the left and right boundary
  * for extra visuals.
  */
-function binarySearch(arr:number[], target:number) {
-    let result:BinarySearchResultType = { steps: [], success: false, target: target, foundIndex: -1 };
+function binarySearch(arr: number[], target: number) {
+    let result: BinarySearchResultType = {
+        steps: [],
+        success: false,
+        target: target,
+        foundIndex: -1,
+    };
     let l = 0,
         r = arr.length - 1;
 
@@ -112,17 +127,23 @@ function binarySearch(arr:number[], target:number) {
     return result;
 }
 
-function depthFirstSearch(nodes:any, edges:any, start:any) {
-    if (nodes.length === 0) return [];
+type DFSNode = { id: string; from: string };
 
-    let result:any = { steps: [] };
-    let adjacencyMap:any = [];
-    let stack:any = [];
-    let visited:any = [];
-    let visitedEdges:any = [];
+function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+    let result: DepthFirstSearchResultType = {
+        steps: [],
+        traversalResult: [],
+        startNode: "",
+    };
+    let adjacencyMap: { [key: string]: string[] } = {};
+    let stack: DFSNode[] = [];
+    let visited: string[] = [];
+    let visitedEdges: Edge[] = [];
+
+    if (nodes.length === 0) return result;
 
     for (let i = 0; i < nodes.length; i++) {
-        adjacencyMap[i] = [];
+        adjacencyMap[nodes[i]] = [];
     }
 
     // build adjacency map
@@ -132,56 +153,58 @@ function depthFirstSearch(nodes:any, edges:any, start:any) {
         adjacencyMap[edges[i].n2].unshift(edges[i].n1);
     }
 
-    stack.push(start);
+    if (!start) start = nodes[0].toString();
+    stack.push({ id: start, from: "" });
+    result.startNode = start.toString();
 
     result.steps.push({
-        stack: copyObject(stack),
+        stack: copyObject(stack) as DFSNode[],
         currentNode: [],
-        visitedNode: copyObject(visited),
-        visitedEdges: copyObject(visitedEdges),
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
         description: `Starting from node ${start}`,
     });
 
     // dfs
+
     while (stack.length > 0) {
-        let node = stack.pop();
-        visited.push(node);
+        let node = stack.pop() as DFSNode;
+        if (visited.includes(node.id)) continue;
+
+        visited.push(node.id);
         // add visited edge
+        visitedEdges.push({ n1: node.from, n2: node.id });
 
         result.steps.push({
-            stack: copyObject(stack),
-            currentNode: [node],
-            visitedNode: copyObject(visited),
-            visitedEdges: copyObject(visitedEdges),
-            description: `Visiting node ${node}`,
+            stack: copyObject(stack) as DFSNode[],
+            currentNode: [node.id],
+            visitedNodes: copyObject(visited) as string[],
+            visitedEdges: copyObject(visitedEdges) as Edge[],
+            description: `Visiting node ${node.id}`,
         });
 
-        for (const n of adjacencyMap[node]) {
-            if (!visited.includes(n)) stack.push(n);
+        for (const n of adjacencyMap[node.id]) {
+            stack.push({ id: n, from: node.id });
         }
 
         result.steps.push({
-            stack: copyObject(stack),
+            stack: copyObject(stack) as DFSNode[],
             currentNode: [],
-            visitedNode: copyObject(visited),
-            visitedEdges: copyObject(visitedEdges),
-            description: `Finished visiting node ${node}`,
+            visitedNodes: copyObject(visited) as string[],
+            visitedEdges: copyObject(visitedEdges) as Edge[],
+            description: `Finished visiting node ${node.id}`,
         });
     }
 
     result.steps.push({
-        stack: copyObject(stack),
+        stack: copyObject(stack) as DFSNode[],
         currentNode: [],
-        visitedNode: copyObject(visited),
-        visitedEdges: copyObject(visitedEdges),
-        description: `Graph traversed.`,
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
+        description: `Traversal finished.`,
     });
     result.traversalResult = visited;
     return result;
 }
 
-export {
-    linearSearch,
-    binarySearch,
-    depthFirstSearch,
-};
+export { linearSearch, binarySearch, depthFirstSearch };

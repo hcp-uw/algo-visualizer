@@ -8,75 +8,47 @@
 import "./Graph.css";
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Coordinate, Edge } from "../../CommonTypes";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    resetGraphInput,
+    updateGraphEdges,
+    updateGraphNodes,
+    updateIsGraphInputChanged,
+} from "../../redux/inputStateSlice";
+import { RootState } from "../../redux/configureStore";
+import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 
 // default values for variables
-
-// const EDGES = [
-//     { n1: 0, n2: 1, weight: randInt(1, 100) },
-//     { n1: 1, n2: 2, weight: randInt(1, 100) },
-//     { n1: 1, n2: 3, weight: randInt(1, 100) },
-// ];
-
-// const NODES = [
-//     {
-//         init: { x: 60 + center.x, y: 50 + center.y },
-//         x: 0,
-//         y: 0,
-//     },
-//     {
-//         init: { x: 150 + center.x, y: 90 + center.y },
-//         x: 0,
-//         y: 0,
-//     },
-//     {
-//         init: { x: 340 + center.x, y: 90 + center.y },
-//         x: 0,
-//         y: 0,
-//     },
-//     {
-//         init: { x: 50 + center.x, y: 240 + center.y },
-//         x: 0,
-//         y: 0,
-//     },
-// ];
-
-const EDGES = [
-    { n1: 0, n2: 1 },
-    { n1: 0, n2: 2 },
-    { n1: 1, n2: 3 },
-    { n1: 1, n2: 4 },
-    { n1: 4, n2: 5 },
-    { n1: 2, n2: 6 },
-];
 
 const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = 500;
 const NODE_RADIUS = 18;
-const EDGE_WIDTH = 2;
-
-type Coordinate = {
-    x: number;
-    y: number;
-};
-
-type Node = {
-    init: Coordinate;
-    x: number;
-    y: number;
-};
-
-type Edge = {
-    n1: number;
-    n2: number;
-    weight?: number | string;
-};
+const EDGE_WIDTH = 1;
 
 type WeightInputState = {
     show: boolean;
     x: number;
     y: number;
     target: number | null;
+};
+
+// contains position of Node
+type Node = {
+    // when dragging, Draggable translate css of node instead of changing its svg x,y
+    // the initial coordinate on create is important
+    init: Coordinate;
+    // this x,y is to make the new edge creation follows the mouse
+    // and make dragging more continuous. onDragEnd can be used to set the x,y coordinate
+    // of node at the end of drag, but state update takes time and it can appears that the
+    // element is jumping.
+    x: number;
+    y: number;
+};
+
+type NodePositions = {
+    [key: string]: Node;
 };
 
 // ----------------------------------------------
@@ -112,49 +84,59 @@ const Graph = ({
     containerWidth = DEFAULT_WIDTH,
     containerHeight = DEFAULT_HEIGHT,
     scale = 1,
+    weighed = false,
     ...props
 }) => {
-    const NODES = [
-        {
-            init: { x: 400 + center.x, y: 50 + center.y },
+    const dispatch = useDispatch();
+
+    const nodes = useSelector((state: RootState) => state.input.graphNodes);
+    const setNodes = (nodes: string[]) => {
+        dispatch(updateGraphNodes(nodes));
+        dispatch(updateIsGraphInputChanged(true));
+    };
+
+    const [nodePositions, setNodePositions] = useState<NodePositions>({
+        "0": {
+            init: { x: 300 + center.x, y: 50 + center.y },
             x: 0,
             y: 0,
         },
-        {
-            init: { x: 300 + center.x, y: 100 + center.y },
-            x: 0,
-            y: 0,
-        },
-        {
-            init: { x: 500 + center.x, y: 100 + center.y },
-            x: 0,
-            y: 0,
-        },
-        {
+        "1": {
             init: { x: 250 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        {
+        "2": {
+            init: { x: 200 + center.x, y: 250 + center.y },
+            x: 0,
+            y: 0,
+        },
+        "3": {
             init: { x: 350 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        {
-            init: { x: 400 + center.x, y: 200 + center.y },
+        "4": {
+            init: { x: 290 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
-        {
-            init: { x: 450 + center.x, y: 150 + center.y },
-            x: 0,
-            y: 0,
-        },
-    ];
+    });
 
-    const [nodes, setNodes] = useState<Node[]>(NODES);
-    const [edges, setEdges] = useState<Edge[]>(EDGES);
-    const [activeNode, setActiveNode] = useState<number | null>(null);
+    const edges = useSelector((state: RootState) => state.input.graphEdges);
+    const setEdges = (edges: Edge[]) => {
+        dispatch(updateGraphEdges(edges));
+        dispatch(updateIsGraphInputChanged(true));
+    };
+
+    const algorSteps = useSelector(
+        (state: RootState) => state.global.algorSteps
+    ) as GraphAlgorithmResultType;
+    const currentStep = useSelector(
+        (state: RootState) => state.global.currentStep
+    );
+
+    const [activeNode, setActiveNode] = useState<string | null>(null);
     const [cursorPos, setCursorPos] = useState<Coordinate>({ x: 0, y: 0 }); // relative to svg element
     const [weightInputState, setWeightInputState] = useState<WeightInputState>({
         show: false,
@@ -166,29 +148,48 @@ const Graph = ({
     // and it messes up with the click to connect function
     // keeping a dragging flag to distinguish the normal click
     // and the click after a drag
+    const [nodeCount, setNodeCount] = useState(
+        Object.keys(nodePositions).length
+    );
     const [isDragging, setisDragging] = useState(false);
 
     const addNode = (initX: number, initY: number) => {
-        let newNode: Node = { init: { x: initX, y: initY }, x: 0, y: 0 };
-        setNodes([...nodes, newNode]);
+        let newPosition: Node = {
+            init: { x: initX, y: initY },
+            x: 0,
+            y: 0,
+        };
+        let id = nodeCount.toString();
+        let newNodeList = copyObject(nodes) as string[];
+        newNodeList.push(id);
+        let newNodePositions = copyObject(nodePositions) as NodePositions;
+        newNodePositions[id] = newPosition;
+
+        setNodes(newNodeList);
+        setNodePositions(newNodePositions);
+        setNodeCount((prev) => prev + 1);
     };
 
-    const removeNode = (node: Node) => {
+    const removeNode = (nodeId: string) => {
         // remove the node and any edges connected with it
-        let copy = copyObject(nodes) as (Node | null)[];
+        let newNodePositions = copyObject(nodePositions) as NodePositions;
+        let newNodeList = copyObject(nodes) as string[];
         let edgesToRemove: number[] = [];
 
-        // node at target index is set to null as a deletion
-        // all other node indexes are kept the same
-        let nodeIndex = nodes.indexOf(node);
-        copy[nodeIndex] = null;
+        // deletion removes the node id from map
         for (let i = 0; i < edges.length; i++) {
-            if (edges[i].n1 === nodeIndex || edges[i].n2 === nodeIndex) {
+            if (edges[i].n1 === nodeId || edges[i].n2 === nodeId) {
                 edgesToRemove.push(i);
             }
         }
 
-        setNodes(copy as Node[]);
+        // remove from copy
+        delete newNodePositions[nodeId];
+        newNodeList.splice(newNodeList.indexOf(nodeId), 1);
+
+        // update
+        setNodes(newNodeList);
+        setNodePositions(newNodePositions);
         removeEdges(edgesToRemove);
     };
 
@@ -209,11 +210,11 @@ const Graph = ({
 
     /**
      *
-     * @param {Number} n1 index of node 1
-     * @param {Number} n2 index of node 2
-     * @param {Number} weight
+     * @param {string} n1 id of node 1
+     * @param {string} n2 id of node 2
+     * @param {string} weight
      */
-    const addEdge = (n1: number, n2: number, weight: number) => {
+    const addEdge = (n1: string, n2: string, weight: number | undefined) => {
         // check if trying to add edge to the same node
         if (n1 === n2) return;
         // check if edge already exist
@@ -256,6 +257,44 @@ const Graph = ({
         };
     };
 
+    const nodeHighlightStyle = (id: string) => {
+        let style = " ";
+        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
+
+        if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
+            style += "node-active ";
+        } else if (
+            algorSteps.steps[currentStep - 1].visitedNodes.includes(id)
+        ) {
+            style += "node-highlighted ";
+        }
+        return style;
+    };
+
+    const edgeHighlightStyle = (edge: Edge) => {
+        let style = " ";
+        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
+
+        let currentEdgeList = algorSteps.steps[currentStep - 1].visitedEdges;
+        for (const edg of currentEdgeList) {
+            if (`${edge.n1} ${edge.n2}` === `${edg.n1} ${edg.n2}`) {
+                style += "edge-highlighted ";
+                break;
+            } else if (`${edge.n1} ${edge.n2}` === `${edg.n2} ${edg.n1}`) {
+                style += "edge-highlighted-reverse ";
+                break;
+            }
+        }
+        return style;
+    };
+
+    useEffect(() => {
+        return () => {
+            // reset inputs on component unmount
+            dispatch(resetGraphInput());
+        };
+    }, []);
+
     return (
         // this outter div act as an anchor for any absolute positioned elements
         <div style={{ position: "relative" }}>
@@ -278,24 +317,36 @@ const Graph = ({
                 }}
                 onMouseMove={(e) => {
                     // could cause performance issue
-                    setCursorPos({
-                        x: e.nativeEvent.offsetX,
-                        y: e.nativeEvent.offsetY,
-                    });
+                    if (activeNode != null)
+                        setCursorPos({
+                            x: e.nativeEvent.offsetX,
+                            y: e.nativeEvent.offsetY,
+                        });
                 }}
                 className="graph-canvas"
             >
                 <g className="edges">
                     {edges.map((edge, index) => {
                         try {
-                            let x1 = nodes[edge.n1].init.x + nodes[edge.n1].x;
-                            let y1 = nodes[edge.n1].init.y + nodes[edge.n1].y;
-                            let x2 = nodes[edge.n2].init.x + nodes[edge.n2].x;
-                            let y2 = nodes[edge.n2].init.y + nodes[edge.n2].y;
+                            let x1 =
+                                nodePositions[edge.n1].init.x +
+                                nodePositions[edge.n1].x;
+                            let y1 =
+                                nodePositions[edge.n1].init.y +
+                                nodePositions[edge.n1].y;
+                            let x2 =
+                                nodePositions[edge.n2].init.x +
+                                nodePositions[edge.n2].x;
+                            let y2 =
+                                nodePositions[edge.n2].init.y +
+                                nodePositions[edge.n2].y;
                             let [dominantBaseline, style] = getEdgeTextStyle(
                                 { x: x1, y: y1 },
                                 { x: x2, y: y2 }
                             );
+
+                            let extraStyle = edgeHighlightStyle(edge);
+                            let rev = extraStyle.includes("reverse");
 
                             return (
                                 <g
@@ -323,10 +374,22 @@ const Graph = ({
                                         y1={y1}
                                         x2={x2}
                                         y2={y2}
-                                        stroke="#413939"
+                                        //lassName={edgeHighlightStyle(edge)}
                                         strokeWidth={EDGE_WIDTH}
                                         key={"e " + index}
                                     />
+                                    {/* extra line on top of the original for line animation */}
+                                    {extraStyle.includes("edge-highlighted") ? (
+                                        <line
+                                            x1={rev ? x2 : x1}
+                                            y1={rev ? y2 : y1}
+                                            x2={rev ? x1 : x2}
+                                            y2={rev ? y1 : y2}
+                                            className={edgeHighlightStyle(edge)}
+                                            strokeWidth={EDGE_WIDTH + 1}
+                                            key={"e " + index + "h"}
+                                        />
+                                    ) : null}
                                     <text
                                         x={(x1 + x2) / 2}
                                         y={(y1 + y2) / 2}
@@ -348,25 +411,26 @@ const Graph = ({
                         activeNode != null ? (
                             <line
                                 x1={
-                                    nodes[activeNode].init.x +
-                                    nodes[activeNode].x
+                                    nodePositions[activeNode].init.x +
+                                    nodePositions[activeNode].x
                                 }
                                 y1={
-                                    nodes[activeNode].init.y +
-                                    nodes[activeNode].y
+                                    nodePositions[activeNode].init.y +
+                                    nodePositions[activeNode].y
                                 }
                                 x2={cursorPos.x}
                                 y2={cursorPos.y}
                                 stroke="#413939"
                                 strokeWidth="2"
                                 key={"dynamic-edge"}
+                                className="no-anim"
                             />
                         ) : null
                     }
                 </g>
                 <g className="nodes">
-                    {nodes.map((node, index) => {
-                        return node != null ? (
+                    {nodes.map((nodeId) => {
+                        return nodeId != null ? (
                             <Draggable
                                 onDrag={(e, data) => {
                                     // this stop propergation prevent it from overlapping with the container's draggable
@@ -375,13 +439,16 @@ const Graph = ({
                                     e.stopPropagation();
                                     hideWeightInputBox();
                                     if (!isDragging) setisDragging(true);
-                                    let copy = copyObject(nodes) as Node[];
-                                    copy[index] = {
-                                        ...nodes[index],
+
+                                    let newNodePositions = copyObject(
+                                        nodePositions
+                                    ) as NodePositions;
+                                    newNodePositions[nodeId] = {
+                                        ...newNodePositions[nodeId],
                                         x: data.x,
                                         y: data.y,
                                     };
-                                    setNodes(copy);
+                                    setNodePositions(newNodePositions);
                                 }}
                                 onStop={() => {
                                     // set draggin to false after 50ms
@@ -390,18 +457,20 @@ const Graph = ({
                                         setisDragging(false);
                                     }, 50);
                                 }}
-                                key={"n" + index}
+                                key={"n" + nodeId}
                                 position={{
-                                    x: nodes[index].x,
-                                    y: nodes[index].y,
+                                    x: nodePositions[nodeId].x,
+                                    y: nodePositions[nodeId].y,
                                 }}
                                 // to make connecting nodes smoother
                                 disabled={activeNode != null ? true : false}
-                                bounds={calculateBound(node.init)}
+                                bounds={calculateBound(
+                                    nodePositions[nodeId].init
+                                )}
                                 scale={scale}
                             >
                                 <g
-                                    id={index.toString()}
+                                    id={nodeId}
                                     fill="#A020F0"
                                     className="node"
                                     onDoubleClick={(e) => {
@@ -412,40 +481,47 @@ const Graph = ({
                                         hideWeightInputBox();
                                         if (!isDragging)
                                             if (activeNode === null) {
-                                                setActiveNode(index);
+                                                setActiveNode(nodeId);
+                                                setCursorPos({
+                                                    x: e.nativeEvent.offsetX,
+                                                    y: e.nativeEvent.offsetY,
+                                                });
                                             } else {
                                                 // add edge when connecting two nodes
                                                 addEdge(
-                                                    index,
+                                                    nodeId,
                                                     activeNode,
-                                                    randInt(1, 100)
+                                                    weighed
+                                                        ? randInt(1, 100)
+                                                        : undefined
                                                 );
                                                 setActiveNode(null);
                                             }
                                     }}
                                     onContextMenu={(e) => {
-                                        removeNode(node);
+                                        removeNode(nodeId);
                                     }}
                                 >
                                     <circle
-                                        cx={node.init.x}
-                                        cy={node.init.y}
+                                        cx={nodePositions[nodeId].init.x}
+                                        cy={nodePositions[nodeId].init.y}
                                         r={NODE_RADIUS}
                                         className={
-                                            index === activeNode
-                                                ? "active-node"
-                                                : ""
+                                            nodeId === activeNode
+                                                ? "node-active"
+                                                : "" +
+                                                  nodeHighlightStyle(nodeId)
                                         }
                                     />
                                     <text
-                                        x={node.init.x}
-                                        y={node.init.y}
+                                        x={nodePositions[nodeId].init.x}
+                                        y={nodePositions[nodeId].init.y}
                                         textAnchor="middle"
                                         alignmentBaseline="middle"
                                         className="noselect"
                                         dy="0.1em"
                                     >
-                                        {index}
+                                        {nodeId}
                                     </text>
                                 </g>
                             </Draggable>

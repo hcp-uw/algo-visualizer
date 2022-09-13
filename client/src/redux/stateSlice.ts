@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { AlgorithmResultType } from "../AlgoResultTypes";
 
 const initialState: {
-    algorSteps: AlgorithmResultType,
-    array: number[],
-    currentStep: number,
-    algorithmName: string
+    algorSteps: AlgorithmResultType;
+    array: number[];
+    currentStep: number;
+    algorithmName: string;
 } = {
     algorSteps: { steps: [], success: false },
     array: [],
@@ -27,7 +27,7 @@ export const stateSlice = createSlice({
         updateAlgorName: (state, action) => {
             state.algorithmName = action.payload;
         },
-        // update algor steps usually come with reset current and previous steps
+        // update algor steps usually come with reset current step
         updateAlgorSteps: (state, action) => {
             state.algorSteps = action.payload.algorSteps;
             state.currentStep = 0;
