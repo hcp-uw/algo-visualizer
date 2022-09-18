@@ -6,10 +6,8 @@
 }
 
 .stack-item-holder {
-    border: 2px solid black;
     width: 100%;
     height: 100%;
-    border-top: none;
 }
 
 .stack-item {
