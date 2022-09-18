@@ -6,6 +6,7 @@
     height: 200px;
     outline: 1px dotted black;
     overflow: hidden;
+    position: relative;
 }
 
 .red-outline {
@@ -53,6 +54,18 @@
 
 .children-container:active {
     cursor: grabbing;
+}
+
+.static-children {
+    position: absolute;
+    width: 25%;
+    min-width: 50px;
+    max-width: 200px;
+    right: 0px;
+    height: 100%;
+    overflow: hidden;
+    outline: 1px dotted black;
+    background-color: white;
 }
 
 .noselect {

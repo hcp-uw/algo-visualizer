@@ -169,7 +169,6 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
 
     while (stack.length > 0) {
         let node = stack.pop() as DFSNode;
-        if (visited.includes(node.id)) continue;
 
         visited.push(node.id);
         // add visited edge
@@ -184,7 +183,15 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
         });
 
         for (const n of adjacencyMap[node.id]) {
-            stack.push({ id: n, from: node.id });
+            if (
+                !visited.includes(n) &&
+                !stack.map((e) => e.id).includes(n) // very inefficient but will do for the purpose of displaying visited
+            ) {
+                // the correct algorithm is to mark node as visited here
+                // but it confuses the algorithm displayer
+                // visited.push(n);
+                stack.push({ id: n, from: node.id });
+            }
         }
 
         result.steps.push({

@@ -9,7 +9,7 @@ import Draggable from "react-draggable";
 
 const SCALE_LIMIT = 0.5;
 
-const VisualizerContainer = ({...props}) => {
+const VisualizerContainer = ({ ...props }) => {
     let s = props.scale || 1;
 
     let initPosition = props.initPosition || { x: 0, y: 0 };
@@ -91,7 +91,10 @@ const VisualizerContainer = ({...props}) => {
                         }}
                         title="Unlock pan & zoom"
                     >
-                        <FontAwesomeIcon icon={["fas", "unlock"]} className="fa" />
+                        <FontAwesomeIcon
+                            icon={["fas", "unlock"]}
+                            className="fa"
+                        />
                     </button>
                 ) : (
                     <button
@@ -102,7 +105,10 @@ const VisualizerContainer = ({...props}) => {
                         }}
                         title="Lock pan & zoom"
                     >
-                        <FontAwesomeIcon icon={["fas", "lock"]} className="fa" />
+                        <FontAwesomeIcon
+                            icon={["fas", "lock"]}
+                            className="fa"
+                        />
                     </button>
                 )}
                 <button
@@ -153,12 +159,14 @@ const VisualizerContainer = ({...props}) => {
                                         y: -initPosition.y,
                                     },
                                 })
+
                                 // props.children
                             }
                         </div>
                     </div>
                 </Draggable>
             </div>
+            <div className="static-children">{props.staticChildren}</div>
         </div>
     );
 };

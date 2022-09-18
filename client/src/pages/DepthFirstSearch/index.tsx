@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import { depthFirstSearchDesc } from "../../assets/algorithm-information.js";
+import Stack from "../../components/Stack";
 
 const ALGORITHM_URL = "searches/depthfirstsearch/";
 
@@ -35,6 +36,7 @@ const DepthFirstSearch = () => {
             <VisualizerContainer
                 height="400"
                 initPosition={{ x: -n / 3, y: -n / 3 }}
+                staticChildren={<Stack />}
             >
                 <Graph containerWidth={n} containerHeight={n} />
             </VisualizerContainer>

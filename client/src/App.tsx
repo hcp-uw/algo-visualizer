@@ -32,7 +32,7 @@ import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
-import DepthFirstSearch from "./pages/DepthFirstSearch/DepthFirstSearch";
+import DepthFirstSearch from "./pages/DepthFirstSearch";
 
 //import Test from "./pages/Test";
 
@@ -53,7 +53,7 @@ library.add(
     faMagnifyingGlassPlus as IconDefinition,
     faCircleInfo as IconDefinition,
     faShuffle as IconDefinition,
-    faTriangleExclamation as IconDefinition, 
+    faTriangleExclamation as IconDefinition,
     faThumbTack as IconDefinition
 );
 
@@ -64,23 +64,11 @@ const App = () => {
             {/* These determines the page hrefs for the app */}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route
-                    path="/linear-search"
-                    element={<LinearSearch />}
-                />
-                <Route
-                    path="/binary-search"
-                    element={<BinarySearch />}
-                />
+                <Route path="/linear-search" element={<LinearSearch />} />
+                <Route path="/binary-search" element={<BinarySearch />} />
                 <Route path="/bubble-sort" element={<BubbleSort />} />
-                <Route
-                    path="/insertion-sort"
-                    element={<InsertionSort />}
-                />
-                <Route
-                    path="/selection-sort"
-                    element={<SelectionSort />}
-                />
+                <Route path="/insertion-sort" element={<InsertionSort />} />
+                <Route path="/selection-sort" element={<SelectionSort />} />
                 <Route path="/merge-sort" element={<MergeSort />} />
                 <Route
                     path="/depth-first-search"
