@@ -166,7 +166,9 @@ const VisualizerContainer = ({ ...props }) => {
                     </div>
                 </Draggable>
             </div>
-            <div className="static-children">{props.staticChildren}</div>
+            {props.staticChildren ? (
+                <div className="static-children">{props.staticChildren}</div>
+            ) : null}
         </div>
     );
 };
