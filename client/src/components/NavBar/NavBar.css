@@ -46,3 +46,15 @@
     color: white;
     background-color: var(--purple);
 }
+
+.github-ref {
+    margin: 0px 1rem;
+    padding: 0px 6px;
+    background-color: rgb(92, 143, 255);
+    color: black;
+}
+
+.github-ref:hover {
+    background-color: rgb(51, 116, 255);
+    color: black;
+}

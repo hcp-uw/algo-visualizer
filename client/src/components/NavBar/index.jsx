@@ -9,6 +9,7 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import FeedbackReport from "../FeedbackReport";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // cheat to have the dropdown separated from nav-item while
 // the hovers work normally
@@ -110,6 +111,18 @@ const NavBar = () => {
                 </Navbar.Collapse>
 
                 <Nav.Item className="ms-auto me-4">
+                    <a
+                        href="https://github.com/hieuc/algo-visualizer"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="github-ref"
+                    >
+                        <FontAwesomeIcon
+                            icon="fa-brands fa-github"
+                            className="fa"
+                        ></FontAwesomeIcon>
+                    </a>
+
                     <FeedbackReport />
                 </Nav.Item>
             </Navbar>

@@ -24,6 +24,8 @@ import {
     faThumbTack,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import LinearSearch from "./pages/LinearSearch";
@@ -54,7 +56,8 @@ library.add(
     faCircleInfo as IconDefinition,
     faShuffle as IconDefinition,
     faTriangleExclamation as IconDefinition,
-    faThumbTack as IconDefinition
+    faThumbTack as IconDefinition,
+    faGithub as IconDefinition
 );
 
 const App = () => {
