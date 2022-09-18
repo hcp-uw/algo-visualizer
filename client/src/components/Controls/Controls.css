@@ -11,7 +11,7 @@
 
 
 .btn {
-    border: 2px solid black;
+    border: 2px solid #3e488f;
     margin-left: 0.5rem;
     margin: 0.5rem 0;
 }
@@ -24,7 +24,7 @@
 .btn:hover {
     background-color: var(--purple);
     color: white;
-    border-color: black;
+    border-color: #3e488f;
 }
 
 .btn:hover .fa {

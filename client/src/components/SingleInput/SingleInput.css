@@ -2,17 +2,18 @@
     border: 1px solid black;
     padding: 5px 5px 5px 5px;
     text-align: center;
-    margin: auto;
-    margin-right: 5px;
-    border-radius: 0.5rem;
+    
 }
 
 .single-input {
-    border: none;
-    max-width: 3rem;
+    max-width: 4rem;
     text-align: center;
+    margin: auto;
+    margin-right: 5px;
+    border-radius: 0.5rem;
+    padding: 6px 6px;
 }
 
 .single-input::placeholder {
-    font-size: 14px;
+    font-size: 16px;
 }

@@ -70,7 +70,8 @@ const ArrayInput = ({ ...props }) => {
                 /* array input box  */
                 <input
                     className={
-                        "array-input " + (isArrayInputValid ? "" : "warning")
+                        "array-input blue-box" +
+                        (isArrayInputValid ? "" : "warning")
                     }
                     placeholder="Array"
                     value={arrayInput}

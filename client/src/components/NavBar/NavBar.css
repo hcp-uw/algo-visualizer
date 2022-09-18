@@ -50,11 +50,11 @@
 .github-ref {
     margin: 0px 1rem;
     padding: 0px 6px;
-    background-color: rgb(92, 143, 255);
+    background-color: rgb(189, 204, 79, 0.9);
     color: black;
 }
 
 .github-ref:hover {
-    background-color: rgb(51, 116, 255);
+    background-color: rgb(154, 173, 6);
     color: black;
 }

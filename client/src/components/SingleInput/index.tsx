@@ -32,18 +32,16 @@ const SingleInput = ({ ...props }) => {
     }, []);
 
     return (
-        <div className="single-input-container">
-            <input
-                //ref={inputBoxRef}
-                className="single-input"
-                type="number"
-                placeholder="Search for"
-                value={singleInput}
-                onChange={(e) => {
-                    dispatch(updateSingleInput(e.target.value));
-                }}
-            ></input>
-        </div>
+        <input
+            //ref={inputBoxRef}
+            className="single-input blue-box"
+            type="number"
+            placeholder="Search"
+            value={singleInput}
+            onChange={(e) => {
+                dispatch(updateSingleInput(e.target.value));
+            }}
+        ></input>
     );
 };
 
