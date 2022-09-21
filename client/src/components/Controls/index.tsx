@@ -35,6 +35,7 @@ import { Edge, ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
 import SingleInput from "../SingleInput";
 import ArrayInput from "../ArrayInput";
+import { DEFAULT_EDGES_1, DEFAULT_NODES_1 } from "../../assets/default-values";
 
 type AlgorithmType = "arrayInput" | "singleInput" | "graphInput";
 
@@ -250,13 +251,8 @@ const Controls = ({ ...props }) => {
             // only sending the ids of nodes
             if (nodes.length === 0 && edges.length === 0) {
                 // default values
-                toSend.nodes = ["0", "1", "2", "3", "4"];
-                toSend.edges = [
-                    { n1: "0", n2: "1" },
-                    { n1: "1", n2: "2" },
-                    { n1: "0", n2: "3" },
-                    { n1: "1", n2: "4" },
-                ];
+                toSend.nodes = Object.keys(DEFAULT_NODES_1({ x: 0, y: 0 }));
+                toSend.edges = DEFAULT_EDGES_1;
                 dispatch(updateGraphNodes(toSend.nodes));
                 dispatch(updateGraphEdges(toSend.edges));
             } else {

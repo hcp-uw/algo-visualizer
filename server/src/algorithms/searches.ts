@@ -170,37 +170,46 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     while (stack.length > 0) {
         let node = stack.pop() as DFSNode;
 
-        visited.push(node.id);
-        // add visited edge
-        visitedEdges.push({ n1: node.from, n2: node.id });
+        if (!visited.includes(node.id)) {
+            visited.push(node.id);
+            // add visited edge
+            visitedEdges.push({ n1: node.from, n2: node.id });
 
-        result.steps.push({
-            stack: copyObject(stack) as DFSNode[],
-            currentNode: [node.id],
-            visitedNodes: copyObject(visited) as string[],
-            visitedEdges: copyObject(visitedEdges) as Edge[],
-            description: `Visiting node ${node.id}`,
-        });
+            result.steps.push({
+                stack: copyObject(stack) as DFSNode[],
+                currentNode: [node.id],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Visiting node ${node.id}`,
+            });
 
-        for (const n of adjacencyMap[node.id]) {
-            if (
-                !visited.includes(n) &&
-                !stack.map((e) => e.id).includes(n) // very inefficient but will do for the purpose of displaying visited
-            ) {
-                // the correct algorithm is to mark node as visited here
-                // but it confuses the algorithm displayer
-                // visited.push(n);
-                stack.push({ id: n, from: node.id });
+            let addedAdj = [];
+            for (const n of adjacencyMap[node.id]) {
+                if (!visited.includes(n)) {
+                    addedAdj.push(n);
+                    stack.push({ id: n, from: node.id });
+                }
             }
-        }
 
-        result.steps.push({
-            stack: copyObject(stack) as DFSNode[],
-            currentNode: [],
-            visitedNodes: copyObject(visited) as string[],
-            visitedEdges: copyObject(visitedEdges) as Edge[],
-            description: `Finished visiting node ${node.id}`,
-        });
+            result.steps.push({
+                stack: copyObject(stack) as DFSNode[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description:
+                    addedAdj.length > 0
+                        ? `Added adjacent nodes ${addedAdj.toString()} to the stack.`
+                        : "Did not add any adjacent nodes.",
+            });
+        } else {
+            result.steps.push({
+                stack: copyObject(stack) as DFSNode[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Node ${node.id} already visited!`,
+            });
+        }
     }
 
     result.steps.push({

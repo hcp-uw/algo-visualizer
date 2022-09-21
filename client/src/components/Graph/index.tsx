@@ -19,6 +19,7 @@ import {
 } from "../../redux/inputStateSlice";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
+import { DEFAULT_NODES_1 } from "../../assets/default-values";
 
 // default values for variables
 
@@ -95,33 +96,9 @@ const Graph = ({
         dispatch(updateIsGraphInputChanged(true));
     };
 
-    const [nodePositions, setNodePositions] = useState<NodePositions>({
-        "0": {
-            init: { x: 300 + center.x, y: 50 + center.y },
-            x: 0,
-            y: 0,
-        },
-        "1": {
-            init: { x: 250 + center.x, y: 150 + center.y },
-            x: 0,
-            y: 0,
-        },
-        "2": {
-            init: { x: 200 + center.x, y: 250 + center.y },
-            x: 0,
-            y: 0,
-        },
-        "3": {
-            init: { x: 350 + center.x, y: 150 + center.y },
-            x: 0,
-            y: 0,
-        },
-        "4": {
-            init: { x: 290 + center.x, y: 250 + center.y },
-            x: 0,
-            y: 0,
-        },
-    });
+    const [nodePositions, setNodePositions] = useState<NodePositions>(
+        DEFAULT_NODES_1(center)
+    );
 
     const edges = useSelector((state: RootState) => state.input.graphEdges);
     const setEdges = (edges: Edge[]) => {

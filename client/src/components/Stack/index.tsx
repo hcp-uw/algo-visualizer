@@ -30,7 +30,7 @@ const Stack = ({ ...props }) => {
         ? algorSteps.steps[currentStep - 1].stack.map((e) => e.id)
         : [];
 
-    const toDisplay = stack.length < 11 ? stack : ["...", ...stack.slice(-10)];
+    const toDisplay = stack.length < 10 ? stack : ["...", ...stack.slice(-9)];
 
     // STACK ANIMATION IS BUGGY WHEN STACK EXCEED LIMITED AMOUNT
 
@@ -41,7 +41,7 @@ const Stack = ({ ...props }) => {
                     {toDisplay.map((item, index) => (
                         <CSSTransition
                             timeout={350}
-                            key={item}
+                            key={item + index}
                             classNames="stack-item"
                         >
                             <div
