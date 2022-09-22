@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
+import { ErrorBoundary } from "react-error-boundary";
 
 // for icons
 import { IconDefinition, library } from "@fortawesome/fontawesome-svg-core";
@@ -22,6 +23,7 @@ import {
     faShuffle,
     faTriangleExclamation,
     faThumbTack,
+    faMeteor,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -35,6 +37,7 @@ import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
 import DepthFirstSearch from "./pages/DepthFirstSearch";
+import PageErrorFallback from "./components/PageErrorFallback";
 
 //import Test from "./pages/Test";
 
@@ -57,7 +60,8 @@ library.add(
     faShuffle as IconDefinition,
     faTriangleExclamation as IconDefinition,
     faThumbTack as IconDefinition,
-    faGithub as IconDefinition
+    faGithub as IconDefinition,
+    faMeteor as IconDefinition
 );
 
 const App = () => {
@@ -65,19 +69,29 @@ const App = () => {
         <React.Fragment>
             <NavBar />
             {/* These determines the page hrefs for the app */}
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/linear-search" element={<LinearSearch />} />
-                <Route path="/binary-search" element={<BinarySearch />} />
-                <Route path="/bubble-sort" element={<BubbleSort />} />
-                <Route path="/insertion-sort" element={<InsertionSort />} />
-                <Route path="/selection-sort" element={<SelectionSort />} />
-                <Route path="/merge-sort" element={<MergeSort />} />
-                <Route
-                    path="/depth-first-search"
-                    element={<DepthFirstSearch />}
-                />
-            </Routes>
+            <ErrorBoundary
+                onError={(error) => {
+                    console.log("An error caused the page to crash:");
+                    console.log(error);
+                }}
+                FallbackComponent={(error) => {
+                    return <PageErrorFallback error={error} />;
+                }}
+            >
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/linear-search" element={<LinearSearch />} />
+                    <Route path="/binary-search" element={<BinarySearch />} />
+                    <Route path="/bubble-sort" element={<BubbleSort />} />
+                    <Route path="/insertion-sort" element={<InsertionSort />} />
+                    <Route path="/selection-sort" element={<SelectionSort />} />
+                    <Route path="/merge-sort" element={<MergeSort />} />
+                    <Route
+                        path="/depth-first-search"
+                        element={<DepthFirstSearch />}
+                    />
+                </Routes>
+            </ErrorBoundary>
         </React.Fragment>
     );
 };
