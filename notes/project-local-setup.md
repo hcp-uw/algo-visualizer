@@ -1,9 +1,3 @@
-# algo-visualizer
-
-The Express server should be started with Postgres database before running the React client.
-
-## **Running guide**:
-
 If you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
 
 # Backend
