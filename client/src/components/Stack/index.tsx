@@ -24,7 +24,10 @@ const Stack = ({ ...props }) => {
         (state: RootState) => state.global.currentStep
     );
 
-    const isStackReady = algorSteps.steps.length > 0 && currentStep > 0;
+    const isStackReady =
+        algorSteps.steps.length > 0 &&
+        currentStep > 0 &&
+        algorSteps.steps[0].stack;
 
     const stack = isStackReady
         ? algorSteps.steps[currentStep - 1].stack.map((e) => e.id)
