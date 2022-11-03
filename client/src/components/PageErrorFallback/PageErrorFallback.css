@@ -1,0 +1,16 @@
+#error-message {
+    font-size: 1.5rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#error-message h2 {
+    font-size: 2.5rem;
+}
+
+#error-message .fa {
+    font-size: 8rem;
+    margin: 1rem;
+    color: #ec4e39;
+}

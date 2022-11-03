@@ -1,32 +1,79 @@
 .element-container {
-    display: flex;
+    display: grid;
+    grid-template-rows: 40px 10%;
     margin: 0px auto;
     width: auto;
     height: 200px;
     outline: 1px dotted black;
     overflow: hidden;
-}
-
-.reset-position-button > * {
-    font-size: 12px;
-    padding: 2px 4px;
-    border: none;
-    float: left;
     position: relative;
 }
 
-.reset-position-button .fa {
+.red-outline {
+    outline: 1px solid red;
+}
+
+.container-buttons {
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.container-buttons > .btn {
+    font-size: 16px;
+    padding: 2px 5px;
+    border: none;
+    float: left;
+    position: relative;
+    margin-top: 0;
+}
+
+.container-buttons .fa {
     margin: 0;
 }
 
 .wrapper {
-    margin: auto;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-.container-children:hover {
-    cursor:grab
+.children-container {
+    display: flex;
+    width: 500%;
+    height: 5000%;
 }
 
-.container-children:active {
+.children-container:hover {
+    cursor: grab;
+}
+
+.children-container:active {
     cursor: grabbing;
 }
+
+.static-children {
+    position: absolute;
+    width: 25%;
+    min-width: 50px;
+    max-width: 200px;
+    right: 0px;
+    height: 100%;
+    overflow: hidden;
+    outline: 1px dotted black;
+    background-color: white;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }

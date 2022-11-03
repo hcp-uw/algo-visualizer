@@ -1,5 +1,5 @@
 .logo {
-    height: 5rem;
+    height: 4.5rem;
     margin: 3px 0 3px 20px;
 }
 
@@ -8,7 +8,7 @@
 }
 
 .navbar {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: lighter;
     padding: 0;
 }
@@ -45,4 +45,16 @@
 .dropdown-item:hover {
     color: white;
     background-color: var(--purple);
+}
+
+.github-ref {
+    margin: 0px 1rem;
+    padding: 0px 6px;
+    background-color: rgb(189, 204, 79, 0.9);
+    color: black;
+}
+
+.github-ref:hover {
+    background-color: rgb(154, 173, 6);
+    color: black;
 }

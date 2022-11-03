@@ -1,0 +1,19 @@
+.single-input-container {
+    border: 1px solid black;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    
+}
+
+.single-input {
+    max-width: 4rem;
+    text-align: center;
+    margin: auto;
+    margin-right: 5px;
+    border-radius: 0.5rem;
+    padding: 6px 6px;
+}
+
+.single-input::placeholder {
+    font-size: 16px;
+}

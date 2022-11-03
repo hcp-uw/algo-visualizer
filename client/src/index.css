@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.blue-box {
+  border: 1px solid rgba(62, 72, 143, 0.9);
+  background-color: rgba(62, 72, 143, 0.1);
+}
+
+.blue-box:focus {
+  outline: 1px solid rgba(62, 72, 143, 0.9);
+}

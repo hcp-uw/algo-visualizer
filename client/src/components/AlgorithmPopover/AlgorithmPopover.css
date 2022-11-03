@@ -1,75 +1,98 @@
-.algo-modal-block {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid black;
-    border-radius: 10px;
-    z-index: 5;
-    background-color: white;
-    width: 500px;
-    max-width: 80%;
-}
-
-.algo-modal {
-    display: none;
-}
-
-.algo-modal-header {
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid black;
-}
-
-.algo-modal-header .algo-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.algo-modal-header .algo-close-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.algo-modal-body {
-    padding: 10px 15px;
-    text-align: left;
-}
-
-.algo-desc {
-    padding: 10px;
-    border-bottom: 1px solid black;
-}
-
-.overlay-toggler-block {
-    position: fixed;
-    opacity: 100;
+.overlay {
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 11;
+    cursor: pointer; /* Add a pointer on hover */
 }
 
-.overlay-toggler {
+.info-modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    text-align: left;
+}
+
+.info-popup {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 20em;
+    border-radius: 10px;
+    z-index: 12;
+    animation: pop-in 0.2s ease-in-out;
+    font-size: 28px;
+}
+
+.info-popup header {
+    font-weight: 400;
+    position: relative;
+    padding: 10px 20px; 
+    border-bottom: solid 1px black;
+    border-radius: 10px 10px 0 0;
+    background-color: #614fcc;
+    color: white;
+}
+
+.info-popup section {
+    flex-direction: column;
+    padding: 10px 20px 10px 20px; 
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+.info-desc {
+    border-bottom: 2px solid gray;
+    padding-bottom: 0.5em;
+    width: 100%;
+}
+
+.info-popup section button {
+    display: block;
+    margin: auto;
+}
+
+.info-popup section > * {
+    margin: 5px 0;
+}
+
+.close {
+    position: relative;
+    right: 0px;
+    border: none;
+    padding: 0;
+}
+
+.close::after {
+    font-weight: bold;
+    right: 0px;
+    position: absolute;
+    background-color: none;
+    content: "\00d7";
+    cursor: pointer;
+}
+
+.hidden {
     display: none;
 }
 
-.popover-button {
-    border: 4px solid black;
-    border-radius: 10px;
-    background-color: white;
-    transition: 200ms;
+#info-icon {
+    font-size: 24px;
+    color: #433497
 }
 
-.popover-button:hover {
-    background-color: var(--purple);
-    color: white;
-    transition: 200ms;
+#info-icon:hover {
+    color: var(--purple);
+    cursor: pointer
 }

@@ -1,0 +1,19 @@
+.array-input {
+    text-align: center;
+    border-radius: 0.5rem;
+    margin: 5px 0px;
+    padding: 6px 30px 6px 8px;
+    
+    width: 100%;
+    
+}
+
+/* https://blog.logrocket.com/creating-beautiful-tooltips-with-only-css/ */
+.array-input-container {
+    position:relative; /* making the .tooltip span a container for the tooltip text */
+    width: 95%;
+    max-width: 40em;
+    margin: auto;
+    padding: 0;
+    display: flex;
+}

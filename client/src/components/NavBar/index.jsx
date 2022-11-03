@@ -9,6 +9,7 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import FeedbackReport from "../FeedbackReport";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // cheat to have the dropdown separated from nav-item while
 // the hovers work normally
@@ -34,7 +35,11 @@ const navMenuMouseLeave = (e) => {
 const NavBar = () => {
     return (
         <React.Fragment>
-            <Navbar className="bg-purple container-fluid">
+            <Navbar
+                collapseOnSelect
+                expand="md"
+                className="bg-purple container-fluid navbar-dark"
+            >
                 {/* the app logo */}
                 <Navbar.Brand>
                     <Link to="/" title="AlgoViz">
@@ -42,50 +47,82 @@ const NavBar = () => {
                     </Link>
                 </Navbar.Brand>
 
-                {/* search dropdown */}
-                <NavDropdown title="Search">
-                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
-                        <div style={invisBlock}>m</div>
-                        <LinkContainer to="/linear-search">
-                            <NavDropdown.Item>Linear Search</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/binary-search">
-                            <NavDropdown.Item>Binary Search</NavDropdown.Item>
-                        </LinkContainer>
-                    </div>
-                </NavDropdown>
+                <Navbar.Toggle
+                    aria-controls="responsive-navbar-nav"
+                    className="me-auto"
+                />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    {/* search dropdown */}
+                    <NavDropdown title="Search">
+                        <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                            <div style={invisBlock}>m</div>
+                            <LinkContainer to="/linear-search">
+                                <NavDropdown.Item>
+                                    Linear Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/binary-search">
+                                <NavDropdown.Item>
+                                    Binary Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/depth-first-search">
+                                <NavDropdown.Item>
+                                    Depth First Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                        </div>
+                    </NavDropdown>
 
-                {/* sort dropdown */}
-                <NavDropdown title="Sort">
-                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
-                        <div style={invisBlock}>m</div>
-                        <LinkContainer to="/bubble-sort">
-                            <NavDropdown.Item>Bubble Sort</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/insertion-sort">
-                            <NavDropdown.Item>Insertion Sort</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/selection-sort">
-                            <NavDropdown.Item>Selection Sort</NavDropdown.Item>
-                        </LinkContainer>
-                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                        <LinkContainer to="/merge-sort">
-                            <NavDropdown.Item>Merge Sort</NavDropdown.Item>
-                        </LinkContainer>
-                    </div>
-                </NavDropdown>
+                    {/* sort dropdown */}
+                    <NavDropdown title="Sort">
+                        <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                            <div style={invisBlock}>m</div>
+                            <LinkContainer to="/bubble-sort">
+                                <NavDropdown.Item>Bubble Sort</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/insertion-sort">
+                                <NavDropdown.Item>
+                                    Insertion Sort
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/selection-sort">
+                                <NavDropdown.Item>
+                                    Selection Sort
+                                </NavDropdown.Item>
+                            </LinkContainer>
 
-                {/* pathfinding dropdown */}
-                <NavDropdown title="Pathfinding">
-                    <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
-                        <div style={invisBlock}>m</div>
-                        <NavDropdown.Item href="#">1st</NavDropdown.Item>
-                        <NavDropdown.Item href="#">2nd</NavDropdown.Item>
-                        <NavDropdown.Item href="#">3rd</NavDropdown.Item>
-                        <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                    </div>
-                </NavDropdown>
+                            <LinkContainer to="/merge-sort">
+                                <NavDropdown.Item>Merge Sort</NavDropdown.Item>
+                            </LinkContainer>
+                        </div>
+                    </NavDropdown>
+
+                    {/* pathfinding dropdown */}
+                    <NavDropdown title="Pathfinding" disabled>
+                        <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
+                            <div style={invisBlock}>m</div>
+                            <NavDropdown.Item href="#">1st</NavDropdown.Item>
+                            <NavDropdown.Item href="#">2nd</NavDropdown.Item>
+                            <NavDropdown.Item href="#">3rd</NavDropdown.Item>
+                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
+                        </div>
+                    </NavDropdown>
+                </Navbar.Collapse>
+
                 <Nav.Item className="ms-auto me-4">
+                    <a
+                        href="https://github.com/hieuc/algo-visualizer"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="github-ref"
+                    >
+                        <FontAwesomeIcon
+                            icon="fa-brands fa-github"
+                            className="fa"
+                        ></FontAwesomeIcon>
+                    </a>
+
                     <FeedbackReport />
                 </Nav.Item>
             </Navbar>

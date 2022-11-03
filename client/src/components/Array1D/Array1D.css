@@ -69,7 +69,7 @@
     box-shadow: 2px 3px 3px #969696;
 }
 
-.value-block:hover {
+.value-block-hover:hover {
     cursor: pointer;
     background-color: #c8ffcb;
 }

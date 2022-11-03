@@ -1,13 +1,126 @@
 .message {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 30vh;
+    height: 25vh;
     width: 97%;
 }
 
 .message p {
-    width: 30%;
+    width: 80%;
+    max-width: 500px;
     text-align: center;
-    font-size: 30px;
+    font-size: 4vw;
 }
+
+.centered > * {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/*----------------- LOGO ------------------------------------- */
+
+#a path {
+    stroke-dasharray: 1760%;
+    stroke-dashoffset: 1760%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+#l path {
+    stroke-dasharray: 1195%;
+    stroke-dashoffset: 1195%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 0.4s;
+}
+
+#g1 {
+    stroke-dasharray: 1240%;
+    stroke-dashoffset: 1240%;
+    animation: stroke-anim 1.5s ease forwards;
+}
+
+#g2 {
+    stroke-dasharray: 400%;
+    stroke-dashoffset: 400%;
+    animation: stroke-anim 1.5s ease forwards;
+}
+
+#o path {
+    stroke-dasharray: 720%;
+    stroke-dashoffset: 720%;
+    animation: stroke-anim 1.5s ease forwards;
+}
+
+#v path {
+    stroke-dasharray: 870%;
+    stroke-dashoffset: 870%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 0.6s;
+}
+
+#i path {
+    stroke-dasharray: 470%;
+    stroke-dashoffset: 470%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 0.8s;
+}
+
+#z1 {
+    stroke-dasharray: 380%;
+    stroke-dashoffset: 380%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 1s;
+}
+
+#z2 {
+    stroke-dasharray: 840%;
+    stroke-dashoffset: 840%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 1s;
+}
+
+#z3 {
+    stroke-dasharray: 500%;
+    stroke-dashoffset: 500%;
+    animation: stroke-anim 1.5s ease forwards;
+    animation-delay: 1s;
+}
+
+#g, #o {
+    stroke: #69378f;
+}
+
+#g path {
+    animation-delay: 1.6s;
+}
+
+#o path {
+    animation-delay: 1.8s;
+}
+
+#logo {
+    stroke-width: 35;
+    width: 80vw;
+    max-width: 700px;
+    height: 20vw;
+    max-height: 131px;
+}
+
+#logo-container {
+    margin-top: 20px;
+}
+
+
+
+@keyframes stroke-anim {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* max message font is 30px */
+@media screen and (min-width: 750px) {
+    .message p {
+       font-size: 30px;
+    }
+  }

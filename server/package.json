@@ -1,20 +1,23 @@
 {
-  "name": "algoviz-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
-    "express": "^4.17.3",
-    "express-rate-limit": "^6.4.0",
-    "pg": "^8.7.3"
-  }
+    "name": "algoviz-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./build/index.js",
+    "scripts": {
+        "test": "jest --coverage",
+        "start": "node ./build/index.js",
+        "build": "tsc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.1",
+        "express": "^4.17.3",
+        "express-rate-limit": "^6.4.0",
+        "jest": "^28.1.3",
+        "pg": "^8.7.3",
+        "typescript": "^4.8.2"
+    }
 }
