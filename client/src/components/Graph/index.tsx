@@ -9,7 +9,7 @@ import "./Graph.css";
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
 import { useEffect, useState } from "react";
-import { Coordinate, Edge } from "../../CommonTypes";
+import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
     resetGraphInput,
@@ -33,23 +33,6 @@ type WeightInputState = {
     x: number;
     y: number;
     target: number | null;
-};
-
-// contains position of Node
-type Node = {
-    // when dragging, Draggable translate css of node instead of changing its svg x,y
-    // the initial coordinate on create is important
-    init: Coordinate;
-    // this x,y is to make the new edge creation follows the mouse
-    // and make dragging more continuous. onDragEnd can be used to set the x,y coordinate
-    // of node at the end of drag, but state update takes time and it can appears that the
-    // element is jumping.
-    x: number;
-    y: number;
-};
-
-type NodePositions = {
-    [key: string]: Node;
 };
 
 // ----------------------------------------------
@@ -487,7 +470,7 @@ const Graph = ({
                                             nodeId === activeNode
                                                 ? "node-active"
                                                 : "" +
-                                                  nodeHighlightStyle(nodeId)
+                                                nodeHighlightStyle(nodeId)
                                         }
                                     />
                                     <text
