@@ -35,7 +35,7 @@ const DepthFirstSearch = () => {
 
             <VisualizerContainer
                 height="400"
-                initPosition={{ x: -n / 3, y: -n / 3 }}
+                initPosition={{ x: 0, y: 0 }}
                 staticChildren={<Stack />}
             >
                 <Graph containerWidth={n} containerHeight={n} />

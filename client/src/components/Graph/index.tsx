@@ -76,9 +76,10 @@ const Graph = ({
     const nodes: string[] = useSelector((state: RootState) => state.input.graphNodes);
     const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
 
-    const setNodes = (nodes: string[]) => {
+    const setNodes = (nodes: string[], newNodePositions: NodePositions) => {
         dispatch(updateGraphNodes(nodes));
         dispatch(updateIsGraphInputChanged(true));
+        dispatch(updateGraphNodePositions(newNodePositions));
     };
 
     const edges: Edge[] = useSelector((state: RootState) => state.input.graphEdges);
@@ -124,8 +125,7 @@ const Graph = ({
         let newNodePositions = copyObject(nodePositions) as NodePositions;
         newNodePositions[id] = newPosition;
 
-        setNodes(newNodeList);
-        dispatch(updateGraphNodePositions(newNodePositions));
+        setNodes(newNodeList, newNodePositions);
         setNodeCount((prev) => prev + 1);
     };
 
@@ -147,8 +147,7 @@ const Graph = ({
         newNodeList.splice(newNodeList.indexOf(nodeId), 1);
 
         // update
-        setNodes(newNodeList);
-        dispatch(updateGraphNodePositions(newNodePositions));
+        setNodes(newNodeList, newNodePositions);
         removeEdges(edgesToRemove);
     };
 
@@ -247,12 +246,14 @@ const Graph = ({
         return style;
     };
 
+    /*
     useEffect(() => {
         return () => {
             // reset inputs on component unmount
             dispatch(resetGraphInput());
         };
     }, []);
+    */
 
     return (
         // this outter div act as an anchor for any absolute positioned elements
@@ -389,6 +390,7 @@ const Graph = ({
                 </g>
                 <g className="nodes">
                     {nodes.map((nodeId) => {
+                        console.log(nodeId);
                         return nodeId != null ? (
                             <Draggable
                                 onDrag={(e, data) => {
@@ -407,7 +409,7 @@ const Graph = ({
                                         x: data.x,
                                         y: data.y,
                                     };
-                                    dispatch(updateGraphNodePositions(newNodePositions))
+                                    dispatch(updateGraphNodePositions(newNodePositions));
                                 }}
                                 onStop={() => {
                                     // set draggin to false after 50ms

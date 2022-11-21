@@ -73,6 +73,7 @@ export const inputStateSlice = createSlice({
         resetGraphInput: (state) => {
             state.graphNodes = [];
             state.graphEdges = [];
+            state.graphNodePositions = {};
             state.isGraphInputChanged = false;
         },
         // updatePrevGraphInput: (state, action) => {
