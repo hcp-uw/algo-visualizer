@@ -34,4 +34,4 @@ type NodePositions = {
     [key: string]: Node;
 };
 
-export { ExtraData, Coordinate, Edge };
+export { ExtraData, Coordinate, Edge, Node, NodePositions };
