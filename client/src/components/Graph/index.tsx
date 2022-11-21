@@ -15,11 +15,11 @@ import {
     resetGraphInput,
     updateGraphEdges,
     updateGraphNodes,
+    updateGraphNodePositions,
     updateIsGraphInputChanged,
 } from "../../redux/inputStateSlice";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
-import { DEFAULT_NODES_1 } from "../../assets/default-values";
 
 // default values for variables
 
@@ -73,17 +73,16 @@ const Graph = ({
 }) => {
     const dispatch = useDispatch();
 
-    const nodes = useSelector((state: RootState) => state.input.graphNodes);
+    const nodes: string[] = useSelector((state: RootState) => state.input.graphNodes);
+    const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
+
     const setNodes = (nodes: string[]) => {
         dispatch(updateGraphNodes(nodes));
         dispatch(updateIsGraphInputChanged(true));
     };
 
-    const [nodePositions, setNodePositions] = useState<NodePositions>(
-        DEFAULT_NODES_1(center)
-    );
+    const edges: Edge[] = useSelector((state: RootState) => state.input.graphEdges);
 
-    const edges = useSelector((state: RootState) => state.input.graphEdges);
     const setEdges = (edges: Edge[]) => {
         dispatch(updateGraphEdges(edges));
         dispatch(updateIsGraphInputChanged(true));
@@ -126,7 +125,7 @@ const Graph = ({
         newNodePositions[id] = newPosition;
 
         setNodes(newNodeList);
-        setNodePositions(newNodePositions);
+        dispatch(updateGraphNodePositions(newNodePositions));
         setNodeCount((prev) => prev + 1);
     };
 
@@ -149,7 +148,7 @@ const Graph = ({
 
         // update
         setNodes(newNodeList);
-        setNodePositions(newNodePositions);
+        dispatch(updateGraphNodePositions(newNodePositions));
         removeEdges(edgesToRemove);
     };
 
@@ -408,7 +407,7 @@ const Graph = ({
                                         x: data.x,
                                         y: data.y,
                                     };
-                                    setNodePositions(newNodePositions);
+                                    dispatch(updateGraphNodePositions(newNodePositions))
                                 }}
                                 onStop={() => {
                                     // set draggin to false after 50ms
