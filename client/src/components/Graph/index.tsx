@@ -9,17 +9,17 @@ import "./Graph.css";
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
 import { useEffect, useState } from "react";
-import { Coordinate, Edge } from "../../CommonTypes";
+import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
     resetGraphInput,
     updateGraphEdges,
     updateGraphNodes,
+    updateGraphNodePositions,
     updateIsGraphInputChanged,
 } from "../../redux/inputStateSlice";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
-import { DEFAULT_NODES_1 } from "../../assets/default-values";
 
 // default values for variables
 
@@ -33,23 +33,6 @@ type WeightInputState = {
     x: number;
     y: number;
     target: number | null;
-};
-
-// contains position of Node
-type Node = {
-    // when dragging, Draggable translate css of node instead of changing its svg x,y
-    // the initial coordinate on create is important
-    init: Coordinate;
-    // this x,y is to make the new edge creation follows the mouse
-    // and make dragging more continuous. onDragEnd can be used to set the x,y coordinate
-    // of node at the end of drag, but state update takes time and it can appears that the
-    // element is jumping.
-    x: number;
-    y: number;
-};
-
-type NodePositions = {
-    [key: string]: Node;
 };
 
 // ----------------------------------------------
@@ -90,17 +73,17 @@ const Graph = ({
 }) => {
     const dispatch = useDispatch();
 
-    const nodes = useSelector((state: RootState) => state.input.graphNodes);
-    const setNodes = (nodes: string[]) => {
+    const nodes: string[] = useSelector((state: RootState) => state.input.graphNodes);
+    const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
+
+    const setNodes = (nodes: string[], newNodePositions: NodePositions) => {
         dispatch(updateGraphNodes(nodes));
         dispatch(updateIsGraphInputChanged(true));
+        dispatch(updateGraphNodePositions(newNodePositions));
     };
 
-    const [nodePositions, setNodePositions] = useState<NodePositions>(
-        DEFAULT_NODES_1(center)
-    );
+    const edges: Edge[] = useSelector((state: RootState) => state.input.graphEdges);
 
-    const edges = useSelector((state: RootState) => state.input.graphEdges);
     const setEdges = (edges: Edge[]) => {
         dispatch(updateGraphEdges(edges));
         dispatch(updateIsGraphInputChanged(true));
@@ -142,8 +125,7 @@ const Graph = ({
         let newNodePositions = copyObject(nodePositions) as NodePositions;
         newNodePositions[id] = newPosition;
 
-        setNodes(newNodeList);
-        setNodePositions(newNodePositions);
+        setNodes(newNodeList, newNodePositions);
         setNodeCount((prev) => prev + 1);
     };
 
@@ -165,8 +147,7 @@ const Graph = ({
         newNodeList.splice(newNodeList.indexOf(nodeId), 1);
 
         // update
-        setNodes(newNodeList);
-        setNodePositions(newNodePositions);
+        setNodes(newNodeList, newNodePositions);
         removeEdges(edgesToRemove);
     };
 
@@ -265,16 +246,18 @@ const Graph = ({
         return style;
     };
 
+    /*
     useEffect(() => {
         return () => {
             // reset inputs on component unmount
             dispatch(resetGraphInput());
         };
     }, []);
+    */
 
     return (
         // this outter div act as an anchor for any absolute positioned elements
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", border: '1px solid #000' }}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={`0 0 ${containerWidth} ${containerHeight}`}
@@ -407,6 +390,7 @@ const Graph = ({
                 </g>
                 <g className="nodes">
                     {nodes.map((nodeId) => {
+                        console.log(nodeId);
                         return nodeId != null ? (
                             <Draggable
                                 onDrag={(e, data) => {
@@ -425,7 +409,7 @@ const Graph = ({
                                         x: data.x,
                                         y: data.y,
                                     };
-                                    setNodePositions(newNodePositions);
+                                    dispatch(updateGraphNodePositions(newNodePositions));
                                 }}
                                 onStop={() => {
                                     // set draggin to false after 50ms
@@ -487,7 +471,7 @@ const Graph = ({
                                             nodeId === activeNode
                                                 ? "node-active"
                                                 : "" +
-                                                  nodeHighlightStyle(nodeId)
+                                                nodeHighlightStyle(nodeId)
                                         }
                                     />
                                     <text

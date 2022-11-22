@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Edge } from "../CommonTypes";
+import { Edge, NodePositions } from "../CommonTypes";
+import { DEFAULT_NODES_1 } from "../assets/default-values";
 
 const initialState: {
     singleInput: string;
@@ -8,6 +9,7 @@ const initialState: {
     prevArrayInput: string;
     isArrayInputValid: boolean;
     graphNodes: string[]; // array of node ids
+    graphNodePositions: NodePositions;
     graphEdges: Edge[];
     isGraphInputChanged: boolean;
     //prevGraphInput: string;
@@ -18,6 +20,7 @@ const initialState: {
     prevArrayInput: "",
     isArrayInputValid: true,
     graphNodes: [],
+    graphNodePositions: DEFAULT_NODES_1({ x: 0, y: 0 }),
     graphEdges: [],
     isGraphInputChanged: false,
     //prevGraphInput: "",
@@ -58,6 +61,9 @@ export const inputStateSlice = createSlice({
         updateGraphNodes: (state, action) => {
             state.graphNodes = action.payload;
         },
+        updateGraphNodePositions: (state, action) => {
+            state.graphNodePositions = action.payload;
+        },
         updateGraphEdges: (state, action) => {
             state.graphEdges = action.payload;
         },
@@ -67,6 +73,7 @@ export const inputStateSlice = createSlice({
         resetGraphInput: (state) => {
             state.graphNodes = [];
             state.graphEdges = [];
+            state.graphNodePositions = {};
             state.isGraphInputChanged = false;
         },
         // updatePrevGraphInput: (state, action) => {
@@ -85,6 +92,7 @@ export const {
     updateIsArrayInputValid,
     resetArrayInput,
     updateGraphNodes,
+    updateGraphNodePositions,
     updateGraphEdges,
     updateIsGraphInputChanged,
     resetGraphInput,
