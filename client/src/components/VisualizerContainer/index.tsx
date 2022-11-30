@@ -6,6 +6,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
+import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/configureStore";
+
 
 const SCALE_LIMIT = 0.5;
 
@@ -13,6 +17,11 @@ const VisualizerContainer = ({ ...props }) => {
     let s = props.scale || 1;
 
     let initPosition = props.initPosition || { x: 0, y: 0 };
+
+    let graph = props?.isGraph;
+
+    const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
+    console.log(nodePositions);
 
     const [scale, setScale] = useState(
         Math.min(1 + SCALE_LIMIT, Math.max(1 - SCALE_LIMIT, s))
@@ -62,6 +71,29 @@ const VisualizerContainer = ({ ...props }) => {
         }
     };
 
+    const handleRecenterChange = () => {
+        if (!graph) {
+            setPosition(initPosition)
+        } else {
+            let avgX = 0;
+            let avgY = 0;
+            let numNodes = Object.keys(nodePositions).length;
+            console.log("NUM:" + numNodes)
+            for (let i = 0; i < numNodes; i++) {
+                avgX += nodePositions[i].init.x
+                avgY += nodePositions[i].init.y
+                console.log(nodePositions[i].init.x + " | " + nodePositions[i].init.y)
+            }
+            console.log(avgX +" | " + avgY)
+            avgX /= numNodes;
+            avgY /= numNodes;
+            
+            let newPos = {x: avgX, y: avgY};
+            console.log(newPos)
+            setPosition(newPos)
+        }
+    }
+
     return (
         <div
             className={"element-container " + (lock ? "red-outline" : "")}
@@ -72,7 +104,8 @@ const VisualizerContainer = ({ ...props }) => {
                     className="btn"
                     onClick={() => {
                         // zoom and drag reset are handled here
-                        setPosition(initPosition);
+                        handleRecenterChange();
+                        //setPosition(initPosition);
                         setScale(s);
                         setKey(key + 1);
                     }}

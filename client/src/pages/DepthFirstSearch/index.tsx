@@ -80,6 +80,7 @@ const DepthFirstSearch = () => {
                 height="400"
                 initPosition={{ x: 0, y: 0 }}
                 staticChildren={<Stack />}
+                isGraph={true}
             >
                 <Graph
                     containerWidth={n}
