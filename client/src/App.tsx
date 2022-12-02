@@ -38,6 +38,7 @@ import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
 import DepthFirstSearch from "./pages/DepthFirstSearch";
 import PageErrorFallback from "./components/PageErrorFallback";
+import AboutUs from "./pages/AboutUs";
 
 //import Test from "./pages/Test";
 
@@ -90,6 +91,7 @@ const App = () => {
                         path="/depth-first-search"
                         element={<DepthFirstSearch />}
                     />
+                    <Route path="/about-us" element={<AboutUs />} />
                 </Routes>
             </ErrorBoundary>
         </React.Fragment>
