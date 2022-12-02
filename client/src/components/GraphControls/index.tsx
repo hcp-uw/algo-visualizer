@@ -19,9 +19,6 @@ const GraphControls = ({...props}) => {
           <select>
 
           </select>
-          <select>
-
-          </select>
         </div>
         <div className="dfs-graph-controls">
           <p>
