@@ -10,6 +10,7 @@ import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import { depthFirstSearchDesc } from "../../assets/algorithm-information.js";
 import Stack from "../../components/Stack";
+import GraphControls from "../../components/GraphControls";
 
 const ALGORITHM_URL = "searches/depthfirstsearch/";
 
@@ -41,7 +42,17 @@ const DepthFirstSearch = () => {
                 <Graph containerWidth={n} containerHeight={n} />
             </VisualizerContainer>
 
-            <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+            <div className="dfs-graph-controls">
+                <div className="controls_graph">
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                </div>
+                <div>
+                    <GraphControls/>
+                </div>
+
+
+            </div>
+
             <StepTracker />
         </div>
     );

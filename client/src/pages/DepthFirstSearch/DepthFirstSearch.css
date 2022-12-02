@@ -1,0 +1,23 @@
+.controls_graph{
+  display: flex;
+  margin: 10px;
+  justify-content: left;
+  margin-left: 15%;
+}
+
+.btn .fa {
+  color: var(--purple);
+  transition-duration: 0.1s;
+}
+
+.btn {
+  border: 2px solid #3e488f;
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.dfs-graph-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
