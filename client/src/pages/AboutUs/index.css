@@ -2,7 +2,7 @@
     justify-content: center;
     display: inline-grid;
     grid-template-columns: repeat(3, 1fr);
-    justify-content: center;
+    align-items: center;
     gap: 15px;
     padding: 10px;
 }
@@ -36,9 +36,10 @@
 .more-information {
     display: flex;
     flex-direction: row;
-    bottom: 0;
     width: 100%;
     padding-top: 25px;
+    position: absolute;
+    bottom: 0;
 }
 
 .collapse-text {
@@ -58,4 +59,35 @@
     padding-top: 20px;
     font-weight: 700;
     color: #000;
+    font-size: 18px;
+}
+
+.card {
+    width: 100%;
+    height: 380px;
+    background-color: #e8e3d3;
+    align-items: center;
+    border: none;
+    position: relative;
+}
+
+@media (max-width: 1200px) {
+    .developer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .developer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .developer-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 }

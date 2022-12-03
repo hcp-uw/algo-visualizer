@@ -71,7 +71,7 @@ export default function AboutUs() {
     return (
         <div className="container">
             <div className="about-us">
-                <p>Meet our Team</p>
+                <p>Meet Our Team</p>
             </div>
             <div className="row">
                 <div className="developer-container">
@@ -93,16 +93,22 @@ export default function AboutUs() {
 function DeveloperCard({ entry }: { entry: { [key: string]: DeveloperData } }) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     let linkedin = entry.student.socials.find(element => element.fields.linkedInUrl?.includes("linkedin")) ?? null
+    let github = entry.student.socials.find(element => element.fields.githubUrl?.includes("github")) ?? null
+    let portfolio = entry.student.socials.find(element => element.fields.portfolioUrl !== undefined) ?? null
+
 
     return (
-        <div style={{ width: "100%", height: "450px" }}>
+        <div className="card">
             <Collapse in={!isOpen}>
-                <div style={{ height: "275px" }}>
+                <div>
                     <Image
                         src={entry.student.headshot.src}
                         alt={entry.student.headshot.alt}
-                        fluid
-                        rounded
+                        style={{
+                            objectFit: "contain",
+                            width: "250px",
+                            height: "200px",
+                        }}
                     />
                 </div>
             </Collapse>
@@ -112,8 +118,31 @@ function DeveloperCard({ entry }: { entry: { [key: string]: DeveloperData } }) {
             </div>
             <Collapse in={isOpen}>
                 <div className="collapse-text">
-                    <p>About: Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, ut. Nulla dolorum ipsam, unde mollitia eum cumque consequatur! Ratione, doloribus.</p>
-                    <p>Email: {entry.student.email}</p>
+                    <ul>
+                        {entry.student.email && (
+                            <li>Email: {entry.student.email}</li>
+                        )}
+                        {github && (
+                            <li
+                                onClick={() => {
+                                    window.open(github?.fields.githubUrl, "_blank")
+                                }}
+                                onMouseEnter={(event) => { event.currentTarget.style.cursor = "pointer" }}
+                            >
+                                Github
+                            </li>
+                        )}
+                        {portfolio && (
+                            <li
+                                onClick={() => {
+                                    window.open(portfolio?.fields.portfolioUrl, "_blank")
+                                }}
+                                onMouseEnter={(event) => { event.currentTarget.style.cursor = "pointer" }}
+                            >
+                                Portfolio
+                            </li>
+                        )}
+                    </ul>
                 </div>
             </Collapse>
             <div className="more-information">
@@ -158,24 +187,7 @@ function DeveloperCard({ entry }: { entry: { [key: string]: DeveloperData } }) {
                     </button>
                 </div>
             </div>
-        </div>
-    )
-}
-
-
-function TemporaryIcon() {
-    return (
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" id="body_1" viewBox="-48 0.02 234.63 139.89">
-                <g transform="matrix(0.35064936 0 0 0.35087723 0 0)">
-                    <g transform="matrix(0.3997996 0 0 0.3997996 0.39279625 -0)">
-                        <g transform="matrix(0.1 0 -0 -0.1 0 998)">
-                            <path d="M4620 9970C 4023 9932 3463 9719 2965 9341C 2839 9246 2536 8945 2440 8820C 2011 8260 1800 7648 1800 6959C 1800 6466 1895 6052 2105 5625C 2239 5352 2381 5144 2588 4914C 2765 4718 3022 4505 3245 4372C 3303 4337 3350 4307 3350 4305C 3350 4303 3320 4292 3283 4280C 3150 4236 2882 4126 2725 4051C 1949 3676 1273 3093 778 2370C 436 1872 181 1258 61 645C 22 447 6 321 12 266C 28 125 161 7 304 7C 376 8 425 27 481 77C 549 139 566 179 599 365C 682 818 803 1184 1006 1590C 1450 2478 2166 3187 3051 3614C 4544 4336 6254 4092 7545 2975C 8310 2312 8844 1380 9016 405C 9051 206 9055 192 9089 138C 9126 80 9187 34 9255 15C 9377 -21 9527 52 9583 173C 9619 250 9622 292 9600 436C 9501 1105 9240 1782 8870 2335C 8269 3232 7404 3905 6388 4264L6388 4264L6271 4306L6378 4370C 6772 4609 7150 4988 7391 5385C 7997 6384 7971 7655 7325 8625C 7105 8955 6804 9255 6470 9477C 6030 9771 5535 9935 4985 9970C 4812 9981 4793 9981 4620 9970zM5140 9445C 5576 9380 5996 9193 6356 8904C 6885 8479 7243 7833 7311 7181C 7326 7038 7317 6730 7295 6600C 7212 6111 6991 5678 6640 5316C 6231 4895 5714 4633 5135 4555C 4954 4530 4644 4532 4462 4559C 3625 4684 2905 5204 2545 5945C 2431 6178 2366 6386 2330 6632C 2303 6815 2303 7095 2330 7278C 2441 8036 2905 8716 3589 9124C 3900 9309 4244 9423 4600 9459C 4725 9472 5008 9464 5140 9445z" stroke="none" fill="#000000" fillRule="nonzero" />
-                        </g>
-                    </g>
-                </g>
-            </svg>
-        </div>
+        </div >
     )
 }
 
