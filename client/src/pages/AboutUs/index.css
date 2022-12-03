@@ -23,7 +23,7 @@
     border-radius: 10px;
 }
 
-.linked-in-button {
+.card-button {
     background: none;
     border: none;
 }
@@ -36,7 +36,20 @@
 .more-information {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    bottom: 0;
+    width: 100%;
+    padding-top: 25px;
+}
+
+.collapse-text {
+    font-weight: 600;
+    text-align: center;
+}
+
+.more-button {
+    font-weight: 800;
+    display: flex;
+    flex-direction: row;
 }
 
 .text-section {
