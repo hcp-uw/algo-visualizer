@@ -7,11 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
 import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 
 
-const SCALE_LIMIT = 0.5;
+const MAX_SCALE_LIMIT = 1.5;
+const MIN_SCALE_LIMIT = 0.5;
+const SCALE_INCREMENT = 0.1;
 
 const VisualizerContainer = ({ ...props }) => {
     let s = props.scale || 1;
@@ -23,9 +25,8 @@ const VisualizerContainer = ({ ...props }) => {
     const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
     console.log(nodePositions);
 
-    const [scale, setScale] = useState(
-        Math.min(1 + SCALE_LIMIT, Math.max(1 - SCALE_LIMIT, s))
-    );
+    // It'll either be 0.5 at the least, 1.5 at the most, and s if it's right in between.
+    const [scale, setScale] = useState(Math.min(MAX_SCALE_LIMIT, Math.max(MIN_SCALE_LIMIT, s)));
 
     // these two states are for position reset
     const [position, setPosition] = useState(initPosition);
@@ -59,13 +60,12 @@ const VisualizerContainer = ({ ...props }) => {
     const handleScaleChange = (delta: 1 | -1) => {
         if (!lock) {
             let d = 0;
-
-            // increase scale
             if (delta > 0) {
-                d = Math.min(1 + SCALE_LIMIT, scale + delta / 10);
+                // increase scale
+                d = Math.min(MAX_SCALE_LIMIT, scale + SCALE_INCREMENT);
             } else {
                 // decrease scale
-                d = Math.max(1 - SCALE_LIMIT, scale + delta / 10);
+                d = Math.max(MIN_SCALE_LIMIT, scale - SCALE_INCREMENT);
             }
             setScale(d);
         }
@@ -87,7 +87,7 @@ const VisualizerContainer = ({ ...props }) => {
             console.log(avgX +" | " + avgY)
             avgX /= numNodes;
             avgY /= numNodes;
-            
+
             let newPos = {x: avgX, y: avgY};
             console.log(newPos)
             setPosition(newPos)
