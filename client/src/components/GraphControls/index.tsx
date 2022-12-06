@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import "./GraphControls.css";
 
 const GraphControls = ({...props}) => {
 
@@ -25,10 +26,8 @@ const GraphControls = ({...props}) => {
             Add Edge:
           </p>
           <select>
-
           </select>
           <select>
-
           </select>
         </div>
         <div className="dfs-graph-controls">
@@ -36,10 +35,8 @@ const GraphControls = ({...props}) => {
             Remove Edge:
           </p>
           <select>
-
           </select>
           <select>
-
           </select>
         </div>
       </div>
