@@ -215,36 +215,6 @@ const Graph = ({
         };
     };
 
-    const nodeHighlightStyle = (id: string) => {
-        let style = " ";
-        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
-
-        if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
-            style += "node-active ";
-        } else if (
-            algorSteps.steps[currentStep - 1].visitedNodes.includes(id)
-        ) {
-            style += "node-highlighted ";
-        }
-        return style;
-    };
-
-    const edgeHighlightStyle = (edge: Edge) => {
-        let style = " ";
-        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
-
-        let currentEdgeList = algorSteps.steps[currentStep - 1].visitedEdges;
-        for (const edg of currentEdgeList) {
-            if (`${edge.n1} ${edge.n2}` === `${edg.n1} ${edg.n2}`) {
-                style += "edge-highlighted ";
-                break;
-            } else if (`${edge.n1} ${edge.n2}` === `${edg.n2} ${edg.n1}`) {
-                style += "edge-highlighted-reverse ";
-                break;
-            }
-        }
-        return style;
-    };
 
     /*
     useEffect(() => {
@@ -305,7 +275,7 @@ const Graph = ({
                                 { x: x2, y: y2 }
                             );
 
-                            let extraStyle = edgeHighlightStyle(edge);
+                            let extraStyle = props.edgeHighlightStyle(edge);
                             let rev = extraStyle.includes("reverse");
 
                             return (
@@ -345,7 +315,7 @@ const Graph = ({
                                             y1={rev ? y2 : y1}
                                             x2={rev ? x1 : x2}
                                             y2={rev ? y1 : y2}
-                                            className={edgeHighlightStyle(edge)}
+                                            className={props.edgeHighlightStyle(edge)}
                                             strokeWidth={EDGE_WIDTH + 1}
                                             key={"e " + index + "h"}
                                         />
@@ -471,7 +441,7 @@ const Graph = ({
                                             nodeId === activeNode
                                                 ? "node-active"
                                                 : "" +
-                                                nodeHighlightStyle(nodeId)
+                                                props.nodeHighlightStyle(nodeId)
                                         }
                                     />
                                     <text
