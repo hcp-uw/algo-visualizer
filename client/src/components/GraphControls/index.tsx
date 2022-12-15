@@ -6,38 +6,37 @@ const GraphControls = ({...props}) => {
 
   return (
     <>
-      <div>
+      <div id="body">
         <div className="dfs-graph-controls">
-          <p>
-            Add Node:
-          </p>
           <input type="text"></input>
+          <button>
+            Add Node
+          </button>
         </div>
         <div className="dfs-graph-controls">
-          <p>
-            Remove Node:
-          </p>
           <select>
-
           </select>
+          <button>
+            Remove Node
+          </button>
         </div>
         <div className="dfs-graph-controls">
-          <p>
-            Add Edge:
-          </p>
-          <select>
+          <select className="select_two">
           </select>
-          <select>
+          <select className="select_two">
           </select>
+          <button>
+            Add Edge
+          </button>
         </div>
         <div className="dfs-graph-controls">
-          <p>
-            Remove Edge:
-          </p>
-          <select>
+          <select className="select_two">
           </select>
-          <select>
+          <select className="select_two">
           </select>
+          <button>
+            Remove Edge
+          </button>
         </div>
       </div>
     </>

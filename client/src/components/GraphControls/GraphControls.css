@@ -5,10 +5,37 @@
 }
 
 input {
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
   width: 100px;
+  border-radius: 5px;
 }
 
 select {
-  width: 30px;
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
+  width: 100px;
+  border-radius: 5px;
+}
+
+.select_two {
+  width: 50px;
+}
+
+button {
+  background-color: white;
+  color: var(--purple);
+  border-radius: 5px;
+  border: 2px solid #3e488f;
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
+}
+
+button:hover {
+  background-color: var(--purple);
+  color: white;
 }
 
