@@ -6,27 +6,19 @@ import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
-import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/configureStore";
-
-
-const MAX_SCALE_LIMIT = 1.5;
-const MIN_SCALE_LIMIT = 0.5;
-const SCALE_INCREMENT = 0.1;
 
 const VisualizerContainer = ({ ...props }) => {
+    let max_scale = props.maxScale || 1.5;
+    let min_scale = props.minScale || 0.5;
+    let scale_increment = props.scale_increment || 0.1;
     let s = props.scale || 1;
+
+    if (min_scale >= max_scale) throw "minScale must be less or than equal to maxScale"
 
     let initPosition = props.initPosition || { x: 0, y: 0 };
 
-    let graph = props?.isGraph;
-
-    const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
-    console.log(nodePositions);
-
-    // It'll either be 0.5 at the least, 1.5 at the most, and s if it's right in between.
-    const [scale, setScale] = useState(Math.min(MAX_SCALE_LIMIT, Math.max(MIN_SCALE_LIMIT, s)));
+    // It'll either be min_scale at the least, max_scale at the most, and s if it's in between.
+    const [scale, setScale] = useState(Math.min(max_scale, Math.max(min_scale, s)));
 
     // these two states are for position reset
     const [position, setPosition] = useState(initPosition);
@@ -62,37 +54,14 @@ const VisualizerContainer = ({ ...props }) => {
             let d = 0;
             if (delta > 0) {
                 // increase scale
-                d = Math.min(MAX_SCALE_LIMIT, scale + SCALE_INCREMENT);
+                d = Math.min(max_scale, scale + scale_increment);
             } else {
                 // decrease scale
-                d = Math.max(MIN_SCALE_LIMIT, scale - SCALE_INCREMENT);
+                d = Math.max(min_scale, scale - scale_increment);
             }
             setScale(d);
         }
     };
-
-    const handleRecenterChange = () => {
-        if (!graph) {
-            setPosition(initPosition)
-        } else {
-            let avgX = 0;
-            let avgY = 0;
-            let numNodes = Object.keys(nodePositions).length;
-            console.log("NUM:" + numNodes)
-            for (let i = 0; i < numNodes; i++) {
-                avgX += nodePositions[i].init.x
-                avgY += nodePositions[i].init.y
-                console.log(nodePositions[i].init.x + " | " + nodePositions[i].init.y)
-            }
-            console.log(avgX +" | " + avgY)
-            avgX /= numNodes;
-            avgY /= numNodes;
-
-            let newPos = {x: avgX, y: avgY};
-            console.log(newPos)
-            setPosition(newPos)
-        }
-    }
 
     return (
         <div
@@ -104,9 +73,9 @@ const VisualizerContainer = ({ ...props }) => {
                     className="btn"
                     onClick={() => {
                         // zoom and drag reset are handled here
-                        handleRecenterChange();
-                        //setPosition(initPosition);
+                        setPosition(initPosition);
                         setScale(s);
+                        // TODO: fix this incrementation thing once Graph Controls is finished
                         setKey(key + 1);
                     }}
                     title="Re-center array"
