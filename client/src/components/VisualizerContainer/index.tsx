@@ -15,6 +15,7 @@ const VisualizerContainer = ({ ...props }) => {
 
     if (min_scale >= max_scale) throw "minScale must be less or than equal to maxScale"
 
+
     let initPosition = props.initPosition || { x: 0, y: 0 };
 
     // It'll either be min_scale at the least, max_scale at the most, and s if it's in between.
@@ -52,6 +53,8 @@ const VisualizerContainer = ({ ...props }) => {
     const handleScaleChange = (delta: 1 | -1) => {
         if (!lock) {
             let d = 0;
+
+            // increase scale
             if (delta > 0) {
                 // increase scale
                 d = Math.min(max_scale, scale + scale_increment);
