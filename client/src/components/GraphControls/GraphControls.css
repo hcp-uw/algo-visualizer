@@ -24,7 +24,7 @@ select {
   width: 50px;
 }
 
-button {
+.buttonClass {
   background-color: white;
   color: var(--purple);
   border-radius: 5px;
