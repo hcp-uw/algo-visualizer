@@ -120,11 +120,12 @@ const GraphControls = ({
         let integerValue = Number.parseInt(value);
         // here we will check if a value has been inputted in
         if (value === "") {
-          window.alert("Please input a value for the node!");
+          let error = "Please input a value for the node" as string
+          alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+          return;
         } else {
           // here we will check if there is an integer given
           if (!Number.isNaN(integerValue)) {
-            console.log(nodes);
             // here we want to check that the value we are inputting
             // has not yet been in the graph
             // this is because our map needs to have unique values
@@ -137,11 +138,15 @@ const GraphControls = ({
               setNodes(newNodeList, newNodePositions);
               setNodeCount((prev) => prev + 1);
             } else {
-              window.alert("Value already taken!");
+              let error = "Value already taken!" as string
+              alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+              return;
             }
 
           } else {
-            window.alert("Please give an integer input!");
+            let error = "Please give an integer input" as string
+            alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+            return;
           }
         }
         element.value = "";
@@ -209,11 +214,17 @@ const GraphControls = ({
     const removeEdge = (start:HTMLSelectElement, end:HTMLSelectElement) => {
       let startValue = "";
       let endValue = "";
-      startValue = start.value;
-      endValue = end.value;
+      startValue = start.value as string;
+      endValue = end.value as string;
 
-      if (startValue === "" || endValue === "") {
-        window.alert("Please enter a value!");
+      let startCheck = "Start" as string;
+      let endCheck = "End" as string;
+
+      if (startValue == startCheck || endValue == endCheck) {
+        console.log("I went into here!");
+        let error = "Please enter in a value" as string
+        alertMessage(document.getElementById("removeEdgePortion") as HTMLDivElement, error)
+        return;
       }
 
       // check if the edge exists
@@ -233,19 +244,41 @@ const GraphControls = ({
       if (found) {
         setEdges(copy);
       } else {
-        window.alert("This edge does not exist");
+        let error = "This edge does not exist" as string
+        alertMessage(document.getElementById("removeEdgePortion") as HTMLDivElement, error)
       }
 
       // Here we will need to append one option for both
       // start and end
       let startReset = document.createElement("option");
-      startReset.textContent = "start";
+      startReset.textContent = "Start";
       let endReset = document.createElement("option");
-      endReset.textContent = "end";
+      endReset.textContent = "End";
       start.innerHTML = "";
       end.innerHTML = "";
       start.appendChild(startReset);
       end.appendChild(endReset);
+    };
+
+    const alertMessage = (element:HTMLDivElement, text:string) => {
+      // we will give an alert message to the correct element
+      let errorMessage = document.createElement('paragraph');
+      errorMessage.textContent = text;
+      errorMessage.classList.add("errorText");
+      let children = element.childNodes;
+      let i;
+      for (i = 0; i < children.length; i++) {
+        let currentChild = children[i] as HTMLElement;
+        currentChild.classList.add("hidden");
+        setTimeout(() => {
+          currentChild.classList.remove("hidden");
+        }, 1000);
+      }
+
+      element.appendChild(errorMessage);
+      setTimeout(() => {
+        element.removeChild(errorMessage);
+      }, 1000)
     };
 
 /*
@@ -344,7 +377,7 @@ const GraphControls = ({
   return (
     <>
       <div id="body">
-        <div className="dfs-graph-controls">
+        <div id="addNodePortion" className="dfs-graph-controls">
           <input id="addNode" type="text"></input>
           <button className = "buttonClass"
             onClick={() => {
@@ -373,14 +406,14 @@ const GraphControls = ({
             Add Edge
           </button>
         </div>
-        <div className="dfs-graph-controls">
+        <div id = "removeEdgePortion" className="dfs-graph-controls">
           <select id="removeEdgesStart" className="select_two"
             onMouseDown={() => {
             let element = document.getElementById("removeEdgesStart");
             getNodes(element as HTMLSelectElement)
           }}
           >
-            <option value="start">Start</option>
+            <option value="Start">Start</option>
           </select>
           <select id="removeEdgesEnd" className="select_two"
             onMouseDown={() => {
@@ -388,7 +421,7 @@ const GraphControls = ({
               getNodes(element as HTMLSelectElement)
             }}
           >
-            <option value="end">End</option>
+            <option value="End">End</option>
           </select>
           <button className = "buttonClass"
             onClick={() => {
