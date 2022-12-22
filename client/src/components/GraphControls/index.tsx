@@ -114,14 +114,36 @@ const GraphControls = ({
             y: 0,
         };
         //let id = nodeCount.toString();
-        let value =
-        let newNodeList = copyObject(nodes) as string[];
-        newNodeList.push(id);
-        let newNodePositions = copyObject(nodePositions) as NodePositions;
-        newNodePositions[id] = newPosition;
+        let element = document.getElementById("addNode") as HTMLInputElement;
+        let value = element.value;
+        let integerValue = Number.parseInt(value);
+        // here we will check if a value has been inputted in
+        if (value === "") {
+          window.alert("Please input a value for the node!");
+        } else {
+          // here we will check if there is an integer given
+          if (!Number.isNaN(integerValue)) {
+            console.log(nodes);
+            // here we want to check that the value we are inputting
+            // has not yet been in the graph
+            // this is because our map needs to have unique values
+            if (!nodes.includes(String(integerValue))) {
+              let newNodeList = copyObject(nodes) as string[];
+              newNodeList.push(value);
+              let newNodePositions = copyObject(nodePositions) as NodePositions;
+              newNodePositions[value] = newPosition;
 
-        setNodes(newNodeList, newNodePositions);
-        setNodeCount((prev) => prev + 1);
+              setNodes(newNodeList, newNodePositions);
+              setNodeCount((prev) => prev + 1);
+            } else {
+              window.alert("Value already taken!");
+            }
+
+          } else {
+            window.alert("Please give an integer input!");
+          }
+        }
+        element.value = "";
     };
 
     const removeNode = (nodeId: string) => {
@@ -246,7 +268,7 @@ const GraphControls = ({
     <>
       <div id="body">
         <div className="dfs-graph-controls">
-          <input type="text"></input>
+          <input id="addNode" type="text"></input>
           <button className = "buttonClass"
           onClick={() => {
             addNode(700, 225);
