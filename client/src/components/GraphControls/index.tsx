@@ -356,6 +356,7 @@ const GraphControls = ({
         </div>
         <div className="dfs-graph-controls">
           <select>
+          <option value="start">Node</option>
           </select>
           <button className = "buttonClass">
             Remove Node
@@ -363,8 +364,10 @@ const GraphControls = ({
         </div>
         <div className="dfs-graph-controls">
           <select className="select_two">
+            <option value="start">Start</option>
           </select>
           <select className="select_two">
+            <option value="start">End</option>
           </select>
           <button className = "buttonClass">
             Add Edge
