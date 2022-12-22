@@ -122,6 +122,7 @@ const GraphControls = ({
         if (value === "") {
           let error = "Please input a value for the node" as string
           alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+          element.value = "";
           return;
         } else {
           // here we will check if there is an integer given
@@ -140,12 +141,14 @@ const GraphControls = ({
             } else {
               let error = "Value already taken!" as string
               alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+              element.value = "";
               return;
             }
 
           } else {
             let error = "Please give an integer input" as string
             alertMessage(document.getElementById("addNodePortion") as HTMLDivElement, error)
+            element.value = "";
             return;
           }
         }
