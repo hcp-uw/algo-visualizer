@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
 // home page
 const Home = () => {
@@ -137,6 +138,7 @@ const Home = () => {
                     downs above.
                 </p>
             </div>
+            <p>Or check out <Link to="/about-us">our team!</Link></p>
         </div>
     );
 };
