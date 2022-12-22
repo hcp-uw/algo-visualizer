@@ -14,6 +14,7 @@ import {
 } from "../../redux/inputStateSlice";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
+import { current } from '@reduxjs/toolkit';
 
 // default values for variables
 
@@ -203,6 +204,51 @@ const GraphControls = ({
         setEdges(copy);
     };
 
+
+    // This is the functionality where you remove just one edge
+    const removeEdge = (start:HTMLSelectElement, end:HTMLSelectElement) => {
+      let startValue = "";
+      let endValue = "";
+      startValue = start.value;
+      endValue = end.value;
+
+      if (startValue === "" || endValue === "") {
+        window.alert("Please enter a value!");
+      }
+
+      // check if the edge exists
+      let found = false;
+      let copy: Edge[] = [];
+      for (const edge of edges) {
+        if (
+            (edge.n1 === startValue || edge.n2 === startValue) &&
+            (edge.n1 === endValue || edge.n2 === endValue)
+        ) {
+          found = true;
+        } else {
+          copy.push(edge);
+        }
+      }
+
+      if (found) {
+        setEdges(copy);
+      } else {
+        window.alert("This edge does not exist");
+      }
+
+      // Here we will need to append one option for both
+      // start and end
+      let startReset = document.createElement("option");
+      startReset.textContent = "start";
+      let endReset = document.createElement("option");
+      endReset.textContent = "end";
+      start.innerHTML = "";
+      end.innerHTML = "";
+      start.appendChild(startReset);
+      end.appendChild(endReset);
+    };
+
+/*
     const modifyEdgeValue = (index: number, value: number) => {
         let copy = copyObject(edges) as Edge[];
         copy[index].weight = value;
@@ -262,17 +308,48 @@ const GraphControls = ({
         }
         return style;
     };
+*/
 
 
+    /*
+    This will add in the nodes that we need for
+    each of the select elements that we have
+    */
+    const getNodes = (element: HTMLSelectElement) => {
+      let firstElement = element.firstChild as HTMLOptionElement;
+      let firstVal = firstElement.textContent;
+      element.innerHTML = "";
+      let firstOption = document.createElement("option");
+      firstOption.textContent = firstVal;
+      let currentElement = element;
+      currentElement.appendChild(firstOption);
+      let i;
+      // here we will add the options to the element that was passed in
+      for (i = 0; i < nodes.length; i++) {
+        let newOption = document.createElement("option");
+        newOption.textContent = nodes[i];
+        currentElement.appendChild(newOption);
+      }
+    };
+
+  // Note use the onClick function for all of these buttons
+  // and all but the addNode functionality will require a drop down
+  // we need to give the select tags, options, so we will need to give
+  // the selects the most updated nodes
+  // 1. Remove Node: All you will need is to get the most recent nodes, which are "Nodes" constant
+  // 2. AddEdge and RemoveEdge: You can also use Nodes for the drop down, but will need
+  // Use edges to see if an edge exist or if an edge already exist
+
+  // You can also make functions that will allow you to put options onto the select elements
   return (
     <>
       <div id="body">
         <div className="dfs-graph-controls">
           <input id="addNode" type="text"></input>
           <button className = "buttonClass"
-          onClick={() => {
-            addNode(700, 225);
-          }}
+            onClick={() => {
+              addNode(700, 225);
+            }}
           >
             Add Node
           </button>
@@ -294,11 +371,29 @@ const GraphControls = ({
           </button>
         </div>
         <div className="dfs-graph-controls">
-          <select className="select_two">
+          <select id="removeEdgesStart" className="select_two"
+            onMouseDown={() => {
+            let element = document.getElementById("removeEdgesStart");
+            getNodes(element as HTMLSelectElement)
+          }}
+          >
+            <option value="start">Start</option>
           </select>
-          <select className="select_two">
+          <select id="removeEdgesEnd" className="select_two"
+            onMouseDown={() => {
+              let element = document.getElementById("removeEdgesEnd");
+              getNodes(element as HTMLSelectElement)
+            }}
+          >
+            <option value="end">End</option>
           </select>
-          <button className = "buttonClass">
+          <button className = "buttonClass"
+            onClick={() => {
+              let start = document.getElementById("removeEdgesStart") as HTMLSelectElement;
+              let end = document.getElementById("removeEdgesEnd") as HTMLSelectElement;
+              removeEdge(start, end);
+            }}
+          >
             Remove Edge
           </button>
         </div>

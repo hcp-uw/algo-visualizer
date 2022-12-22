@@ -8,7 +8,7 @@ input {
   margin-left: 0.5rem;
   margin: 0.5rem 0;
   width: 150px;
-  width: 100px;
+  width: 150px;
   border-radius: 5px;
 }
 
@@ -16,12 +16,12 @@ select {
   margin-left: 0.5rem;
   margin: 0.5rem 0;
   width: 150px;
-  width: 100px;
+  width: 150px;
   border-radius: 5px;
 }
 
 .select_two {
-  width: 50px;
+  width: 75px;
 }
 
 .buttonClass {
