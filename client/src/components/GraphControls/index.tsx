@@ -284,6 +284,8 @@ const GraphControls = ({
       }, 1000)
     };
 
+// might need these functions for later, possible when we need to
+// have weight adding function?
 /*
     const modifyEdgeValue = (index: number, value: number) => {
         let copy = copyObject(edges) as Edge[];
@@ -299,50 +301,6 @@ const GraphControls = ({
                 y: 0,
                 target: null,
             });
-    };
-
-    const calculateBound = (initPos: Coordinate) => {
-        // bounds in format of Draggable object
-        const width = containerWidth;
-        const height = containerHeight;
-        const pad = NODE_RADIUS + 3; // depends on node radius
-        return {
-            top: 0 - initPos.y + pad,
-            left: 0 - initPos.x + pad,
-            bottom: height - initPos.y - pad,
-            right: width - initPos.x - pad,
-        };
-    };
-
-    const nodeHighlightStyle = (id: string) => {
-        let style = " ";
-        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
-
-        if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
-            style += "node-active ";
-        } else if (
-            algorSteps.steps[currentStep - 1].visitedNodes.includes(id)
-        ) {
-            style += "node-highlighted ";
-        }
-        return style;
-    };
-
-    const edgeHighlightStyle = (edge: Edge) => {
-        let style = " ";
-        if (currentStep < 1 || algorSteps.steps.length === 0) return style;
-
-        let currentEdgeList = algorSteps.steps[currentStep - 1].visitedEdges;
-        for (const edg of currentEdgeList) {
-            if (`${edge.n1} ${edge.n2}` === `${edg.n1} ${edg.n2}`) {
-                style += "edge-highlighted ";
-                break;
-            } else if (`${edge.n1} ${edge.n2}` === `${edg.n2} ${edg.n1}`) {
-                style += "edge-highlighted-reverse ";
-                break;
-            }
-        }
-        return style;
     };
 */
 
@@ -381,7 +339,7 @@ const GraphControls = ({
     <>
       <div id="body">
         <div id="addNodePortion" className="dfs-graph-controls">
-          <input id="addNode" type="text"></input>
+          <input id="addNode" type="text" placeholder = "Input node Val"></input>
           <button className = "buttonClass"
             onClick={() => {
               addNode(700, 225);
