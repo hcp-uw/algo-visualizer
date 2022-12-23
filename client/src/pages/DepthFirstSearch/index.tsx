@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./DepthFirstSearch.css";
 import Controls from "../../components/Controls";
+import GraphControls from "../../components/GraphControls";
 import StepTracker from "../../components/StepTracker";
 import Graph from "../../components/Graph";
 import VisualizerContainer from "../../components/VisualizerContainer";
