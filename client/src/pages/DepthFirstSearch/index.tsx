@@ -19,7 +19,8 @@ const ALGORITHM_URL = "searches/depthfirstsearch/";
 const DepthFirstSearch = () => {
 
     const dispatch = useDispatch();
-    const n = 2000;
+    const innerGraphBoxWidth = 1400;
+    const innerGraphBoxHeight = 450;
 
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
@@ -78,12 +79,14 @@ const DepthFirstSearch = () => {
 
             <VisualizerContainer
                 height="400"
-                initPosition={{ x: 0, y: 0 }}
                 staticChildren={<Stack />}
+                minScale={0.3}
+                scale={0.8}
+                initPosition={{ x: -150, y: -25 }}
             >
                 <Graph
-                    containerWidth={n}
-                    containerHeight={n}
+                    containerWidth={innerGraphBoxWidth}
+                    containerHeight={innerGraphBoxHeight}
                     edgeHighlightStyle={edgeHighlightStyle}
                     nodeHighlightStyle={nodeHighlightStyle}
                 />

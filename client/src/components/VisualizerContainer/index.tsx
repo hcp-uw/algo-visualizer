@@ -7,16 +7,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./VisualizerContainer.css";
 import Draggable from "react-draggable";
 
-const SCALE_LIMIT = 0.5;
-
 const VisualizerContainer = ({ ...props }) => {
+    let max_scale = props.maxScale || 1.5;
+    let min_scale = props.minScale || 0.5;
+    let scale_increment = props.scale_increment || 0.1;
     let s = props.scale || 1;
+
+    if (min_scale >= max_scale) throw "minScale must be less or than equal to maxScale"
+
 
     let initPosition = props.initPosition || { x: 0, y: 0 };
 
-    const [scale, setScale] = useState(
-        Math.min(1 + SCALE_LIMIT, Math.max(1 - SCALE_LIMIT, s))
-    );
+    // It'll either be min_scale at the least, max_scale at the most, and s if it's in between.
+    const [scale, setScale] = useState(Math.min(max_scale, Math.max(min_scale, s)));
 
     // these two states are for position reset
     const [position, setPosition] = useState(initPosition);
@@ -53,10 +56,11 @@ const VisualizerContainer = ({ ...props }) => {
 
             // increase scale
             if (delta > 0) {
-                d = Math.min(1 + SCALE_LIMIT, scale + delta / 10);
+                // increase scale
+                d = Math.min(max_scale, scale + scale_increment);
             } else {
                 // decrease scale
-                d = Math.max(1 - SCALE_LIMIT, scale + delta / 10);
+                d = Math.max(min_scale, scale - scale_increment);
             }
             setScale(d);
         }
@@ -74,6 +78,7 @@ const VisualizerContainer = ({ ...props }) => {
                         // zoom and drag reset are handled here
                         setPosition(initPosition);
                         setScale(s);
+                        // TODO: fix this incrementation thing once Graph Controls is finished
                         setKey(key + 1);
                     }}
                     title="Re-center array"

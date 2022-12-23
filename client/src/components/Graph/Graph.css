@@ -10,12 +10,6 @@
     z-index: -1;
 }
 
-.canvas-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 circle {
     stroke: #4d315f;
     fill: #c4a2d8;
