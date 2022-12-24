@@ -30,4 +30,12 @@ router.post("/depthfirstsearch", (req, res) => {
     });
 });
 
+router.post("/breadthfirstsearch", (req, res) => {
+    let r = searches.breadthFirstSearch(req.body.nodes, req.body.edges);
+    res.status(200).send({
+        result: r,
+    });
+});
+
+
 module.exports = router;

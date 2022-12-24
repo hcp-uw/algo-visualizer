@@ -1,54 +1,56 @@
 import React from "react";
-import "./Stack.css";
+import "./Queue.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
-import { DepthFirstSearchResultType } from "../../AlgoResultTypes";
+import { BreadthFirstSearchResultType } from "../../AlgoResultTypes";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 /**
- * this component will use the stack in algorithmsteps
+ * this component will use the queue in algorithmsteps
  *
  * @param param0
  * @returns
  */
-const Stack = ({ ...props }) => {
+const Queue = ({ ...props }) => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
-    ) as DepthFirstSearchResultType;
+    ) as BreadthFirstSearchResultType;
 
     const currentStep = useSelector(
         (state: RootState) => state.global.currentStep
     );
 
-    const isStackReady =
+    const isQueueReady =
         algorSteps.steps.length > 0 &&
         currentStep > 0 &&
-        algorSteps.steps[0].stack;
+        algorSteps.steps[0].queue;
 
-    const stack = isStackReady
-        ? algorSteps.steps[currentStep - 1].stack.map((e: { id: string; from: string }) => e.id)
+    const queue = isQueueReady
+        ? algorSteps.steps[currentStep - 1].queue.map((e: { id: string; from: string }) => e.id)
         : [];
 
-    const toDisplay = stack.length < 10 ? stack : ["...", ...stack.slice(-9)];
+    const toDisplay = queue.length < 10 ? queue : ["...", ...queue.slice(-9)];
 
     // STACK ANIMATION IS BUGGY WHEN STACK EXCEED LIMITED AMOUNT
 
     return (
-        <div className="stack-container">
-            <div className="stack-item-holder">
+        <div className="queue-container">
+            <p id="queue-back">Enter Queue</p>
+            <div className="queue-item-holder">
                 <TransitionGroup>
                     {toDisplay.map((item: string, index: number) => (
                         <CSSTransition
                             timeout={350}
                             key={item + index}
-                            classNames="stack-item"
+                            classNames="queue-item"
                         >
                             <div
                                 style={{
-                                    top: `${19 - index * 3.8}rem`,
+                                    top: `${17.5 - index * 3.8}rem`,
                                 }}
                                 className={
-                                    "stack-item " +
-                                    (item === "..." ? "stack-item-extra" : "")
+                                    "queue-item " +
+                                    (item === "..." ? "queue-item-extra" : "")
                                 }
                             >
                                 {item}
@@ -57,8 +59,9 @@ const Stack = ({ ...props }) => {
                     ))}
                 </TransitionGroup>
             </div>
+            <p id="queue-front">Leave Queue</p>
         </div>
     );
 };
 
-export default Stack;
+export default Queue;

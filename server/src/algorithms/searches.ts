@@ -14,6 +14,7 @@
 import {
     BinarySearchResultType,
     DepthFirstSearchResultType,
+    BreadthFirstSearchResultType,
     LinearSearchResultType,
 } from "../AlgoResultTypes";
 import { Edge, NodeMap } from "../CommonTypes";
@@ -127,7 +128,7 @@ function binarySearch(arr: number[], target: number) {
     return result;
 }
 
-type DFSNode = { id: string; from: string };
+type NodeWithPrev = { id: string; from: string };
 
 function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     let result: DepthFirstSearchResultType = {
@@ -136,7 +137,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
         startNode: "",
     };
     let adjacencyMap: { [key: string]: string[] } = {};
-    let stack: DFSNode[] = [];
+    let stack: NodeWithPrev[] = [];
     let visited: string[] = [];
     let visitedEdges: Edge[] = [];
 
@@ -158,7 +159,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     result.startNode = start.toString();
 
     result.steps.push({
-        stack: copyObject(stack) as DFSNode[],
+        stack: copyObject(stack) as NodeWithPrev[],
         currentNode: [],
         visitedNodes: copyObject(visited) as string[],
         visitedEdges: copyObject(visitedEdges) as Edge[],
@@ -166,9 +167,9 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     });
 
     // dfs
-
     while (stack.length > 0) {
-        let node = stack.pop() as DFSNode;
+        // front of the list is the top of the stack
+        let node = stack.pop() as NodeWithPrev;
 
         if (!visited.includes(node.id)) {
             visited.push(node.id);
@@ -176,13 +177,14 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
             visitedEdges.push({ n1: node.from, n2: node.id });
 
             result.steps.push({
-                stack: copyObject(stack) as DFSNode[],
+                stack: copyObject(stack) as NodeWithPrev[],
                 currentNode: [node.id],
                 visitedNodes: copyObject(visited) as string[],
                 visitedEdges: copyObject(visitedEdges) as Edge[],
                 description: `Visiting node ${node.id}`,
             });
 
+            // collecting adjacent nodes
             let addedAdj = [];
             for (const n of adjacencyMap[node.id]) {
                 if (!visited.includes(n)) {
@@ -192,7 +194,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
             }
 
             result.steps.push({
-                stack: copyObject(stack) as DFSNode[],
+                stack: copyObject(stack) as NodeWithPrev[],
                 currentNode: [],
                 visitedNodes: copyObject(visited) as string[],
                 visitedEdges: copyObject(visitedEdges) as Edge[],
@@ -203,7 +205,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
             });
         } else {
             result.steps.push({
-                stack: copyObject(stack) as DFSNode[],
+                stack: copyObject(stack) as NodeWithPrev[],
                 currentNode: [],
                 visitedNodes: copyObject(visited) as string[],
                 visitedEdges: copyObject(visitedEdges) as Edge[],
@@ -213,7 +215,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     }
 
     result.steps.push({
-        stack: copyObject(stack) as DFSNode[],
+        stack: copyObject(stack) as NodeWithPrev[],
         currentNode: [],
         visitedNodes: copyObject(visited) as string[],
         visitedEdges: copyObject(visitedEdges) as Edge[],
@@ -223,4 +225,106 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     return result;
 }
 
-export { linearSearch, binarySearch, depthFirstSearch };
+
+function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+    let result: BreadthFirstSearchResultType = {
+        steps: [],
+        traversalResult: [],
+        startNode: "",
+    };
+    let adjacencyMap: { [key: string]: string[] } = {};
+    let queue: NodeWithPrev[] = [];
+    let visited: string[] = [];
+    let visitedEdges: Edge[] = [];
+
+    if (nodes.length === 0) return result;
+
+    for (let i = 0; i < nodes.length; i++) {
+        adjacencyMap[nodes[i]] = [];
+    }
+
+    // build adjacency map
+    for (let i = 0; i < edges.length; i++) {
+        // add to front so we search from left to right
+        adjacencyMap[edges[i].n1].unshift(edges[i].n2);
+        adjacencyMap[edges[i].n2].unshift(edges[i].n1);
+    }
+
+    if (!start) start = nodes[0].toString();
+    queue.push({ id: start, from: "" });
+    result.startNode = start.toString();
+
+    result.steps.push({
+        queue: copyObject(queue) as NodeWithPrev[],
+        currentNode: [],
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
+        description: `Starting from node ${start}`,
+    });
+
+    // bfs
+    while (queue.length > 0) {
+        // front of the list is the front of the queue
+        let node = queue.shift() as NodeWithPrev;
+
+        if (!visited.includes(node.id)) {
+            visited.push(node.id);
+            // add visited edge
+            visitedEdges.push({ n1: node.from, n2: node.id });
+
+            result.steps.push({
+                queue: copyObject(queue) as NodeWithPrev[],
+                currentNode: [node.id],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Visiting node ${node.id}`,
+            });
+
+            // collecting adjacent nodes
+            let addedAdj = [];
+            for (const n of adjacencyMap[node.id]) {
+                if (!visited.includes(n)) {
+                    addedAdj.push(n);
+                }
+
+            }
+            // Add nodes to queue from least to greatest order
+            addedAdj.sort();
+            for (const n of addedAdj) {
+                queue.push({ id: n, from: node.id });
+            }
+
+            result.steps.push({
+                queue: copyObject(queue) as NodeWithPrev[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description:
+                    addedAdj.length > 0
+                        ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
+                        : "Did not add any adjacent nodes.",
+            });
+        } else {
+            result.steps.push({
+                queue: copyObject(queue) as NodeWithPrev[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Node ${node.id} already visited!`,
+            });
+        }
+    }
+
+    result.steps.push({
+        queue: copyObject(queue) as NodeWithPrev[],
+        currentNode: [],
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
+        description: `Traversal finished.`,
+    });
+    result.traversalResult = visited;
+    return result;
+}
+
+
+export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch };

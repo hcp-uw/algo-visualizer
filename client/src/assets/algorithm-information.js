@@ -76,3 +76,12 @@ export const depthFirstSearchDesc = {
         "Space Complexity: O(|Vertices|)",
     ],
 };
+
+export const breadthFirstSearchDesc = {
+    algorithm: "Breadth First Search",
+    title: "Breadth-first search is an algorithm for traversing or searching tree or graph data structures. The algorithm starts at a node, records all of its adjacent nodes, and then explores down each of the adjacent nodes and repeats the process of recording the adjacent nodes of the next layer. Visually, breadth-first search explores the nodes in a graph layer by layer. Extra memory, usually a queue, is needed to keep track of the nodes discovered in each layer, which helps with going to the next layer of the graph during traversal.",
+    description: [
+        "Worst Time Complexity: O(|Vertices| + |Edges|)",
+        "Space Complexity: O(|Vertices|)",
+    ],
+};
