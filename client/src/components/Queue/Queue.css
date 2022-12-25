@@ -29,19 +29,6 @@
     border-radius: 15px;
 }
 
-.queue-item-enter {
-    animation: queue-item-enter .35s ease-out;
-}
-
-.queue-item-exit {
-    animation: queue-item-exit .35s ease-out;
-}
-
-.queue-item-extra {
-    background-color: white;
-    border: none;
-}
-
 #queue-front, #queue-back {
     font-size: 18px;
     margin-bottom: 0px;
@@ -54,26 +41,4 @@
 
 #queue-front {
     color: rgb(255, 0, 0);
-}
-
-@keyframes queue-item-enter {
-    from {
-        translate: 0 -50px;
-        opacity: 0;
-    }
-    to {
-        translate: 0;
-        opacity: 1;
-    }
-}
-
-@keyframes queue-item-exit {
-    from {
-        translate: 0;
-        opacity: 1;
-    }
-    to {
-        translate: 0 50px;
-        opacity: 0;
-    }
 }

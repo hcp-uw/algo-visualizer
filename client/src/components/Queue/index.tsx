@@ -37,27 +37,19 @@ const Queue = ({ ...props }) => {
         <div className="queue-container">
             <p id="queue-back">Enter Queue</p>
             <div className="queue-item-holder">
-                <TransitionGroup>
-                    {toDisplay.map((item: string, index: number) => (
-                        <CSSTransition
-                            timeout={350}
-                            key={item + index}
-                            classNames="queue-item"
-                        >
-                            <div
-                                style={{
-                                    top: `${17.5 - index * 3.8}rem`,
-                                }}
-                                className={
-                                    "queue-item " +
-                                    (item === "..." ? "queue-item-extra" : "")
-                                }
-                            >
-                                {item}
-                            </div>
-                        </CSSTransition>
-                    ))}
-                </TransitionGroup>
+                {toDisplay.map((item: string, index: number) => (
+                    <div
+                        style={{
+                            top: `${17.5 - index * 3.8}rem`,
+                        }}
+                        className={
+                            "queue-item " +
+                            (item === "..." ? "queue-item-extra " : "")
+                        }
+                    >
+                        {item}
+                    </div>
+                ))}
             </div>
             <p id="queue-front">Leave Queue</p>
         </div>
