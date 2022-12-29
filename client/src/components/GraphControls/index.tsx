@@ -367,14 +367,35 @@ const GraphControls = ({
             Remove Node
           </button>
         </div>
-        <div className="dfs-graph-controls">
-          <select className="select_two">
-            <option value="start">Start</option>
+        <div>
+        <select id="addEdgesStart" className="select_two"
+            onMouseDown={() => {
+              let element = document.getElementById("addEdgesStart");
+              getNodes(element as HTMLSelectElement)
+            }}
+          >
+            <option value="Start">Start</option>
           </select>
-          <select className="select_two">
-            <option value="start">End</option>
+          <select id="addEdgesEnd" className="select_two"
+            onMouseDown={() => {
+              let element = document.getElementById("addEdgesEnd");
+              getNodes(element as HTMLSelectElement)
+            }}
+          >
+            <option value="End">End</option>
           </select>
-          <button className = "buttonClass">
+          <button className = "buttonClass"
+            onClick={() => {
+              let start = document.getElementById("addEdgesStart") as HTMLSelectElement;
+              let end = document.getElementById("addEdgesEnd") as HTMLSelectElement;
+              addEdge(
+                start.value,
+                end.value,
+                weighed
+                ? randInt(1, 100)
+                : undefined)
+            }}
+          >
             Add Edge
           </button>
         </div>
