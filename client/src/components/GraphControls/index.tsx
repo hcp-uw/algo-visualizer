@@ -162,6 +162,11 @@ const GraphControls = ({
         let newNodePositions = copyObject(nodePositions) as NodePositions;
         let newNodeList = copyObject(nodes) as string[];
         let edgesToRemove: number[] = [];
+        if (nodeId == '-Select Node-') {
+          let error = "Please input a value for the node to remove" as string
+          alertMessage(document.getElementById("removeNodePortion") as HTMLDivElement, error)
+          return;
+        }
 
         // deletion removes the node id from map
         for (let i = 0; i < edges.length; i++) {
@@ -196,6 +201,7 @@ const GraphControls = ({
           ) {
             let error = "Edge already exists" as string
             alertMessage(document.getElementById("addEdgePortion") as HTMLDivElement, error)
+            return;
           }
       }
       setEdges([...edges, { n1, n2, weight }]);
@@ -365,6 +371,7 @@ const GraphControls = ({
           onClick={() => {
             let remove = document.getElementById("removeNodeDropDown") as HTMLSelectElement;
             removeNode(remove.value);
+            remove.value = "-Select Node-"
           }}>
             Remove Node
           </button>
