@@ -170,6 +170,11 @@ const GraphControls = ({
           return;
         }
 
+
+
+        // look through the nodes
+        // if there's a node that matches the nodeId, you're gonna skip in
+
         // deletion removes the node id from map
         for (let i = 0; i < edges.length; i++) {
             if (edges[i].n1 === nodeId || edges[i].n2 === nodeId) {
@@ -178,6 +183,7 @@ const GraphControls = ({
         }
 
         // remove from copy
+        let newPositions = [];
         delete newNodePositions[nodeId];
         newNodeList.splice(newNodeList.indexOf(nodeId), 1);
 
