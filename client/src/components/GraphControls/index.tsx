@@ -200,8 +200,10 @@ const GraphControls = ({
           if (
               (edge.n1 === n1 || edge.n2 === n1) &&
               (edge.n1 === n2 || edge.n2 === n2)
-          )
-              return;
+          ) {
+            let error = "Edge already exists" as string
+            alertMessage(document.getElementById("addEdgePortion") as HTMLDivElement, error)
+          }
       }
       setEdges([...edges, { n1, n2, weight }]);
   };
@@ -374,7 +376,7 @@ const GraphControls = ({
             Remove Node
           </button>
         </div>
-        <div>
+        <div id = "addEdgePortion" className="dfs-graph-controls">
         <select id="addEdgesStart" className="select_two"
             onMouseDown={() => {
               let element = document.getElementById("addEdgesStart");
@@ -401,6 +403,8 @@ const GraphControls = ({
                 weighed
                 ? randInt(1, 100)
                 : undefined)
+              start.value = "Start"
+              end.value = "End"
             }}
           >
             Add Edge
