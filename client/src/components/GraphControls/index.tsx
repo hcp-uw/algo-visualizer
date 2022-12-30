@@ -168,6 +168,13 @@ const GraphControls = ({
           return;
         }
 
+        if (nodeId == '-Select Node-') {
+          console.log("I went into here!");
+          let error = "Please enter in a value" as string
+          alertMessage(document.getElementById("removeNodePortion") as HTMLDivElement, error)
+          return;
+        }
+
         // deletion removes the node id from map
         for (let i = 0; i < edges.length; i++) {
             if (edges[i].n1 === nodeId || edges[i].n2 === nodeId) {
