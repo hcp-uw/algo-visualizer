@@ -183,7 +183,6 @@ const GraphControls = ({
         }
 
         // remove from copy
-        let newPositions = [];
         delete newNodePositions[nodeId];
         newNodeList.splice(newNodeList.indexOf(nodeId), 1);
 
