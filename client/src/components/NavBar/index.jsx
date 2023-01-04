@@ -71,6 +71,11 @@ const NavBar = () => {
                                     Depth First Search
                                 </NavDropdown.Item>
                             </LinkContainer>
+                            <LinkContainer to="/breadth-first-search">
+                                <NavDropdown.Item>
+                                    Breadth First Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
                         </div>
                     </NavDropdown>
 
