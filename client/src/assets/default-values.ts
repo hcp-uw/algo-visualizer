@@ -3,57 +3,57 @@ import { Edge } from "../CommonTypes";
 export const DEFAULT_NODES_1 = (center: { x: number; y: number }) => {
     return {
         "0": {
-            init: { x: 150 + center.x, y: 125 + center.y },
+            init: { x: 150 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
         "1": {
-            init: { x: 150 + center.x, y: 225 + center.y },
+            init: { x: 150 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
         "2": {
-            init: { x: 250 + center.x, y: 300 + center.y },
+            init: { x: 250 + center.x, y: 325 + center.y },
             x: 0,
             y: 0,
         },
         "3": {
-            init: { x: 250 + center.x, y: 125 + center.y },
+            init: { x: 250 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
         "4": {
-            init: { x: 250 + center.x, y: 225 + center.y },
+            init: { x: 250 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
         "5": {
-            init: { x: 350 + center.x, y: 225 + center.y },
+            init: { x: 350 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
         "6": {
-            init: { x: 450 + center.x, y: 225 + center.y },
+            init: { x: 450 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
         "7": {
-            init: { x: 450 + center.x, y: 125 + center.y },
+            init: { x: 450 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
         "8": {
-            init: { x: 350 + center.x, y: 125 + center.y },
+            init: { x: 350 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
         "9": {
-            init: { x: 300 + center.x, y: 25 + center.y },
+            init: { x: 300 + center.x, y: 50 + center.y },
             x: 0,
             y: 0,
         },
         "10": {
-            init: { x: 350 + center.x, y: 300 + center.y },
+            init: { x: 350 + center.x, y: 325 + center.y },
             x: 0,
             y: 0,
         },

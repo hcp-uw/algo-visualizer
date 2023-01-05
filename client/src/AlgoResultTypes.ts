@@ -76,12 +76,25 @@ type DepthFirstSearchResultType = {
     startNode: string;
 };
 
-type GraphAlgorithmResultType = DepthFirstSearchResultType;
+type BreadthFirstSearchResultType = {
+    steps: {
+        queue: { id: string; from: string }[];
+        currentNode: string[];
+        visitedNodes: string[];
+        visitedEdges: Edge[];
+        description: string;
+    }[];
+    traversalResult: string[];
+    startNode: string;
+};
+
+type GraphAlgorithmResultType = DepthFirstSearchResultType | BreadthFirstSearchResultType;
 
 type SearchAlgorithmResultType =
     | LinearSearchResultType
     | BinarySearchResultType
-    | DepthFirstSearchResultType;
+    | DepthFirstSearchResultType
+    | BreadthFirstSearchResultType;
 
 type SortAlgorithmResultType =
     | BubbleSortResultType
@@ -103,4 +116,5 @@ export {
     SortAlgorithmResultType,
     GraphAlgorithmResultType,
     DepthFirstSearchResultType,
+    BreadthFirstSearchResultType
 };

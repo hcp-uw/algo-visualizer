@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Stack.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
-import {
-    resetSingleInput,
-    updateSingleInput,
-} from "../../redux/inputStateSlice";
-import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
+import { DepthFirstSearchResultType } from "../../AlgoResultTypes";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { copyObject } from "../../utilities/utilities";
 /**
  * this component will use the stack in algorithmsteps
  *
@@ -18,7 +13,7 @@ import { copyObject } from "../../utilities/utilities";
 const Stack = ({ ...props }) => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
-    ) as GraphAlgorithmResultType;
+    ) as DepthFirstSearchResultType;
 
     const currentStep = useSelector(
         (state: RootState) => state.global.currentStep
@@ -30,7 +25,7 @@ const Stack = ({ ...props }) => {
         algorSteps.steps[0].stack;
 
     const stack = isStackReady
-        ? algorSteps.steps[currentStep - 1].stack.map((e) => e.id)
+        ? algorSteps.steps[currentStep - 1].stack.map((e: { id: string; from: string }) => e.id)
         : [];
 
     const toDisplay = stack.length < 10 ? stack : ["...", ...stack.slice(-9)];
@@ -41,7 +36,7 @@ const Stack = ({ ...props }) => {
         <div className="stack-container">
             <div className="stack-item-holder">
                 <TransitionGroup>
-                    {toDisplay.map((item, index) => (
+                    {toDisplay.map((item: string, index: number) => (
                         <CSSTransition
                             timeout={350}
                             key={item + index}

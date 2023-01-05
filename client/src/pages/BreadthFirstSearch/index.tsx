@@ -1,23 +1,22 @@
 import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./DepthFirstSearch.css";
+import "./BreadthFirstSearch.css";
 import Controls from "../../components/Controls";
-import GraphControls from "../../components/GraphControls";
 import StepTracker from "../../components/StepTracker";
 import Graph from "../../components/Graph";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
-import { depthFirstSearchDesc } from "../../assets/algorithm-information.js";
-import Stack from "../../components/Stack";
+import { breadthFirstSearchDesc } from "../../assets/algorithm-information.js";
+import Queue from "../../components/Queue";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 
-const ALGORITHM_URL = "searches/depthfirstsearch/";
+const ALGORITHM_URL = "searches/breadthfirstsearch/";
 
-const DepthFirstSearch = () => {
+const BreadthFirstSearch = () => {
 
     const dispatch = useDispatch();
     const innerGraphBoxWidth = 1400;
@@ -34,7 +33,7 @@ const DepthFirstSearch = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(depthFirstSearchDesc.algorithm));
+        dispatch(updateAlgorName(breadthFirstSearchDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -75,12 +74,12 @@ const DepthFirstSearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                <AlgorithmPopover data={depthFirstSearchDesc} />
+                <AlgorithmPopover data={breadthFirstSearchDesc} />
             </div>
 
             <VisualizerContainer
                 height="400"
-                staticChildren={<Stack />}
+                staticChildren={<Queue />}
                 minScale={0.3}
                 scale={0.8}
                 initPosition={{ x: -150, y: -25 }}
@@ -93,20 +92,10 @@ const DepthFirstSearch = () => {
                 />
             </VisualizerContainer>
 
-            <div className="dfs-graph-controls">
-                <div className="controls_graph">
-                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
-                </div>
-                <div>
-                    <GraphControls/>
-                </div>
-
-
-            </div>
-
+            <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
             <StepTracker />
         </div>
     );
 };
 
-export default DepthFirstSearch;
+export default BreadthFirstSearch;

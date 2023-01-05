@@ -8,11 +8,10 @@
 import "./Graph.css";
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    resetGraphInput,
     updateGraphEdges,
     updateGraphNodes,
     updateGraphNodePositions,
@@ -214,16 +213,6 @@ const Graph = ({
             right: width - initPos.x - pad,
         };
     };
-
-
-    /*
-    useEffect(() => {
-        return () => {
-            // reset inputs on component unmount
-            dispatch(resetGraphInput());
-        };
-    }, []);
-    */
 
     return (
         // this outter div act as an anchor for any absolute positioned elements
