@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./DepthFirstSearch.css";
 import Controls from "../../components/Controls";
+import GraphControls from "../../components/GraphControls";
 import StepTracker from "../../components/StepTracker";
 import Graph from "../../components/Graph";
 import VisualizerContainer from "../../components/VisualizerContainer";
@@ -92,7 +93,17 @@ const DepthFirstSearch = () => {
                 />
             </VisualizerContainer>
 
-            <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+            <div className="dfs-graph-controls">
+                <div id="controlsDiv" className="controls_graph">
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                </div>
+                <div id="GraphControlsDiv">
+                    <GraphControls/>
+                </div>
+
+
+            </div>
+
             <StepTracker />
         </div>
     );
