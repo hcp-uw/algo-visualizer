@@ -94,10 +94,10 @@ const DepthFirstSearch = () => {
             </VisualizerContainer>
 
             <div className="dfs-graph-controls">
-                <div className="controls_graph">
+                <div id="controlsDiv" className="controls_graph">
                     <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
                 </div>
-                <div>
+                <div id="GraphControlsDiv">
                     <GraphControls/>
                 </div>
 

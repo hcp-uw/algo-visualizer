@@ -2,7 +2,7 @@
   display: flex;
   margin: 10px;
   justify-content: left;
-  margin-left: 25%;
+  margin-left: 20%;
 }
 
 .btn .fa {
@@ -20,4 +20,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+}
+
+#GraphControlsDiv {
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-bottom: 2%;
+}
+
+#controlsDiv {
+  margin-top: 2.5%;
 }
