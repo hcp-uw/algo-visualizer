@@ -1,0 +1,50 @@
+.graph-controls-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+input {
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
+  width: 150px;
+  border-radius: 5px;
+}
+
+select {
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
+  border-radius: 5px;
+}
+
+.select_two {
+  width: 75px;
+}
+
+.buttonClass {
+  background-color: white;
+  color: var(--purple);
+  border-radius: 5px;
+  border: 2px solid #3e488f;
+  margin-left: 0.5rem;
+  margin: 0.5rem 0;
+  width: 150px;
+}
+
+.buttonClass:hover {
+  background-color: var(--purple);
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.errorText {
+  padding-top: 12px;
+  color: red;
+  height: 52px;
+}
+

@@ -13,6 +13,7 @@ import Queue from "../../components/Queue";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
+import GraphControls from "../../components/GraphControls";
 
 const ALGORITHM_URL = "searches/breadthfirstsearch/";
 
@@ -92,7 +93,16 @@ const BreadthFirstSearch = () => {
                 />
             </VisualizerContainer>
 
-            <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+            <div className="dfs-graph-controls">
+                <div id="controlsDiv" className="controls_graph">
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                </div>
+                <div id="GraphControlsDiv">
+                    <GraphControls/>
+                </div>
+
+
+            </div>
             <StepTracker />
         </div>
     );
