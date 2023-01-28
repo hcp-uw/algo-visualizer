@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    container_name: algo-viz-server
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+  client:
+    build: ./client
+    container_name: algo-viz-front-end
+    ports:
+      - '3000:3000'
+    #volumes: (might not work for Windows ppl, so its commented out for now)
+      #- ./client:/app
+      #- /app/node_modules
+    stdin_open: true
+    tty: true

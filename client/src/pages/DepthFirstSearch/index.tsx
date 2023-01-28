@@ -100,8 +100,6 @@ const DepthFirstSearch = () => {
                 <div id="GraphControlsDiv">
                     <GraphControls/>
                 </div>
-
-
             </div>
 
             <StepTracker />

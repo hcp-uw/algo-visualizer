@@ -25,6 +25,11 @@ const limiter = rateLimit({
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
 
+// alive check
+app.get('/', (req, res) => {
+    res.status(200).send({ status: 'Positive!' });
+});
+
 // searches api
 app.use("/api/searches", require("./routes/searches.js"));
 
