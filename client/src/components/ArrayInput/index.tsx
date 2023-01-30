@@ -28,7 +28,12 @@ const ArrayInput = ({ ...props }) => {
     const getWarningText = () => {
         let warnings = [];
         if (validInputCode.includes(1))
-            warnings.push("Array must have 5-20 elements.");
+            if (props.isMergeSort) {
+                warnings.push("Array must have 5-16 elements.");
+            }
+            else {
+                warnings.push("Array must have 5-20 elements.");
+            }
         if (validInputCode.includes(2))
             warnings.push("Elements must be in range 1-99.");
         if (validInputCode.includes(3))
@@ -39,6 +44,9 @@ const ArrayInput = ({ ...props }) => {
     const checkArrayInput = (arr: string[]) => {
         let code = [];
         // 5 to 20 elements, range 1-99
+        if (props.isMergeSort) {
+            if (arr.length < 5 || arr.length > 16) code.push(1);
+        }
         if (arr.length < 5 || arr.length > 20) code.push(1);
 
         for (let i = 0; i < arr.length; i++) {

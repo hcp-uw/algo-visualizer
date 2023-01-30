@@ -347,6 +347,7 @@ const Controls = ({ ...props }) => {
                     {require.includes("arrayInput") ? (
                         <ArrayInput
                             requestSortedArray={props.requestSortedArray}
+                            isMergeSort={props.isMergeSort}
                         ></ArrayInput>
                     ) : null}
                 </div>

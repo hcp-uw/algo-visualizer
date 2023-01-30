@@ -170,6 +170,7 @@ const MergeSort = () => {
                 extraData={extraData}
                 algorithmUrl={ALGORITHM_URL}
                 require={["arrayInput"]}
+                isMergeSort={true}
             />
 
             <div className="swap-counter-container">
