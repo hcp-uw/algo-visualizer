@@ -33,6 +33,7 @@ export const stateSlice = createSlice({
             state.currentStep = 0;
         },
         updateStep: (state, action) => {
+            console.log(action.payload.currentStep)
             state.currentStep = action.payload.currentStep;
         },
         resetSteps: (state) => {

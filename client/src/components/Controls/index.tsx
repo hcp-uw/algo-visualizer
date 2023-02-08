@@ -225,7 +225,7 @@ const Controls = ({ ...props }) => {
      * Handle state setup before sending the request for algorithm fetch.
      */
     const fetchAlgorithm = () => {
-        doPause();
+        doReset(); 
         let toSend: {
             array?: number[];
             target?: number;
@@ -260,7 +260,6 @@ const Controls = ({ ...props }) => {
                 toSend.edges = edges;
             }
         }
-
         return AlgoFetcher.post(props.algorithmUrl, toSend);
     };
 

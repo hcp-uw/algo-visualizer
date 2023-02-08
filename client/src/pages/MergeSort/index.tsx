@@ -71,6 +71,8 @@ const MergeSort = () => {
      */
     const drawBlocks = () => {
         // when page loaded at first or in case steps are missing
+        console.log("algo fetched")
+        console.log(" step # before = " + currentStep)
         const step = algorSteps.steps[currentStep - 1];
         let isStepAvailable =
             step != null &&
@@ -100,7 +102,7 @@ const MergeSort = () => {
                 }
             }
 
-            let level = isStepAvailable ? step.positions[id].level : 0;
+            let level = isStepAvailable ? step.positions[id].level : 0; //error
 
             let maxSubarraySize = Math.ceil(array.length / Math.pow(2, level));
             let treePosition = isStepAvailable ? step.positions[id].treePos : 0;
