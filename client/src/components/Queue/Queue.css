@@ -43,13 +43,14 @@
 }
 
 .queue-item-enter {
-    animation: queue-item-slide-down 0.2s ease-in;
+    animation: queue-item-slide-down 0.3s ease-in;
 }
 
 .queue-item-exit {
     opacity: 1;
     translate: 0;
-    animation: queue-item-slide-down2 0.002s ease-in;
+    animation: queue-item-slide-down2 0.0002s ease-in;
+    display: none;
 }
 
 .queue-item-exit-active {
@@ -64,20 +65,20 @@
 
 @keyframes queue-item-slide-down {
     from {
-        translate: 0 -50px;
+        translate: 0 -20px;
     }
     to {
-        translate: 0 20px;
+        translate: 0 0px;
     }
 }
 
 @keyframes queue-item-slide-down2 {
     from {
-        translate: 0px;
+        translate: 0 20px;
         opacity: 1;
     }
     to {
-        translate: 0px;
+        translate: 0 0px;
         opacity: 0;
     }
 }
