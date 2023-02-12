@@ -31,9 +31,12 @@ const Queue = ({ ...props }) => {
         currentStep > 0 &&
         algorSteps.steps[0].queue;
 
+    // This is the queue object in which we will be using
     const queue = isQueueReady
         ? algorSteps.steps[currentStep - 1].queue.map((e: { id: string; from: string }) => e.id)
         : [];
+
+    // Here we might want to add a class to each of the
 
     const toDisplay = queue.length < 10 ? queue : ["...", ...queue.slice(-9)];
 
@@ -79,56 +82,12 @@ const Queue = ({ ...props }) => {
                 </div>
             </div>
         );
-    }
-
-    console.log("I went into (1)");
-
-
-    currentIndex = currentStep;
-
-    return (
-        <div className="queue-container">
-            <div className="text-queue">
-                <p id="queue-back">Enter Queue</p>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <p id="queue-front">Leave Queue</p>
-            </div>
-            <div className="queue-item-holder">
-                <TransitionGroup>
-                    {toDisplay.map((item: string, index: number) => (
-                        <CSSTransition
-                            timeout={350}
-                            key={item + index}
-                            classNames="queue-item"
-                        >
-                            <div
-                                style={{
-                                    top: `${19 - index * 3.8}rem`,
-                                }}
-                                className={
-                                    "queue-item " +
-                                    (item === "..." ? "queue-item-extra" : "")
-                                }
-                            >
-                                {item}
-                            </div>
-                        </CSSTransition>
-                    ))}
-                </TransitionGroup>
-            </div>
-        </div>
-    );
+    } else {
+        console.log("I went into (1)");
 
 
-    /*
-    if (currentIndex < currentStep) {
-        console.log("I WENT INTO HERE (1)!");
         currentIndex = currentStep;
+
         return (
             <div className="queue-container">
                 <div className="text-queue">
@@ -154,7 +113,7 @@ const Queue = ({ ...props }) => {
                                         top: `${19 - index * 3.8}rem`,
                                     }}
                                     className={
-                                        "stack-item " +
+                                        "queue-item " +
                                         (item === "..." ? "queue-item-extra" : "")
                                     }
                                 >
@@ -166,40 +125,7 @@ const Queue = ({ ...props }) => {
                 </div>
             </div>
         );
-    } else {
-        console.log("I WENT INTO HERE (2)!");
-        currentIndex = currentStep;
-        return (
-            <div className="queue-container">
-                <div className="text-queue">
-                    <p id="queue-back">Enter Queue</p>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <p id="queue-front">Leave Queue</p>
-                </div>
-                <div className="queue-item-holder">
-                    {toDisplay.map((item: string, index: number) => (
-                        <div
-                            style={{
-                                top: `${17.5 - index * 3.8}rem`,
-                            }}
-                            className={
-                                "queue-item " +
-                                (item === "..." ? "queue-item-extra " : "")
-                            }
-                        >
-                            {item}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
     }
-    */
 };
 
 export default Queue;
