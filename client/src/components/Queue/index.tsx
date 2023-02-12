@@ -15,6 +15,8 @@ import { current } from "@reduxjs/toolkit";
 
 var currentIndex = -1;
 
+var newStep = -1;
+
 const Queue = ({ ...props }) => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
@@ -35,6 +37,7 @@ const Queue = ({ ...props }) => {
 
     const toDisplay = queue.length < 10 ? queue : ["...", ...queue.slice(-9)];
 
+    newStep = currentStep
 
     if (currentIndex > currentStep) {
         console.log("I WENT INTO HERE (2)!");
@@ -57,16 +60,16 @@ const Queue = ({ ...props }) => {
                             <CSSTransition
                                 timeout={350}
                                 key={item + index}
-                                classNames="queueBack-item"
+                                classNames={{
+                                    enter: 'queueBack-item-enter',
+                                    exit: 'queueBack-item-exit',
+                                    exitActive: 'queueBack-item-exit-active'
+                                }}
                             >
                                 <div
                                     style={{
                                         top: `${19 - index * 3.8}rem`,
                                     }}
-                                    className={
-                                        "queueBack-item " +
-                                        (item === "..." ? "queueBack-item-extra" : "")
-                                    }
                                 >
                                     {item}
                                 </div>
