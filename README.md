@@ -1,12 +1,20 @@
 # algo-visualizer
 
-The Express server should be started with Postgres database before running the React client.
+Welcome to the HCP Algorithm Visualizer project. This repository contains the front-end React application in the `client` folder and the back-end Node.js application in the `server` folder. The following information will explain how to set up the development environment for your to run and test the codebase on your local machine. 
 
-## **Running guide**:
+# Starting up React and Node
 
-If you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
+Note, there are two ways to start the codebase's front-end and back-end
+1. Npm commands (faster, but more commands needed)
+2. Docker Compose (slower, but less commends needed)
 
-# Backend
+## Npm Setup:
+
+This approach is more organic and you're probably more used to this approach if you have experience developing Node.js or React applications.
+
+First, if you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
+
+### Starting Backend
 
 Open a terminal on VS Code. Follow the following steps on terminal:
 
@@ -28,13 +36,13 @@ npm install
 npm run build
 ```
 
-4. Start server
+4. Start Node.js server
 
 ```
 npm start
 ```
 
-# Frontend
+### Starting Frontend
 
 Open a terminal on VS Code. Follow the follwing steps on terminal:
 
@@ -50,17 +58,41 @@ cd client
 npm install
 ```
 
-3. Start server
+3. Start React App server
 
 ```cmd
 npm start
 ```
 
-There might be warnings for vulnerabilities after packages are installed. They can be ignored for now.
+There might be warnings for vulnerabilities after packages are installed. Run the suggested commands to repair any critical severity vulnerabilities. After going through this process, the website will be functional and hosted on `localhost:3000`.
 
-# Database
 
-Note that at the current state, the database isn't necessary for the AlgoViz to function, it would just make the "Provide Feedback" function useless.
+## **Docker Compose**:
+
+The other way to start the whole codebase on your local machine with just one command is through Docker! Our codebase has been setup so that the front-end and back-end are containerized and can be started with just one command.
+
+First, ensure that you have a Docker account and you have the Docker application installed
+
+1. Check you have Docker CLI by ensure you get the latest version when you run the following command:
+```cmd
+docker -v
+```
+
+2. Ensure that you are logged into your Docker account in Docker CLI by running
+```cmd
+docker login
+```
+
+2. Then, at the root of the repository folder, run the following command:
+```cmd
+docker compose up
+```
+This will build the Docker images for the front-end and back-end and the website will be hosted on your `localhost:3000`.
+
+
+## Starting up Database
+
+Note that at the current state, the database isn't necessary for the AlgoViz to function, it would just make the "Provide Feedback" function useless. Also, the Postgres setup guide below is in dire need of improvement, which we plan to do over the next few months (as of Feb 13th, 2023)
 
 **Postgresql Download**
 
