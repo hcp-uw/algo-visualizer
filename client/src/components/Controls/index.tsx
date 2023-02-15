@@ -225,7 +225,7 @@ const Controls = ({ ...props }) => {
      * Handle state setup before sending the request for algorithm fetch.
      */
     const fetchAlgorithm = () => {
-        doReset(); 
+        doReset();
         let toSend: {
             array?: number[];
             target?: number;
