@@ -67,15 +67,15 @@ const Queue = ({ ...props }) => {
                         <CSSTransition
                             timeout={350}
                             key={item + index}
-                            classNames= {temp <= currentStep ? "queueBack-item" : "queue-item"}
+                            classNames= {temp <= currentStep ? "queue-item" : "queueBack-item"}
                         >
                             <div
                                 style={{
                                     top: `${19 - index * 3.8}rem`,
                                 }}
-                                className={(temp <= currentStep ? "queueBack-item" : "queue-item")
+                                className={(temp <= currentStep ? "queue-item" : "queueBack-item")
                                         +
-                                    (item === "..." ? (temp <= currentStep ? "queueBack-item-extra" : "queue-item-extra") : "")
+                                    (item === "..." ? (temp <= currentStep ? "queue-item-extra" : "queueBack-item-extra") : "")
                                 }
                             >
                                 {item}
