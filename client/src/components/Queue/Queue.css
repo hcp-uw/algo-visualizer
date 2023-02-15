@@ -4,8 +4,7 @@
     padding: 10px 15% 10px 15%;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: horizontal;
 }
 
 .queue-item-holder {
@@ -41,4 +40,134 @@
 
 #queue-front {
     color: rgb(255, 0, 0);
+}
+
+.queue-item-enter {
+    animation: queue-item-slide-down 0.3s ease-in;
+}
+
+.queue-item-exit {
+    opacity: 1;
+    translate: 0;
+    animation: queue-item-slide-down2 0.0002s ease-in;
+    display: none;
+}
+
+.queue-item-exit-active {
+    opacity: 0;
+    translate: 0 -50px;
+}
+
+.queue-item-extra {
+    background-color: white;
+    border: none;
+}
+
+@keyframes queue-item-slide-down {
+    from {
+        translate: 0 -20px;
+    }
+    to {
+        translate: 0 0px;
+    }
+}
+
+@keyframes queue-item-slide-down2 {
+    from {
+        translate: 0 20px;
+        opacity: 1;
+    }
+    to {
+        translate: 0 0px;
+        opacity: 0;
+    }
+}
+
+
+
+/******************************************************************************/
+.queueBack-container {
+    width: 100%;
+    height: 100%;
+    padding: 10px 15% 10px 15%;
+    overflow: hidden;
+    display: flex;
+    align-items: horizontal;
+}
+
+.queueBack-item-holder {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    margin: 5px 0px 5px 0px;
+    width: 100%;
+    height: 340px;
+}
+
+.queueBack-item {
+    text-align: center;
+    padding: 0;
+    position: relative;
+    border: 1px solid #9124d4;
+    font-size: 18px;
+    width: 90%;
+    min-width: 24px;
+    margin: auto;
+    background-color: #e7c1ff;
+    border-radius: 15px;
+}
+
+#queueBack-front, #queueBack-back {
+    padding-right: 5px;
+    font-size: 18px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#queueBack-back {
+    color: rgb(1, 171, 9);
+}
+
+#queueBack-front {
+    color: rgb(255, 0, 0);
+}
+
+
+.queueBack-item-enter {
+    animation: queueBack-item-slide-down 0.02s ease-in;
+}
+
+.queueBack-item-exit {
+    opacity: 1;
+    translate: 0;
+    animation: queueBack-item-slide-down2 0.02s ease-in;
+}
+
+.queueBack-item-exit-active {
+    opacity: 0;
+    translate: 0 -50px;
+}
+
+.queueBack-item-extra {
+    background-color: white;
+    border: none;
+}
+
+@keyframes queueBack-item-slide-down {
+    from {
+        translate: 0 20px;
+    }
+    to {
+        translate: 0 0px;
+    }
+}
+
+@keyframes queueBack-item-slide-down2 {
+    from {
+        translate: 0 20px;
+        opacity: 1;
+    }
+    to {
+        translate: 0 0px;
+        opacity: 0;
+    }
 }
