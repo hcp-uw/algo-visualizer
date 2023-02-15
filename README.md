@@ -156,5 +156,3 @@ heroku container:release web --app algo-viz-server
 ```
 
 To view the deployed front-end, visit [https://algo-viz-client.herokuapp.com/](https://algo-viz-client.herokuapp.com/) or run `heroku open` in your Terminal.
-
-To check the back-end is running, visit [https://algo-viz-server.herokuapp.com/](https://algo-viz-server.herokuapp.com/). You should see the word `Positive` being returned.
