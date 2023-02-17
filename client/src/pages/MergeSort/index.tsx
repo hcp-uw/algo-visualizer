@@ -71,8 +71,6 @@ const MergeSort = () => {
      */
     const drawBlocks = () => {
         // when page loaded at first or in case steps are missing
-        console.log("algo fetched")
-        console.log(" step # before = " + currentStep)
         const step = algorSteps.steps[currentStep - 1];
         let isStepAvailable =
             step != null &&
