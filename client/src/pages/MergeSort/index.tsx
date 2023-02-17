@@ -100,7 +100,7 @@ const MergeSort = () => {
                 }
             }
 
-            let level = isStepAvailable ? step.positions[id].level : 0;
+            let level = isStepAvailable ? step.positions[id].level : 0; //error
 
             let maxSubarraySize = Math.ceil(array.length / Math.pow(2, level));
             let treePosition = isStepAvailable ? step.positions[id].treePos : 0;
