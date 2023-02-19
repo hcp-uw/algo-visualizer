@@ -45,8 +45,6 @@ const Queue = ({ ...props }) => {
     const temp = currentIndex
     currentIndex = currentStep;
 
-    console.log("Past index: " + temp);
-    console.log("Current index: " + newStep);
     return (
         <div className="queueBack-container">
             <div className="text-queue">
