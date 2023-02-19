@@ -1,5 +1,9 @@
 const { linearSearch, binarySearch, depthFirstSearch } = require("./searches");
 
+test("Fake test", () => {
+    expect(1).toEqual(1);
+})
+
 test("Linear Search basic cases", () => {
     // a success case
     let array = [1, 2, 3];
@@ -110,7 +114,7 @@ test("Binary Search edge cases", () => {
 });
 
 test("Depth First Search basic cases", () => {
-    let nodes = [0, 1, 2, 3, 4, 5, 6];
+    let nodes = ["0", "1", "2", "3", "4", "5", "6"];
     let edges = [
         { n1: 0, n2: 1 },
         { n1: 0, n2: 2 },
@@ -121,7 +125,7 @@ test("Depth First Search basic cases", () => {
     ];
 
     let result = depthFirstSearch(nodes, edges, 0).traversalResult;
-    expect(result).toEqual([0, 1, 3, 4, 5, 2, 6]);
+    expect(result).toEqual(["0", "1", "3", "4", "5", "2", "6"]);
 });
 
 test("Depth First Search edge cases", () => {
@@ -129,7 +133,7 @@ test("Depth First Search edge cases", () => {
     let nodes = [];
     let edges = [];
 
-    let result = depthFirstSearch(nodes, edges, 0);
+    let result = depthFirstSearch(nodes, edges, 0).traversalResult;
     expect(result).toEqual([]);
 
     // 1 element graph
@@ -137,5 +141,5 @@ test("Depth First Search edge cases", () => {
     edges = [];
 
     result = depthFirstSearch(nodes, edges, 0).traversalResult;
-    expect(result).toEqual([0]);
+    expect(result).toEqual(["0"]);
 });
