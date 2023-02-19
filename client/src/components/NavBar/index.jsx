@@ -117,7 +117,7 @@ const NavBar = () => {
 
                 <Nav.Item className="ms-auto me-4">
                     <a
-                        href="https://github.com/hieuc/algo-visualizer"
+                        href="https://github.com/Husky-Coding-Project/algo-visualizer"
                         target="_blank"
                         rel="noreferrer"
                         className="github-ref"
