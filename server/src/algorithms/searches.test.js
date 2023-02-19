@@ -1,4 +1,4 @@
-const { linearSearch, binarySearch, depthFirstSearch } = require("./searches");
+const { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch } = require("./searches");
 
 test("Fake test", () => {
     expect(1).toEqual(1);
