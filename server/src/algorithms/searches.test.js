@@ -1,9 +1,5 @@
 const { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch } = require("./searches");
 
-test("Fake test", () => {
-    expect(1).toEqual(1);
-})
-
 test("Linear Search basic cases", () => {
     // a success case
     let array = [1, 2, 3];
