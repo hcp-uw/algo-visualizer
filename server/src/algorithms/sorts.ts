@@ -522,6 +522,43 @@ function fillSubarrayPositions(ids1:number[], ids2:number[], positions:Position[
 function copyOject(obj:Object):Object {
     return JSON.parse(JSON.stringify(obj));
 }
+
+//----------------------------------QUICK SORT----------------------------------------------
+function quickSort(arr:number[]) {
+    let i = partition(arr, 0, arr.length - 1)
+    quickSortHelper(arr, 0, i - 1)
+}
+
+function quickSortHelper(arr:number[], left:number, right:number) {
+    
+}
+
+function findPivot(arr:number[], right:number, left:number) {
+    let middle = (left + right) / 2;
+    return arr[middle]
+}
+
+function partition(arr:number[], left:number, right:number) {
+    const pivot = findPivot(arr, 0, arr.length - 1)
+    let l = 0
+    let r = arr.length - 1
+    while (l <= r) {
+        while (arr[l] < pivot) {
+            l++;
+        }
+        while (arr[r] > pivot) {
+            r--;
+        }
+        if (l <= r) {
+            [arr[l], arr[r]] = [arr[l], arr[r]];
+            l++;
+            r--;
+        }
+    }
+    return l;
+}
+
+
 //-----------------------------------------------------------------------------------------
 
 export {
