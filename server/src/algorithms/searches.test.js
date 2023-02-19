@@ -116,16 +116,31 @@ test("Binary Search edge cases", () => {
 test("Depth First Search basic cases", () => {
     let nodes = ["0", "1", "2", "3", "4", "5", "6"];
     let edges = [
-        { n1: 0, n2: 1 },
-        { n1: 0, n2: 2 },
-        { n1: 1, n2: 3 },
-        { n1: 1, n2: 4 },
-        { n1: 4, n2: 5 },
-        { n1: 2, n2: 6 },
+        { n1: "0", n2: "1" },
+        { n1: "0", n2: "2" },
+        { n1: "1", n2: "3" },
+        { n1: "1", n2: "4" },
+        { n1: "4", n2: "5" },
+        { n1: "2", n2: "6" }
     ];
 
     let result = depthFirstSearch(nodes, edges, 0).traversalResult;
     expect(result).toEqual(["0", "1", "3", "4", "5", "2", "6"]);
+});
+
+test("Breadth First Search basic cases", () => {
+    let nodes = ["0", "1", "2", "3", "4", "5", "6"];
+    let edges = [
+        { n1: "0", n2: "1" },
+        { n1: "0", n2: "2" },
+        { n1: "1", n2: "3" },
+        { n1: "1", n2: "4" },
+        { n1: "4", n2: "5" },
+        { n1: "2", n2: "6" }
+    ];
+
+    let result = breadthFirstSearch(nodes, edges, 0).traversalResult;
+    expect(result).toEqual(["0", "1", "2", "3", "4", "6", "5"]);
 });
 
 test("Depth First Search edge cases", () => {
@@ -143,3 +158,20 @@ test("Depth First Search edge cases", () => {
     result = depthFirstSearch(nodes, edges, 0).traversalResult;
     expect(result).toEqual(["0"]);
 });
+
+test("Breadth First Search edge cases", () => {
+    // empty graph
+    let nodes = [];
+    let edges = [];
+
+    let result = breadthFirstSearch(nodes, edges, 0).traversalResult;
+    expect(result).toEqual([]);
+
+    // 1 element graph
+    nodes = [0];
+    edges = [];
+
+    result = breadthFirstSearch(nodes, edges, 0).traversalResult;
+    expect(result).toEqual(["0"]);
+});
+
