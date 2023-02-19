@@ -526,11 +526,20 @@ function copyOject(obj:Object):Object {
 //----------------------------------QUICK SORT----------------------------------------------
 function quickSort(arr:number[]) {
     let i = partition(arr, 0, arr.length - 1)
-    quickSortHelper(arr, 0, i - 1)
+    return quickSortHelper(arr, 0, i - 1)
 }
 
 function quickSortHelper(arr:number[], left:number, right:number) {
-    
+    if (arr.length > 1) {
+        let index = partition(arr, left, right)
+        if (left < index - 1) {
+            quickSortHelper(arr, left, index - 1)
+        }
+        if (index < right) {
+            quickSortHelper(arr, index, right)
+        }
+    }
+    return arr
 }
 
 function findPivot(arr:number[], right:number, left:number) {
