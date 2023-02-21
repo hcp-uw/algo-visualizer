@@ -45,6 +45,12 @@ npm start
 
 From now onward, if you make changes to the back-end and you want to view the effects of your latest changes, just do Steps 3 and 4.
 
+If you want to run the back-end tests, do the following
+```
+npm run build
+npm test
+```
+
 ### Starting Frontend
 
 Open a terminal on VS Code. Follow the following steps on terminal:

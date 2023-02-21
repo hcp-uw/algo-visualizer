@@ -169,7 +169,6 @@ const GraphControls = ({
         }
 
         if (nodeId == '-Select Node-') {
-          console.log("I went into here!");
           let error = "Please enter in a value" as string
           alertMessage(document.getElementById("removeNodePortion") as HTMLDivElement, error)
           return;
@@ -246,7 +245,6 @@ const GraphControls = ({
       let endCheck = "End" as string;
 
       if (startValue == startCheck || endValue == endCheck) {
-        console.log("I went into here!");
         let error = "Please enter in a value" as string
         alertMessage(document.getElementById("removeEdgePortion") as HTMLDivElement, error)
         return;
