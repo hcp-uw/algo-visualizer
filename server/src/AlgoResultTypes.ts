@@ -33,6 +33,19 @@ type BubbleSortResultType = {
     }[];
 };
 
+type QuickSortResultType = {
+    steps: {
+        array: number[];
+        leftHighlight: number; // color this
+        rightHighlight: number; // color this
+        sorted: number[]; // low priority on coloring
+        swapped: boolean; //  low priority on coloring
+        description: string;
+        pivotIndex: number; // color this
+    }[];
+};
+
+
 type InsertionSortResultType = BubbleSortResultType;
 
 type SelectionSortResultType = {
@@ -98,7 +111,8 @@ type SortAlgorithmResultType =
     | BubbleSortResultType
     | InsertionSortResultType
     | SelectionSortResultType
-    | MergeSortResultType;
+    | MergeSortResultType
+    | QuickSortResultType;
 
 type AlgorithmResultType = SearchAlgorithmResultType | SortAlgorithmResultType;
 
@@ -109,6 +123,7 @@ export {
     InsertionSortResultType,
     SelectionSortResultType,
     MergeSortResultType,
+    QuickSortResultType,
     AlgorithmResultType,
     SearchAlgorithmResultType,
     SortAlgorithmResultType,
