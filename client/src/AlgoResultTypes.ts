@@ -64,6 +64,18 @@ type MergeSortResultType = {
     compareCount: number;
 };
 
+type QuickSortResultType = {
+    steps: {
+        array: number[];
+        leftHighlight: number; // color this
+        rightHighlight: number; // color this
+        sorted: number[]; // low priority on coloring
+        swapped: boolean; //  low priority on coloring
+        description: string;
+        pivotIndex: number; // color this
+    }[];
+};
+
 type DepthFirstSearchResultType = {
     steps: {
         stack: { id: string; from: string }[];
@@ -100,7 +112,8 @@ type SortAlgorithmResultType =
     | BubbleSortResultType
     | InsertionSortResultType
     | SelectionSortResultType
-    | MergeSortResultType;
+    | MergeSortResultType
+    | QuickSortResultType;
 
 type AlgorithmResultType = SearchAlgorithmResultType | SortAlgorithmResultType;
 
@@ -111,6 +124,7 @@ export {
     InsertionSortResultType,
     SelectionSortResultType,
     MergeSortResultType,
+    QuickSortResultType,
     AlgorithmResultType,
     SearchAlgorithmResultType,
     SortAlgorithmResultType,
