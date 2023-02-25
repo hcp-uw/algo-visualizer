@@ -4,7 +4,7 @@
  */
 const express = require("express");
 const router = express.Router();
-const db = require("../db");
+const { db } = require("../db");
 
 // attach the body as a json into res variable
 router.use(express.json());
@@ -13,12 +13,12 @@ router.post("/", async (req, res) => {
     req.body.browserInfo["user-agent"] = req.get("User-Agent");
     const params = [
         req.body.message,
-        req.body.browserInfo,
-        req.body.algorithmData,
+        JSON.stringify(req.body.browserInfo),
+        JSON.stringify(req.body.algorithmData),
     ];
 
     const query =
-        "INSERT INTO Feedback (Message, Browser_info, Algorithm_data) VALUES ($1, $2, $3);";
+        "INSERT INTO Feedback (message, browser_info, algorithm_data) VALUES (?, ?, ?);";
 
     try {
         await db.query(query, params);
