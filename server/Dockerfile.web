@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64/v8 node:14.17.0-alpine
+FROM --platform=linux/amd64 node:14.17.0-alpine
 
 RUN npm install -g nodemon
 
@@ -9,7 +9,6 @@ COPY package-lock.json .
 COPY tsconfig.json .
 
 RUN npm install
-RUN npm ci --only=production
 
 COPY . .
 
