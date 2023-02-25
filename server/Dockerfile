@@ -12,6 +12,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm run build
+
 # required for docker desktop port mapping
 EXPOSE 3001
 
