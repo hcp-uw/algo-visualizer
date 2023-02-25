@@ -1,10 +1,10 @@
 # Your workflow name.
 name: Deploy to Heroku.
 
-# Run workflow on every push to master branch.
+# Run workflow on every push to main branch.
 on:
   push:
-    branches: [production]
+    branches: [80-automating-heroku-deployment]
 
 # Your workflows jobs.
 jobs:
@@ -44,5 +44,5 @@ jobs:
           docker_options: "--no-cache"
           # (Optional, default: "web")
           process_type: web
-          
+
 ### ⬆ IMPORTANT PART ⬆ ###
