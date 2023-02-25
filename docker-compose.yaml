@@ -14,6 +14,3 @@ services:
     container_name: algo-viz-server
     ports:
       - '3001:3001'
-    volumes:
-      - ./server:/app
-      - /app/node_modules
