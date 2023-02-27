@@ -16,6 +16,7 @@ import {
     DepthFirstSearchResultType,
     BreadthFirstSearchResultType,
     LinearSearchResultType,
+    DjikstraSearchResultType
 } from "../AlgoResultTypes";
 import { Edge, NodeMap } from "../CommonTypes";
 
@@ -129,6 +130,10 @@ function binarySearch(arr: number[], target: number) {
 }
 
 type NodeWithPrev = { id: string; from: string };
+
+type NodeWithPrevAndWeight = { id: string; from: string; weight: number};
+
+type AdjacentNode = { id: string; weight: number};
 
 function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
     let result: DepthFirstSearchResultType = {
@@ -327,4 +332,123 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") 
 }
 
 
-export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch };
+
+// The main difference with this and BFS is the fact that we will
+// now be using a priorityQueue rather than using a queue
+function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
+    let result: DjikstraSearchResultType = {
+        steps: [],
+        traversalResult: [],
+        startNode: "",
+    };
+
+    let adjacencyMap: { [key: string]: string[] } = {};
+    let priorityQueue: NodeWithPrevAndWeight[] = [];
+    let visited: string[] = [];
+    let visitedEdges: Edge[] = [];
+    let edgeWeights: {[key:string]: number} = {}
+
+    if (nodes.length === 0) return result;
+
+    for (let i = 0; i < nodes.length; i++) {
+        adjacencyMap[nodes[i]] = [];
+    }
+
+    // build adjacency map
+    for (let i = 0; i < edges.length; i++) {
+        // add to front so we search from left to right
+        adjacencyMap[edges[i].n1].unshift(edges[i].n2);
+        adjacencyMap[edges[i].n2].unshift(edges[i].n1);
+        edgeWeights["" + edges[i].n1 + " " + edges[i].n2] = edges[i].weight as number;
+    }
+
+    // The start is going to have a weight of 0
+    if (!start) start = nodes[0].toString();
+    priorityQueue.push({ id: start, from: "", weight: 0});
+    result.startNode = start.toString();
+
+    result.steps.push({
+        priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+        currentNode: [],
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
+        description: `Starting from node ${start}`,
+    });
+
+    // Djikstra's algorithm
+    while (priorityQueue.length > 0) {
+        // front of the list is the front of the queue
+        let node = priorityQueue.shift() as NodeWithPrevAndWeight;
+
+        if (!visited.includes(node.id)) {
+            visited.push(node.id);
+            // add visited edge
+            visitedEdges.push({ n1: node.from, n2: node.id, weight: node.weight});
+
+            result.steps.push({
+                priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+                currentNode: [node.id],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Visiting node ${node.id}`,
+            });
+
+            // collecting adjacent nodes
+            var addedAdj:AdjacentNode[] = [];
+            for (const n of adjacencyMap[node.id]) {
+                if (!visited.includes(n)) {
+                    addedAdj.push({id:n, weight: edgeWeights["" + node.id + " " + n]});
+                }
+            }
+
+            // Add nodes to queue from least to greatest order
+            addedAdj.sort();
+            for (const adjacentNode of addedAdj) {
+                priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: adjacentNode.weight});
+            }
+
+            // Here we will need to sort the priorityQueue by the weight of each node
+            priorityQueue.sort(function(x, y) {
+                if (x.weight < y.weight) {
+                   return -1;
+                }
+                if (x.weight > y.weight) {
+                   return 1;
+                }
+                return 0;
+             });
+
+            result.steps.push({
+                priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description:
+                    addedAdj.length > 0
+                        ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
+                        : "Did not add any adjacent nodes.",
+            });
+        } else {
+            result.steps.push({
+                priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+                currentNode: [],
+                visitedNodes: copyObject(visited) as string[],
+                visitedEdges: copyObject(visitedEdges) as Edge[],
+                description: `Node ${node.id} already visited!`,
+            });
+        }
+    }
+
+    result.steps.push({
+        priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+        currentNode: [],
+        visitedNodes: copyObject(visited) as string[],
+        visitedEdges: copyObject(visitedEdges) as Edge[],
+        description: `Traversal finished.`,
+    });
+    result.traversalResult = visited;
+    return result;
+}
+
+
+export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch, djikstraSearch };
