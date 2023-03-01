@@ -12,7 +12,7 @@
  *              }
  */
 
-import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
+import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, QuickSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
 
 /**
  * Helper function to swap two elements in an array.
@@ -524,6 +524,18 @@ function copyOject(obj:Object):Object {
 }
 
 //----------------------------------QUICK SORT----------------------------------------------
+
+
+// steps: {
+//     array: number[];
+//     leftHighlight: number; // color this
+//     rightHighlight: number; // color this
+//     sorted: number[]; // low priority on coloring
+//     swapped: boolean; //  low priority on coloring
+//     description: string;
+//     pivotIndex: number; // color this
+// }[];
+
 function quickSort(arr:number[]) {
     let i = partition(arr, 0, arr.length - 1)
     return quickSortHelper(arr, 0, i - 1)
