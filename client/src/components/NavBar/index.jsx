@@ -96,9 +96,15 @@ const NavBar = () => {
                                     Selection Sort
                                 </NavDropdown.Item>
                             </LinkContainer>
-
                             <LinkContainer to="/merge-sort">
-                                <NavDropdown.Item>Merge Sort</NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    Merge Sort
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/quick-sort">
+                                <NavDropdown.Item>
+                                    Quick Sort
+                                </NavDropdown.Item>
                             </LinkContainer>
                         </div>
                     </NavDropdown>

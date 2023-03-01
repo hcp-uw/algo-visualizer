@@ -40,6 +40,7 @@ type QuickSortResultType = {
         rightHighlight: number; // color this
         sorted: number[]; // low priority on coloring
         swapped: boolean; //  low priority on coloring
+        swapCount: number;
         description: string;
         pivotIndex: number; // color this
     }[];

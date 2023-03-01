@@ -37,4 +37,11 @@ router.post("/mergesort", (req, res) => {
     });
 });
 
+router.post("/quicksort", (req, res) => {
+    var r = sorts.quickSort(req.body.array);
+    res.status(200).send({
+        result: r,
+    });
+});
+
 module.exports = router;
