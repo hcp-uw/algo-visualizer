@@ -538,145 +538,110 @@ function copyOject(obj:Object):Object {
 //     pivotIndex: number; // color this
 // }[];
 
+/*
 function quickSort(arr:number[]) {
-    let result:QuickSortResultType = { steps: [] }
-    let sorted:number[] = [];
-    let swapCount = 0; 
-    let ids = [...Array(arr.length).keys()];
-    
-    sorted.push(ids[0]);
-    result.steps.push({
-        array: [...ids],
-        leftHighlight: -1, // color this
-        rightHighlight: -1, // color this
-        sorted: sorted, // low priority on coloring
-        swapped: false, //  low priority on coloring
-        swapCount: swapCount,
-        description: "Starting quick sort...",
-        pivotIndex: -1, // color this
-    })
-    return quickSortHelper(arr, 0, arr.length - 1, result, sorted, swapCount, ids)
+    if (arr.length <= 1) return "Array is empty!";
+    // let i = partition(arr, 0, arr.length - 1)
+    return quickSortHelper(arr, 0, arr.length - 1)
 }
 
-function quickSortHelper(arr:number[], left:number, right:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]) {
+function quickSortHelper(arr:number[], left:number, right:number) {
     if (arr.length > 1) {
-        let index = partition(arr, left, right, result, sorted, swapCount, ids)
+        let index = partition(arr, left, right)
         if (left < index - 1) {
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: left, // color this
-                rightHighlight: index - 1, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: true, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Swapping...",
-                pivotIndex: index, // color this
-            })
-            quickSortHelper(arr, left, index - 1, result, sorted, swapCount, ids)
+            quickSortHelper(arr, left, index - 1)
         }
         if (index < right) {
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: index, // color this
-                rightHighlight: right, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: true, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Swapping...",
-                pivotIndex: index, // color this
-            })
-            quickSortHelper(arr, index, right, result, sorted, swapCount, ids)
+            quickSortHelper(arr, index, right)
         }
     }
     return arr
 }
 
-function findPivot(arr:number[], right:number, left:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]) {
+function findPivot(arr:number[], right:number, left:number) {
     let middle = (left + right) / 2;
-    result.steps.push({
-        array: [...ids],
-        leftHighlight: -1, // color this
-        rightHighlight: -1, // color this
-        sorted: sorted, // low priority on coloring
-        swapped: false, //  low priority on coloring
-        swapCount: swapCount,
-        description: "Choosing pivot...",
-        pivotIndex: middle, // color this
-    })
     return arr[middle]
 }
 
-function partition(arr:number[], left:number, right:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]) {
-    const pivot = findPivot(arr, 0, arr.length - 1, result, sorted, swapCount, ids)
-    let l = left
-    let r = right
-    result.steps.push({
-        array: [...ids],
-        leftHighlight: l, // color this
-        rightHighlight: r, // color this
-        sorted: sorted, // low priority on coloring
-        swapped: false, //  low priority on coloring
-        swapCount: swapCount,
-        description: "Partitioning...",
-        pivotIndex: pivot, // color this
-    })
+function partition(arr:number[], left:number, right:number) {
+    const pivot = findPivot(arr, 0, arr.length - 1)
+    let l = 0
+    let r = arr.length - 1
     while (l <= r) {
         while (arr[l] < pivot) {
             l++;
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: l, // color this
-                rightHighlight: r, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: false, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Moving left pointer",
-                pivotIndex: pivot, // color this
-            })
         }
         while (arr[r] > pivot) {
             r--;
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: l, // color this
-                rightHighlight: r, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: false, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Moving right pointer",
-                pivotIndex: pivot, // color this
-            })
         }
         if (l <= r) {
-            swap(arr, l, r);
-            swap(ids, l, r);
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: l, // color this
-                rightHighlight: r, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: true, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Swapping...",
-                pivotIndex: pivot, // color this
-            })
+            [arr[l], arr[r]] = [arr[l], arr[r]];
             l++;
             r--;
-            result.steps.push({
-                array: [...ids],
-                leftHighlight: l, // color this
-                rightHighlight: r, // color this
-                sorted: sorted, // low priority on coloring
-                swapped: true, //  low priority on coloring
-                swapCount: swapCount,
-                description: "Updating left and right pointers after the swap",
-                pivotIndex: pivot, // color this
-            })
         }
     }
     return l;
-}
+}*/
 
+function quickSort(array:number[]) {
+    if (array.length <= 1) return "Array is empty!";
+    // Create an array to hold the indices of the elements to be sorted
+    const indices: number[] = [];
+    
+    // Initialize the indices array with the starting and ending indices of the input array
+    indices.push(0);
+    indices.push(array.length - 1);
+    
+    // Loop through the indices array, sorting subarrays until there are no more subarrays to sort
+    while (indices.length > 1) {
+      // Pop the last two indices from the array
+
+        const end = indices.pop()!;
+        const start = indices.pop()!;
+        
+        // Choose a pivot element (in this case, the last element)
+        const pivot = array[end];
+        
+        // Create two variables to hold the indices of the elements smaller and larger than the pivot
+        let i = start;
+        let j = end;
+        
+        // Loop through the subarray, swapping elements as necessary to partition the array around the pivot
+        while (i < j) { 
+            while (array[i] < pivot) {
+                i++;
+            }
+            while (array[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                [array[i], array[j]] = [array[j], array[i]];
+                i++;
+                j--;
+            }
+        }
+
+        // Swap the pivot element into its final position
+        i++;
+        [array[i], array[end]] = [array[end], array[i]];
+        
+        // If there are elements to the left of the pivot, add the left subarray's start and end indices
+        if (i - 1 > start) {
+            indices.push(start);
+            indices.push(i - 1);
+        }
+        
+        // If there are elements to the right of the pivot, add the right subarray's start and end indices
+        if (i + 1 < end) {
+            indices.push(i + 1);
+            indices.push(end);
+        }
+    }
+    
+    // Return the sorted array
+    return array;
+  }
+  
 
 //-----------------------------------------------------------------------------------------
 

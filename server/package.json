@@ -6,7 +6,9 @@
     "scripts": {
         "test": "jest build --coverage",
         "start": "node ./build/index.js",
-        "build": "tsc"
+        "build": "tsc",
+        "bstart": "npm run build && npm start",
+        "btest": "npm run build && npm test"
     },
     "keywords": [],
     "author": "",
