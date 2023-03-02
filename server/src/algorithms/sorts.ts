@@ -587,27 +587,28 @@ function quickSort(array:number[]) {
     if (array.length <= 1) return "Array is empty!";
     // Create an array to hold the indices of the elements to be sorted
     const indices: number[] = [];
-    
+
     // Initialize the indices array with the starting and ending indices of the input array
     indices.push(0);
     indices.push(array.length - 1);
-    
+
     // Loop through the indices array, sorting subarrays until there are no more subarrays to sort
     while (indices.length > 1) {
-      // Pop the last two indices from the array
-
+        console.log(indices);
+        // Pop the last two indices from the array
         const end = indices.pop()!;
         const start = indices.pop()!;
-        
+
         // Choose a pivot element (in this case, the last element)
         const pivot = array[end];
-        
+
         // Create two variables to hold the indices of the elements smaller and larger than the pivot
         let i = start;
         let j = end;
-        
+
         // Loop through the subarray, swapping elements as necessary to partition the array around the pivot
         while (i < j) {
+            console.log(`i: ${i}, j: ${j}, array=${array}`)
             while (array[i] < pivot) {
                 i++;
             }
@@ -616,32 +617,26 @@ function quickSort(array:number[]) {
             }
             if (i <= j) {
                 [array[i], array[j]] = [array[j], array[i]];
-                i++;
-                j--;
             }
         }
-
-        // Swap the pivot element into its final position
-        i++;
-        [array[i], array[end]] = [array[end], array[i]];
-        
+        console.log(`i: ${i}, j: ${j}, array=${array}`);
         // If there are elements to the left of the pivot, add the left subarray's start and end indices
         if (i - 1 > start) {
             indices.push(start);
             indices.push(i - 1);
         }
-        
+
         // If there are elements to the right of the pivot, add the right subarray's start and end indices
         if (i + 1 < end) {
             indices.push(i + 1);
             indices.push(end);
         }
     }
-    
+
     // Return the sorted array
     return array;
   }
-  
+
 
 //-----------------------------------------------------------------------------------------
 
