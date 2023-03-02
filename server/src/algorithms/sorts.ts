@@ -607,7 +607,7 @@ function quickSort(array:number[]) {
         let j = end;
         
         // Loop through the subarray, swapping elements as necessary to partition the array around the pivot
-        while (i < j) { 
+        while (i < j) {
             while (array[i] < pivot) {
                 i++;
             }
