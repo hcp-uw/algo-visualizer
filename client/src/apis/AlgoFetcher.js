@@ -9,7 +9,7 @@ import axios from "axios";
 // URL based on NODE_ENV
 
 const baseURL =
-    process.env.NODE_ENV === "production" ? "https://algo-viz-server.herokuapp.com/api" : "http://localhost:3001/api";
+    process.env.REACT_APP_PRODUCTION === "true" ? "https://algo-viz-server.herokuapp.com/api" : "http://localhost:3001/api";
 
 export default axios.create({
     baseURL,
