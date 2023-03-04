@@ -9,9 +9,10 @@ COPY package-lock.json .
 COPY tsconfig.json .
 
 RUN npm install
-RUN npm ci --only=production
 
 COPY . .
+
+RUN npm run build
 
 # required for docker desktop port mapping
 EXPOSE 3001
