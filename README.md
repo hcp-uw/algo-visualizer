@@ -95,8 +95,8 @@ To **deploy to Heroku manually without Github Actions**, you can run the followi
 **ONLY do this if you need to test something Docker + Heroku related that cannot be tested without deploying.**
 
 ```cmd
-heroku container:push web --app algo-vizualizer --recursive
-heroku container:release web --app algo-vizualizer
+heroku container:push web --app algo-visualizer --recursive
+heroku container:release web --app algo-visualizer
 ```
 
 Now, if you want to test the Github Action specifically without merging to production branch, then you can do the following:
