@@ -1,7 +1,5 @@
 /client/node_modules
-/client/Dockerfile*
 /client/build
 
 /server/node_modules
-/server/Dockerfile*
 /server/build
