@@ -76,6 +76,11 @@ const NavBar = () => {
                                     Breadth First Search
                                 </NavDropdown.Item>
                             </LinkContainer>
+                            <LinkContainer to="/djikstra-search">
+                                <NavDropdown.Item>
+                                    Djikstra Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
                         </div>
                     </NavDropdown>
 
