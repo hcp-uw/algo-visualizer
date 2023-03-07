@@ -88,11 +88,25 @@ type BreadthFirstSearchResultType = {
     startNode: string;
 };
 
+// NEW CHANGE
+type DjikstraSearchResultType = {
+    steps: {
+        priorityQueue: { id: string; from: string, weight: number }[];
+        currentNode: string[];
+        visitedNodes: string[];
+        visitedEdges: Edge[];
+        description: string;
+    }[];
+    traversalResult: string[];
+    startNode: string;
+};
+
 type SearchAlgorithmResultType =
     | LinearSearchResultType
     | BinarySearchResultType
     | DepthFirstSearchResultType
-    | BreadthFirstSearchResultType;
+    | BreadthFirstSearchResultType
+    | DjikstraSearchResultType;
 
 type SortAlgorithmResultType =
     | BubbleSortResultType
@@ -113,5 +127,6 @@ export {
     SearchAlgorithmResultType,
     SortAlgorithmResultType,
     DepthFirstSearchResultType,
-    BreadthFirstSearchResultType
+    BreadthFirstSearchResultType,
+    DjikstraSearchResultType
 };
