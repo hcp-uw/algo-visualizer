@@ -1,13 +1,3 @@
-/* This is Postgres */
-DROP TABLE IF EXISTS Feedback;
-CREATE TABLE Feedback (
-    id BIGSERIAL NOT NULL PRIMARY KEY,
-    timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
-    message VARCHAR(1023) NOT NULL,
-    browser_info VARCHAR(255),
-    algorithm_data TEXT
-);
-
 /* This is MySql */
 DROP TABLE IF EXISTS Feedback;
 CREATE TABLE Feedback (

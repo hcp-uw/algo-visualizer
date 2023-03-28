@@ -1,44 +1,37 @@
 # algo-visualizer
 
-Welcome to the HCP Algorithm Visualizer project. This repository contains the front-end React application in the `client` folder and the back-end Node.js application in the `server` folder. The following information will explain how to set up the development environment for your to run and test the codebase on your local machine. 
+Welcome to the HCP Algorithm Visualizer project. This repository contains the front-end React application in the `client` folder and the back-end Node.js application in the `server` folder. The following information will explain how to set up the development environment for your to run and test the codebase on your local machine.
 
-# Starting up Front-end React App and Back-end Node.js App
+**If you find mistakes, please submit an Issue to our Issue board and identify the issue for us! Thank you!
 
-There are two ways to start the codebase's front-end and back-end locally in your dev environment:
-1. Npm Setup (faster, but more commands needed, recommended for newcomers)
-2. Docker Compose (slower, but less commends needed, useful for long-term contributors)
+# Setting up Development Environment
 
-## **Npm Setup**:
-
-This approach is more organic and you're probably used to this approach if you have experience developing Node.js or React apps. 
+## Standard Installation and Setup Locally
 
 First, if you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
 
+
 ### Starting Backend
 
-Open a terminal on VS Code. Follow the following steps on terminal:
+Open a terminal on VS Code and check you're at your project root folder. Follow the following steps on terminal:
 
 1. Change directory to `server` folder
-
 ```cmd
 cd server
 ```
 
 2. Install necessary packages
-
 ```cmd
 npm install
 ```
 Do `npm install <package_name>` if you want to install more specific packages in the future. Same for front-end.
 
 3. Compile Typescript (Repeat for every new changes)
-
 ```
 npm run build
 ```
 
 4. Start Node.js server
-
 ```
 npm start
 ```
@@ -50,6 +43,7 @@ If you want to run the back-end tests, do the following
 npm run build
 npm test
 ```
+
 
 ### Starting Frontend
 
@@ -67,7 +61,7 @@ cd client
 npm install
 ```
 
-There might be warnings for vulnerabilities after packages are installed. Run the suggested commands to repair any critical severity vulnerabilities. After going through this process, the website will be functional and hosted on `localhost:3000`.
+There might be warnings for vulnerabilities after packages are installed. Run `npm audit fix` to repair any critical severity vulnerabilities. After going through this process, the website will be functional and hosted on `localhost:3000`.
 
 3. Start React App server
 
@@ -75,90 +69,86 @@ There might be warnings for vulnerabilities after packages are installed. Run th
 npm start
 ```
 
-From now onward, if you make changes to the back-end and you want to view your the effects of your latest changes, just do Step 3.
+From now onward, if you make changes to the front-end and you want to view the effects of your latest changes, just save your code and/or do Step 3.
 
-## **Docker Compose**:
 
-The other way to start the whole codebase on your local machine with just one command is through Docker! Our codebase has been setup so that the front-end and back-end are containerized and can be started with just one command.
+### Starting Database
 
-First, ensure that you have a Docker account and you have the Docker application installed
+**Initial Setup**
 
-1. Check you have Docker CLI by ensure you get the latest version when you run the following command:
-```cmd
-docker -v
+To start up your database locally, you'll first need to install mySQL locally. Visit [here](https://dev.mysql.com/downloads/mysql/) to download mySQL. In case you're a Mac user, get the ARM64 version if you have an Apple Silicon chip or get the x86-64 bit version if you have a 64-bit Intel chip. Once you make your choice, don't bother creating an Oracle Web Account if offered to, and just click `"No thanks, just start my download."` to get that started. Once the `.dmg` file installs, open it, open the package, and complete the MySQL installation.
+
+When it asks for a MySQL server password for the root user, just pick whatever is simple and works for your local machine. For the purposes of this setup guide, we'll choose `"AlgoViz123!"`
+
+Now, we encourage you to use the Database extension provided by VSCode to set up a connection to a local database and to create your database. Open it up and click the "+" button available at the top of the Database sidebar to create a connection to your MySQL database. You'll see several fields pop up. Fill in the following:
+
+Here are the necessary fields to plug into setting up the connection:
+- **Host URL**: 127.0.0.1 (a.k.a localhost)
+- **Username**: root
+- **Password**: AlgoViz123! (or whatever password you chose for your database)
+- **Port**: 3306
+- **Name**: algoviz (or whatever variation of algoviz you want)
+
+Next, click the "+" symbol next the the database connection that you created. When you hover over it, the label should say "New Database". This will open up a page with a script to create a new database. Add your chosen name of your database next to the command `CREATE DATABASE`. It should look like this:
+
+```code
+-- Active: 1678214754850@@127.0.0.1@3306
+CREATE DATABASE algoviz
+    DEFAULT CHARACTER SET = 'utf8mb4';
 ```
 
-2. Ensure that you are logged into your Docker account in Docker CLI by running
-```cmd
-docker login
-```
+Click the little `> Execute` button above the script that VSCode provides. This should successfully create a database under your MySQL connection.
 
-3. Then, at the root of the repository folder, run the following command:
-```cmd
-docker compose up
-```
-This will build the Docker images for the front-end and back-end and the website will be hosted on your `localhost:3000` while the back-end is listen on port 3001.
-
-4. When you're done or want to refresh or stop using those ports, run the following at the root folder
-```cmd
-docker compose down
-```
-
-## Starting up Database
-
-Note that at the current state, the database isn't necessary for the AlgoViz to function, it would just make the "Provide Feedback" function useless. Also, the Postgres setup guide below is in dire need of improvement, which we plan to do over the next few months (as of Feb 13th, 2023)
-
-**Postgresql Download**
-
-Follow the Postgres' official [site](https://www.postgresql.org/download/) and select your OS to install Postgres. During setup, use either password `test123` or your own, but then `PGPASSWORD` variable in .env file must be modified for the database to run correctly. Other fields can be left as default.
-
-UPDATE from Vikram:: I found these two links useful
-Video for Installing Postgres: https://www.youtube.com/watch?v=wTqosS71Dc4
-Download page that's used in the video: https://postgresapp.com/downloads.html
-
-**Database Setup and Monitor**
-
-1. To start PSQL, there are two options:
-    - Open `SQL Shell`. A quick search from start menu should find it, or it should be located at `C:\Program Files\PostgreSQL\<POSTGRES VERSION>\scripts\runpsql.bat`
-    - Add psql to PATH (e.g. for [Windows](https://blog.sqlbackupandftp.com/setting-windows-path-for-postgres-tools)). Then `psql -U postgres` can be used to start SQL shell from any shell.
-2. Login with default parameters (press enter when prompted) and saved password (default `test123`). After logging in you can make direct database queries through the command line
-3. Copy and run the content of `./server/src/db/SetupTables.sql` to setup tables.
-
-**Setup environment variables** (for local testing)
-
-Create a file called `.env` in `./server/` folder with the following content:
-
-```
-PGUSER=postgres
-PGHOST=localhost
-PGPASSWORD=test123
-PGDATABASE=postgres
-PGPORT=5432
-```
-
-Express will use this credentials to login to Postgres database.
+**Schema Setup**
+Now, to set up the Feedback table of the project, navigate to our SQL code at `/server/src/db/SetupTables.sql`. In VSCode, click the two Execute statements to drop the table in case it exists and then create the table with the specified schema. There should be green logging from the Database extension proving that the table was successfully made. To verify this further, you can go into the Database extension and view its contents.
 
 
-## Heroku Deployment
+However, we have our production database hosted on SimpleDB as an add-on to Heroku. Contact whoever is hosting AlgoViz to get the DB credentials/environment variables to access the hosted database and use the SequelAce application to gain secure access to that database and see its contents.
 
-As of February 14th, 2023, the Algo Viz codebase is hosted on Heroku on Vikram Nithyanandam's Heroku account. When logged into that account, run the following commands to deploy the latest front-end or back-end code to our production website. These commands make use of the `Dockerfile.web` files in both the `client` and `server` folders, which provide instructions to construct Docker images for the front-end and back-end applications. From there we can deploy those Docker images to Heroku and release it. 
+**Codebase Connection**
 
-**Note, these commands must only be run on the main branch**
+To ensure that your code is able to connect to your local codebase, go to `server/src/db/index.js` and ensure that you plug in your correct database password into the password field on line 7. Or, create a `.env` file in the `server` folder and assign the correct environment variables in there.
 
-### Deploying Front-end
+
+### Local Docker Deployment
+
+If you want to deploy Algo-Viz via Docker locally, first ensure that you have Docker Desktop installed and the Docker CLI installed. Then, run the following Terminal commands to make use of root `Dockerfile` file:
 
 ```cmd
-cd client
-heroku container:push web --app algo-viz-client --recursive
-heroku container:release web --app algo-viz-client
+docker build -f Dockerfile -t algo-viz .
+docker run -p 3001:3001 -t algo-viz
 ```
 
-### Deploying Back-end
+This will take a while, but will deploy your codebase at `localhost:3001` (not 3000) because our back-end serves the static build files from our front-end
+
+
+## Production Deployment via Heroku
+
+**NOTE: the following is only relevant to actual members of the AlgoViz team. If you're just a passing visitor, this won't be relevant to you**
+
+As of March 4th, 2023, the Algo Viz codebase is hosted on Heroku on Vikram Nithyanandam's Heroku account.
+Currently, our codebase is deployed to Heroku automatically via Github Actions on the `production` branch. Whenever you want to update the `production` branch with our latest `main` branch code, submit a pull request from `main` to `production`. The deployment process makes use of the `Dockerfile.web` file in root folder, which provide instructions to construct the Docker image for the Algo-Viz application.
+
+To **deploy to Heroku manually without Github Actions**, you can run the following in your Heroku CLI (assuming you have Vikram's credentials) at the root folder.
+
+**ONLY do this if you need to test something Docker + Heroku related that cannot be tested without deploying.**
 
 ```cmd
-cd server
-heroku container:push web --app algo-viz-server --recursive
-heroku container:release web --app algo-viz-server
+heroku container:push web --app algo-visualizer --recursive
+heroku container:release web --app algo-visualizer
 ```
 
-To view the deployed front-end, visit [https://algo-viz-client.herokuapp.com/](https://algo-viz-client.herokuapp.com/) or run `heroku open` in your Terminal.
+Now, if you want to test the Github Action specifically without merging to production branch, then you can do the following:
+
+Navigate to `.github/workflows/main.yml` and check the following code block:
+```code
+# Run workflow on every push to main branch.
+on:
+  push:
+    branches: [production]
+...
+```
+
+and rename `production` to your current branch. Then, once you commit and push to Github, the Github action will run on your separate branch and deploy the front-end and back-end code to Heroku. **Do NOT use this approach for testing regular code on production unless absolutely necessary.**
+
+Now, when it comes to the MySQL database, we use a Heroku add-on called SimpleDB, which gives a free single MySQL database that we can use for AlgoViz and store feedback. Similar to the local fields that we set to connect to our local database, there are config environment variable values that SimpleDB provides us so that our production back-end can gain access to that database. To gain access to what that database contains, speak to the owner of the Heroku account.
