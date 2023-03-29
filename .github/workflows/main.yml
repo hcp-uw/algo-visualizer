@@ -4,7 +4,7 @@ name: Deploy to Heroku.
 # Run workflow on every push to main branch.
 on:
   push:
-    branches: [production]
+    branches: [fixing-deployment]
 
 # Your workflows jobs.
 jobs:
@@ -14,21 +14,6 @@ jobs:
       # Check-out your repository.
       - name: Checkout
         uses: actions/checkout@v2
-
-      # Builds and deploys our project code to Heroku
-      - name: Build, Push, and Release Algo-Viz Docker Container to Heroku
-        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
-        with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP }}
-          # (Optional, default: "./")
-          dockerfile_directory: ./
-          dockerfile_name: Dockerfile.web
-          # (Optional, default: "")
-          docker_options: "--no-cache"
-          # (Optional, default: "web")
-          process_type: web
 
       # Builds and deploys our project code to Heroku
       - name: Build, Push, and Release Algo-Viz Docker Container to Heroku
