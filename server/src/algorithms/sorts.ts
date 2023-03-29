@@ -538,104 +538,46 @@ function copyOject(obj:Object):Object {
 //     pivotIndex: number; // color this
 // }[];
 
-/*
-function quickSort(arr:number[]) {
-    if (arr.length <= 1) return "Array is empty!";
-    // let i = partition(arr, 0, arr.length - 1)
-    return quickSortHelper(arr, 0, arr.length - 1)
-}
+function quickSort(arr: number[]) {
+    if (arr.length <= 1) return "Array is empty or single-element array!";
 
-function quickSortHelper(arr:number[], left:number, right:number) {
-    if (arr.length > 1) {
-        let index = partition(arr, left, right)
-        if (left < index - 1) {
-            quickSortHelper(arr, left, index - 1)
-        }
-        if (index < right) {
-            quickSortHelper(arr, index, right)
-        }
-    }
-    return arr
-}
+    let stack: number[] = [];
+    stack.push(0);
+    stack.push(arr.length - 1);
 
-function findPivot(arr:number[], right:number, left:number) {
-    let middle = (left + right) / 2;
-    return arr[middle]
-}
+    while (stack.length > 0) {
+        let end: number = stack.pop()!;
+        let start: number = stack.pop()!;
 
-function partition(arr:number[], left:number, right:number) {
-    const pivot = findPivot(arr, 0, arr.length - 1)
-    let l = 0
-    let r = arr.length - 1
-    while (l <= r) {
-        while (arr[l] < pivot) {
-            l++;
+        let pivotIndex = quickSortPartition(arr, start, end);
+
+        if (start !== undefined && pivotIndex - 1 > start) {
+            stack.push(start);
+            stack.push(pivotIndex - 1);
         }
-        while (arr[r] > pivot) {
-            r--;
-        }
-        if (l <= r) {
-            [arr[l], arr[r]] = [arr[l], arr[r]];
-            l++;
-            r--;
+
+        if (pivotIndex !== undefined && pivotIndex + 1 < end) {
+            stack.push(pivotIndex + 1);
+            stack.push(end);
         }
     }
-    return l;
-}*/
+    return arr;
+}
 
-function quickSort(array:number[]) {
-    if (array.length <= 1) return "Array is empty!";
-    // Create an array to hold the indices of the elements to be sorted
-    const indices: number[] = [];
+function quickSortPartition(arr: number[], start: number, end: number) {
+    let pivotIndex = start;
+    let pivotValue = arr[end];
 
-    // Initialize the indices array with the starting and ending indices of the input array
-    indices.push(0);
-    indices.push(array.length - 1);
-
-    // Loop through the indices array, sorting subarrays until there are no more subarrays to sort
-    while (indices.length > 1) {
-        console.log(indices);
-        // Pop the last two indices from the array
-        const end = indices.pop()!;
-        const start = indices.pop()!;
-
-        // Choose a pivot element (in this case, the last element)
-        const pivot = array[end];
-
-        // Create two variables to hold the indices of the elements smaller and larger than the pivot
-        let i = start;
-        let j = end;
-
-        // Loop through the subarray, swapping elements as necessary to partition the array around the pivot
-        while (i < j) {
-            console.log(`i: ${i}, j: ${j}, array=${array}`)
-            while (array[i] < pivot) {
-                i++;
-            }
-            while (array[j] > pivot) {
-                j--;
-            }
-            if (i <= j) {
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-        console.log(`i: ${i}, j: ${j}, array=${array}`);
-        // If there are elements to the left of the pivot, add the left subarray's start and end indices
-        if (i - 1 > start) {
-            indices.push(start);
-            indices.push(i - 1);
-        }
-
-        // If there are elements to the right of the pivot, add the right subarray's start and end indices
-        if (i + 1 < end) {
-            indices.push(i + 1);
-            indices.push(end);
+    for (let i = start; i < end; i++) {
+        if (arr[i] < pivotValue) {
+            [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
+            pivotIndex++;
         }
     }
 
-    // Return the sorted array
-    return array;
-  }
+    [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]];
+    return pivotIndex;
+}
 
 
 //-----------------------------------------------------------------------------------------

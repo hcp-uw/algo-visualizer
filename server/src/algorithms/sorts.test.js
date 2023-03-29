@@ -224,45 +224,27 @@ test("Quick Sort base cases", () => {
 
 test("Quick Sort edge cases", () => {
     // empty array
-    let passing = true;
-    let failing = false;
-    if (passing) {
-        expect(quickSort([])).toEqual("Array is empty!");
-        // (pass! 🟢)
+    expect(quickSort([])).toEqual("Array is empty or single-element array!");
 
-        // sorted array case (pass!)
-        testSorting(quickSort, SORTED_CASE);
-        // standardTest(quickSort, SORTED_CASE);
-        // (pass! 🟢)
+    // sorted array case (pass!)
+    testSortOnly(quickSort, SORTED_CASE);
 
-        // array with negative values case (pass!)
-        testSorting(quickSort, INCLUDE_NEGATIVES_CASE);
-        // standardTest(quickSort, INCLUDE_NEGATIVES_CASE);
-        // (pass! 🟢)
+    // array with negative values case (pass!)
+    testSortOnly(quickSort, INCLUDE_NEGATIVES_CASE);
 
-        // array with float values case
-        testSorting(quickSort, FLOATS_CASE);
-        // standardTest(quickSort, FLOATS_CASE);
-        // (pass! 🟢)
-    }
-    if (failing) {
-        // array with duplicate values case
-        testSorting(quickSort, INCLUDE_DUPS_CASE);
-        // standardTest(quickSort, INCLUDE_DUPS_CASE);
-        // (fail! 🔴)
+    // array with float values case
+    testSortOnly(quickSort, FLOATS_CASE);
 
-        // array with medium amount of elements case
-        // testSorting(quickSort, MEDIUM_CASE);
-        // standardTest(quickSort, MEDIUM_CASE);
-        // (fail! 🔴)
-    }
+    // array with duplicate values case
+    testSortOnly(quickSort, INCLUDE_DUPS_CASE);
+
+    // array with medium amount of elements case
+    testSortOnly(quickSort, MEDIUM_CASE);
 
 })
 
-function testSorting(algorithm, arr) {
-    console.log(arr);
+function testSortOnly(algorithm, arr) {
     let sortedArr = algorithm(arr);
-    console.log(sortedArr);
     for (let i = 0; i < sortedArr.length - 1; i++) {
         expect(sortedArr[i]).toBeLessThanOrEqual(sortedArr[i + 1]);
     }
