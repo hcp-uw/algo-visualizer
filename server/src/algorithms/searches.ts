@@ -358,7 +358,7 @@ function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
     for (let i = 0; i < edges.length; i++) {
         // add to front so we search from left to right
         adjacencyMap[edges[i].n1].unshift(edges[i].n2);
-        adjacencyMap[edges[i].n2].unshift(edges[i].n1);
+        //adjacencyMap[edges[i].n2].unshift(edges[i].n1);
         edgeWeights["" + edges[i].n1 + " " + edges[i].n2] = edges[i].weight as number;
     }
 
@@ -404,7 +404,7 @@ function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
             // Add nodes to queue from least to greatest order
             addedAdj.sort();
             for (const adjacentNode of addedAdj) {
-                priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: adjacentNode.weight});
+                priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: adjacentNode.weight + node.weight});
             }
 
             // Here we will need to sort the priorityQueue by the weight of each node

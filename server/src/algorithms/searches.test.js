@@ -1,4 +1,4 @@
-const { linearSearch, binarySearch, depthFirstSearch } = require("./searches");
+const { linearSearch, binarySearch, depthFirstSearch, djikstraSearch } = require("./searches");
 
 test("Linear Search basic cases", () => {
     // a success case
@@ -138,4 +138,26 @@ test("Depth First Search edge cases", () => {
 
     result = depthFirstSearch(nodes, edges, 0).traversalResult;
     expect(result).toEqual([0]);
+});
+
+test("Djikstra's test case", () => {
+    // make the nodes
+    // make the edges
+    let nodes = [0, 1, 2, 3, 4, 5, 6];
+    let edges = [
+        { n1: 0, n2: 1, weight: 2},
+        { n1: 0, n2: 2, weight: 6},
+        { n1: 1, n2: 3, weight: 5},
+        { n1: 2, n2: 3, weight: 8},
+        { n1: 3, n2: 4, weight: 10},
+        { n1: 3, n2: 5, weight: 15},
+        { n1: 5, n2: 6, weight: 6},
+        { n1: 4, n2: 6, weight: 2},
+        { n1: 4, n2: 5, weight: 6},
+    ];
+
+    var result = djikstraSearch(nodes, edges, "0").traversalResult;
+
+    expect(result).toEqual([]);
+
 });
