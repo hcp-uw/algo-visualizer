@@ -88,13 +88,26 @@ type BreadthFirstSearchResultType = {
     startNode: string;
 };
 
-type GraphAlgorithmResultType = DepthFirstSearchResultType | BreadthFirstSearchResultType;
+type DijkstrasSearchResultType = {
+    steps: {
+        stack: { id: string; from: string }[];
+        currentNode: string[];
+        visitedNodes: string[];
+        visitedEdges: Edge[];
+        description: string;
+    }[];
+    traversalResult: string[];
+    startNode: string;
+}
+
+type GraphAlgorithmResultType = DepthFirstSearchResultType | BreadthFirstSearchResultType | DijkstrasSearchResultType;
 
 type SearchAlgorithmResultType =
     | LinearSearchResultType
     | BinarySearchResultType
     | DepthFirstSearchResultType
-    | BreadthFirstSearchResultType;
+    | BreadthFirstSearchResultType
+    | DijkstrasSearchResultType;
 
 type SortAlgorithmResultType =
     | BubbleSortResultType
@@ -116,5 +129,6 @@ export {
     SortAlgorithmResultType,
     GraphAlgorithmResultType,
     DepthFirstSearchResultType,
-    BreadthFirstSearchResultType
+    BreadthFirstSearchResultType,
+    DijkstrasSearchResultType
 };

@@ -37,5 +37,12 @@ router.post("/breadthfirstsearch", (req, res) => {
     });
 });
 
+router.post("/dijkstrasearch", (req, res) => {
+    let r = searches.djikstraSearch(req.body.nodes, req.body.edges);
+    res.status(200).send({
+        result: r,
+    });
+});
+
 
 module.exports = router;
