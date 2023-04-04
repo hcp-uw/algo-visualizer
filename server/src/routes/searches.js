@@ -37,8 +37,7 @@ router.post("/breadthfirstsearch", (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-router.post("/dijkstrasearch", (req, res) => {
+router.post("/djikstrasearch", (req, res) => {
     let r = searches.djikstraSearch(req.body.nodes, req.body.edges);
     res.status(200).send({
         result: r,
@@ -46,6 +45,4 @@ router.post("/dijkstrasearch", (req, res) => {
 });
 
 
-=======
->>>>>>> 0eebc8888c4232a3d12b441cae374727b46eb5bf
 module.exports = router;
