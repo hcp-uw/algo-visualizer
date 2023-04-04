@@ -34,7 +34,7 @@ const DjikstraSearch = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(dijkstrasFirstSearchDec.algorithm));
+        dispatch(updateAlgorName(dijkstrasFirstSearchDesc.algorithm));
 
         return () => {
             dispatch(resetSteps());
