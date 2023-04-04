@@ -8,7 +8,7 @@ import VisualizerContainer from "../../components/VisualizerContainer";
 import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
-import { breadthFirstSearchDesc } from "../../assets/algorithm-information.js";
+import { dijkstrasFirstSearchDesc } from "../../assets/algorithm-information.js";
 import Queue from "../../components/Queue";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
@@ -34,7 +34,7 @@ const DjikstraSearch = () => {
     // reset data upon exiting the page
     useEffect(() => {
         // update the name on first load
-        dispatch(updateAlgorName(breadthFirstSearchDesc.algorithm));
+        dispatch(updateAlgorName(dijkstrasFirstSearchDec.algorithm));
 
         return () => {
             dispatch(resetSteps());
@@ -75,7 +75,7 @@ const DjikstraSearch = () => {
     return (
         <div className="content">
             <div className="centered">
-                <AlgorithmPopover data={breadthFirstSearchDesc} />
+                <AlgorithmPopover data={dijkstrasFirstSearchDesc} />
             </div>
 
             <VisualizerContainer
