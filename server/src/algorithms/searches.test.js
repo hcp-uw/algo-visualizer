@@ -156,8 +156,8 @@ test("Djikstra's test case", () => {
         { n1: 4, n2: 5, weight: 6},
     ];
 
-    var result = djikstraSearch(nodes, edges, "0").traversalResult;
+    var result = djikstraSearch(nodes, edges, 0).traversalResult;
 
-    expect(result).toEqual([]);
+    expect(result).toEqual(["0", 1, 2, 3, 4, 6, 5]);
 
 });
