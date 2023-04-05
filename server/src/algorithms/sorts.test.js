@@ -218,7 +218,7 @@ test("Merge Sort edge cases", () => {
 
 test("Quick Sort base cases", () => {
     // base case
-    testSorting(quickSort, BASE_CASE);
+    standardTest(quickSort, BASE_CASE);
     // (pass! 🟢)
 });
 
@@ -227,19 +227,19 @@ test("Quick Sort edge cases", () => {
     expect(quickSort([])).toEqual("Array is empty or single-element array!");
 
     // sorted array case (pass!)
-    testSortOnly(quickSort, SORTED_CASE);
+    standardTest(quickSort, SORTED_CASE);
 
     // array with negative values case (pass!)
-    testSortOnly(quickSort, INCLUDE_NEGATIVES_CASE);
+    standardTest(quickSort, INCLUDE_NEGATIVES_CASE);
 
     // array with float values case
-    testSortOnly(quickSort, FLOATS_CASE);
+    standardTest(quickSort, FLOATS_CASE);
 
     // array with duplicate values case
-    testSortOnly(quickSort, INCLUDE_DUPS_CASE);
+    standardTest(quickSort, INCLUDE_DUPS_CASE);
 
     // array with medium amount of elements case
-    testSortOnly(quickSort, MEDIUM_CASE);
+    standardTest(quickSort, MEDIUM_CASE);
 
 })
 
