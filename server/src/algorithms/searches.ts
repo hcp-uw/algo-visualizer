@@ -16,7 +16,7 @@ import {
     DepthFirstSearchResultType,
     BreadthFirstSearchResultType,
     LinearSearchResultType,
-    dijkstraSearchResultType
+    DijkstraSearchResultType
 } from "../AlgoResultTypes";
 import { Edge, NodeMap } from "../CommonTypes";
 
@@ -336,7 +336,7 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") 
 // The main difference with this and BFS is the fact that we will
 // now be using a priorityQueue rather than using a queue
 function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
-    let result: dijkstraSearchResultType = {
+    let result: DijkstraSearchResultType = {
         steps: [],
         traversalResult: [],
         startNode: "",
