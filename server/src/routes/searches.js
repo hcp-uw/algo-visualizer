@@ -37,8 +37,8 @@ router.post("/breadthfirstsearch", (req, res) => {
     });
 });
 
-router.post("/djikstrasearch", (req, res) => {
-    let r = searches.djikstraSearch(req.body.nodes, req.body.edges);
+router.post("/dijkstrasearch", (req, res) => {
+    let r = searches.dijkstraSearch(req.body.nodes, req.body.edges);
     res.status(200).send({
         result: r,
     });

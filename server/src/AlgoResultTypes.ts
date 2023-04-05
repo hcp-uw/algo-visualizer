@@ -89,7 +89,7 @@ type BreadthFirstSearchResultType = {
 };
 
 // We most likely will need to have a weight as well for the priorityQueue
-type DjikstraSearchResultType = {
+type DijkstraSearchResultType = {
     steps: {
         priorityQueue: { id: string; from: string, weight: number}[];
         currentNode: string[];
@@ -106,7 +106,7 @@ type SearchAlgorithmResultType =
     | BinarySearchResultType
     | DepthFirstSearchResultType
     | BreadthFirstSearchResultType
-    | DjikstraSearchResultType;
+    | DijkstraSearchResultType;
 
 type SortAlgorithmResultType =
     | BubbleSortResultType
@@ -128,5 +128,5 @@ export {
     SortAlgorithmResultType,
     DepthFirstSearchResultType,
     BreadthFirstSearchResultType,
-    DjikstraSearchResultType
+    DijkstraSearchResultType
 };

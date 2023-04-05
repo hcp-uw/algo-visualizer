@@ -38,7 +38,7 @@ import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
 import DepthFirstSearch from "./pages/DepthFirstSearch";
 import BreadthFirstSearch from "./pages/BreadthFirstSearch";
-import DjikstraSearch from "./pages/DjikstraSearch";
+import DijkstraSearch from "./pages/DijkstraSearch";
 import PageErrorFallback from "./components/PageErrorFallback";
 import AboutUs from "./pages/AboutUs"
 import { createClient } from "contentful"
@@ -98,7 +98,7 @@ const App = () => {
                     <Route path="/merge-sort" element={<MergeSort />} />
                     <Route path="/depth-first-search" element={<DepthFirstSearch />} />
                     <Route path="/breadth-first-search" element={<BreadthFirstSearch />} />
-                    <Route path="/djikstra-search" element={<DjikstraSearch />} />
+                    <Route path="/dijkstra-search" element={<DijkstraSearch />} />
                     <Route path="/about-us" element={<AboutUs />} />
                 </Routes>
             </ErrorBoundary>

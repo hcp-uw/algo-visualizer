@@ -76,7 +76,7 @@ const NavBar = () => {
                                     Breadth First Search
                                 </NavDropdown.Item>
                             </LinkContainer>
-                            <LinkContainer to="/djikstra-search">
+                            <LinkContainer to="/dijkstra-search">
                                 <NavDropdown.Item>
                                     Dijkstra's Search
                                 </NavDropdown.Item>

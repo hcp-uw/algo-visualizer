@@ -16,7 +16,7 @@ import {
     DepthFirstSearchResultType,
     BreadthFirstSearchResultType,
     LinearSearchResultType,
-    DjikstraSearchResultType
+    dijkstraSearchResultType
 } from "../AlgoResultTypes";
 import { Edge, NodeMap } from "../CommonTypes";
 
@@ -335,8 +335,8 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") 
 
 // The main difference with this and BFS is the fact that we will
 // now be using a priorityQueue rather than using a queue
-function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
-    let result: DjikstraSearchResultType = {
+function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
+    let result: dijkstraSearchResultType = {
         steps: [],
         traversalResult: [],
         startNode: "",
@@ -375,7 +375,7 @@ function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
         description: `Starting from node ${start}`,
     });
 
-    // Djikstra's algorithm
+    // dijkstra's algorithm
     while (priorityQueue.length > 0) {
         // front of the list is the front of the queue
         let node = priorityQueue.shift() as NodeWithPrevAndWeight;
@@ -451,4 +451,4 @@ function djikstraSearch(nodes: string[], edges: Edge[], start: string = "") {
 }
 
 
-export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch, djikstraSearch };
+export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch, dijkstraSearch };

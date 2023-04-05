@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./DjikstraSearch.css";
+import "./DijkstraSearch.css";
 import Controls from "../../components/Controls";
 import StepTracker from "../../components/StepTracker";
 import Graph from "../../components/Graph";
@@ -15,9 +15,9 @@ import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
 
-const ALGORITHM_URL = "searches/DjikstraSearch/";
+const ALGORITHM_URL = "searches/DijkstraSearch/";
 
-const DjikstraSearch = () => {
+const DijkstraSearch = () => {
 
     const dispatch = useDispatch();
     const innerGraphBoxWidth = 1400;
@@ -108,4 +108,4 @@ const DjikstraSearch = () => {
     );
 };
 
-export default DjikstraSearch;
+export default DijkstraSearch;
