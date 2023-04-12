@@ -80,6 +80,7 @@ const MEDIUM_CASE = [
 const standardTest = (algorithm, arr) => {
     let result = algorithm(arr);
     result = result.steps[result.steps.length - 1].array;
+    console.log(result);
 
     // check if element is no more than the next
     for (let i = 0; i < result.length - 1; i++) {
@@ -219,7 +220,6 @@ test("Merge Sort edge cases", () => {
 test("Quick Sort base cases", () => {
     // base case
     standardTest(quickSort, BASE_CASE);
-    // (pass! 🟢)
 });
 
 test("Quick Sort edge cases", () => {

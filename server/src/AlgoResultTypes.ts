@@ -35,6 +35,7 @@ type BubbleSortResultType = {
 
 type QuickSortResultType = {
     steps: {
+        indexArray: number[];
         array: number[];
         subArrayStartIndex: number; // color this
         subArrayEndIndex: number; // color this

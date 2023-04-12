@@ -548,18 +548,18 @@ function quickSort(arr: number[]) {
     let ids = [...Array(arr.length).keys()];
     let stack: number[] = [];
 
-    quickSortResultBuilder(result, [...ids], 0, arr.length - 1, -1, -1, false, false, swapCount, "Starting quick sort...", -1)
+    quickSortResultBuilder(result, [...ids], arr, 0, arr.length - 1, -1, -1, false, false, swapCount, "Starting quick sort...", -1)
 
     // Choosing the front and back pointer indexes before sorting
     stack.push(0);
     stack.push(arr.length - 1);
-    
+
     // now, let's iterate through each subarray option by pulling each subarray's front/end index
     // and using that to reference the subarray
     while (stack.length > 0) {
         let end: number = stack.pop()!;
         let start: number = stack.pop()!;
-        
+
         // starts the partition and swapping process to sort the subarray by the pivot
         let pivotIndex = quickSortPartition(result, ids, swapCount, arr, start, end);
 
@@ -567,17 +567,17 @@ function quickSort(arr: number[]) {
         if (start !== undefined && pivotIndex - 1 > start) {
             stack.push(start);
             stack.push(pivotIndex - 1);
-            quickSortResultBuilder(result, [...ids], start, end, -1, -1, false, false, swapCount, "Decrement right pointer by one and create left subarray", pivotIndex)
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Decrement right pointer by one and create left subarray", pivotIndex)
         } else {
-            quickSortResultBuilder(result, [...ids], start, end, -1, -1, false, false, swapCount, "No more left subarray splitting is possible", pivotIndex)
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more left subarray splitting is possible", pivotIndex)
         }
-        
+
         if (pivotIndex !== undefined && pivotIndex + 1 < end) {
             stack.push(pivotIndex + 1);
             stack.push(end);
-            quickSortResultBuilder(result, [...ids], start, end, -1, -1, false, false, swapCount, "Increment left pointer by one and create right subarray", pivotIndex)
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Increment left pointer by one and create right subarray", pivotIndex)
         } else {
-            quickSortResultBuilder(result, [...ids], start, end, -1, -1, false, false, swapCount, "No more right subarray splitting is possible", pivotIndex)
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more right subarray splitting is possible", pivotIndex)
         }
     }
     return result;
@@ -587,37 +587,38 @@ function quickSortPartition(result: QuickSortResultType, ids:number[], swapCount
     let pivotIndex = start;
     let pivotValue = arr[end];
 
-    quickSortResultBuilder(result, [...ids], start, end, start, start, false, false, swapCount, `Choosing pivot: ${pivotValue}`, end);
+    quickSortResultBuilder(result, [...ids], arr, start, end, start, start, false, false, swapCount, `Choosing pivot: ${pivotValue}`, end);
 
     for (let i = start; i < end; i++) {
-        quickSortResultBuilder(result, [...ids], start, end, pivotIndex, i, false, false, swapCount, `Comparing ${arr[i]} and ${arr[pivotIndex]}`, end);
+        quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `Comparing ${arr[i]} and ${arr[pivotIndex]}`, end);
         if (arr[i] < pivotValue) {
             // swap left and right pointers to align with sorting by pivot and Update ids state.
             [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
             [ids[i], ids[pivotIndex]] = [ids[pivotIndex], ids[i]];
-            quickSortResultBuilder(result, [...ids], start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}! Swapping: ${arr[i]} and ${arr[pivotIndex]}`, end);
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}! Swapping: ${arr[i]} and ${arr[pivotIndex]}`, end);
             // increment and log pivotIndex
             pivotIndex++;
-            quickSortResultBuilder(result, [...ids], start, end, pivotIndex, i, false, true, swapCount, `Incrementing left pointer by one`, end);
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, true, swapCount, `Incrementing left pointer by one`, end);
         } else {
-            quickSortResultBuilder(result, [...ids], start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}, continue incrementing right pointer`, end);
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}, continue incrementing right pointer`, end);
         }
     }
     // the pivotIndex represents where the pivot value should belong to retain sorting by pivot
     [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]];
-    quickSortResultBuilder(result, [...ids], start, end, pivotIndex, end, false, true, swapCount, `Swap pivot with left pointer to finish partitioning by ${pivotValue}`, pivotIndex);
+    quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, end, false, true, swapCount, `Swap pivot with left pointer to finish partitioning by ${pivotValue}`, pivotIndex);
     return pivotIndex;
 }
 
 function quickSortResultBuilder(
-        result: QuickSortResultType, array: number[], 
+        result: QuickSortResultType, indexArray: number[], array: number[],
         subArrayStartIndex: number, subArrayEndIndex: number,
-        leftPointer: number, rightPointer: number, 
-        sorted: boolean, swapped: boolean, 
-        swapCount: number,description: string, 
+        leftPointer: number, rightPointer: number,
+        sorted: boolean, swapped: boolean,
+        swapCount: number,description: string,
         pivotIndex: number
     ) {
         result.steps.push({
+            indexArray: indexArray,
             array: array,
             subArrayStartIndex: subArrayStartIndex, // color this
             subArrayEndIndex: subArrayEndIndex, // color this
