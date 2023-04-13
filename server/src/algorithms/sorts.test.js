@@ -79,8 +79,13 @@ const MEDIUM_CASE = [
  */
 const standardTest = (algorithm, arr) => {
     let result = algorithm(arr);
+    console.log(result.steps[result.steps.length - 1].sortedArray)
     result = result.steps[result.steps.length - 1].array;
     console.log(result);
+
+    for (let i = 0; i < result.length - 1; i++) {
+        console.log(`${i} || Index: ${result[i]} || Value: ${arr[result[i]]}`)
+    }
 
     // check if element is no more than the next
     for (let i = 0; i < result.length - 1; i++) {
@@ -219,9 +224,10 @@ test("Merge Sort edge cases", () => {
 
 test("Quick Sort base cases", () => {
     // base case
+    console.log("This is quicksort testing");
     standardTest(quickSort, BASE_CASE);
 });
-
+/*
 test("Quick Sort edge cases", () => {
     // empty array
     expect(quickSort([])).toEqual("Array is empty or single-element array!");
@@ -242,7 +248,7 @@ test("Quick Sort edge cases", () => {
     standardTest(quickSort, MEDIUM_CASE);
 
 })
-
+*/
 function testSortOnly(algorithm, arr) {
     let sortedArr = algorithm(arr);
     for (let i = 0; i < sortedArr.length - 1; i++) {

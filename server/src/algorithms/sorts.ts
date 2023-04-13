@@ -313,7 +313,7 @@ function mergeSort(arr:number[]) {
     }
 
     r.steps.push({
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         description: "Starting merge sort...",
@@ -325,7 +325,7 @@ function mergeSort(arr:number[]) {
     mergeSortHelper(arr, ids, r, positions, 0, 0);
 
     r.steps.push({
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         sorted: true,
@@ -349,7 +349,7 @@ function mergeSortHelper(arr:number[], ids:number[], r:MergeSortResultType, posi
     // adding step
     fillSubarrayPositions(ids1, ids2, positions, level, treePos);
     let step = {
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: ids1.concat(ids2),
         compareCount: r.compareCount,
         description: `Splitting array into subarrays...`,
@@ -382,7 +382,7 @@ function mergeSortHelper(arr:number[], ids:number[], r:MergeSortResultType, posi
         // adding step
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: ids1.concat(ids2),
             compareCount: r.compareCount,
             description: `Merging subarrays...`,
@@ -405,7 +405,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
         // add step for comparing
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         let step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: [ids1[0], ids2[0]],
             comparing: true,
             compareCount: r.compareCount,
@@ -451,7 +451,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
             };
         }
         step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: highlighted,
             swapped: true,
             compareCount: r.compareCount,
@@ -489,7 +489,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
         };
     }
     let step = {
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: ids3,
         compareCount: r.compareCount,
         description: description,
@@ -519,10 +519,6 @@ function fillSubarrayPositions(ids1:number[], ids2:number[], positions:Position[
     }
 }
 
-function copyOject(obj:Object):Object {
-    return JSON.parse(JSON.stringify(obj));
-}
-
 //----------------------------------QUICK SORT----------------------------------------------
 
 // QuickSortResultType
@@ -540,7 +536,8 @@ function copyOject(obj:Object):Object {
 //     pivotIndex: number; // color this
 // }[];
 
-function quickSort(arr: number[]) {
+function quickSort(origArr: number[]) {
+    let arr = copyObject(origArr) as number[];
     if (arr.length <= 1) return "Array is empty or single-element array!";
 
     let result: QuickSortResultType = { steps: [] }
@@ -605,6 +602,7 @@ function quickSortPartition(result: QuickSortResultType, ids:number[], swapCount
     }
     // the pivotIndex represents where the pivot value should belong to retain sorting by pivot
     [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]];
+    [ids[pivotIndex], ids[end]] = [ids[end], ids[pivotIndex]];
     quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, end, false, true, swapCount, `Swap pivot with left pointer to finish partitioning by ${pivotValue}`, pivotIndex);
     return pivotIndex;
 }
@@ -618,8 +616,8 @@ function quickSortResultBuilder(
         pivotIndex: number
     ) {
         result.steps.push({
-            array: array,
-            sortedArray: sortedArray,
+            array: copyObject(array) as number[],
+            sortedArray: copyObject(sortedArray) as number[],
             subArrayStartIndex: subArrayStartIndex, // color this
             subArrayEndIndex: subArrayEndIndex, // color this
             leftPointer: leftPointer,
@@ -634,6 +632,10 @@ function quickSortResultBuilder(
 
 
 //-----------------------------------------------------------------------------------------
+
+function copyObject(obj:Object):Object {
+    return JSON.parse(JSON.stringify(obj));
+}
 
 export {
     bubbleSort,
