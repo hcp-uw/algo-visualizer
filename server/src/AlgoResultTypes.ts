@@ -35,13 +35,13 @@ type BubbleSortResultType = {
 
 type QuickSortResultType = {
     steps: {
-        indexArray: number[];
         array: number[];
+        sortedArray: number[];
         subArrayStartIndex: number; // color this
         subArrayEndIndex: number; // color this
         leftPointer: number;
         rightPointer: number;
-        sorted: boolean; // low priority on coloring
+        sorted: boolean;
         swapped: boolean; //  low priority on coloring
         swapCount: number;
         description: string;

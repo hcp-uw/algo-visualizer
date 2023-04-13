@@ -610,7 +610,7 @@ function quickSortPartition(result: QuickSortResultType, ids:number[], swapCount
 }
 
 function quickSortResultBuilder(
-        result: QuickSortResultType, indexArray: number[], array: number[],
+        result: QuickSortResultType, array: number[], sortedArray: number[],
         subArrayStartIndex: number, subArrayEndIndex: number,
         leftPointer: number, rightPointer: number,
         sorted: boolean, swapped: boolean,
@@ -618,8 +618,8 @@ function quickSortResultBuilder(
         pivotIndex: number
     ) {
         result.steps.push({
-            indexArray: indexArray,
             array: array,
+            sortedArray: sortedArray,
             subArrayStartIndex: subArrayStartIndex, // color this
             subArrayEndIndex: subArrayEndIndex, // color this
             leftPointer: leftPointer,
