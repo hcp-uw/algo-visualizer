@@ -67,10 +67,14 @@ type MergeSortResultType = {
 type QuickSortResultType = {
     steps: {
         array: number[];
-        leftHighlight: number; // color this
-        rightHighlight: number; // color this
-        sorted: number[]; // low priority on coloring
+        sortedArray: number[];
+        subArrayStartIndex: number; // color this
+        subArrayEndIndex: number; // color this
+        leftPointer: number;
+        rightPointer: number;
+        sorted: boolean;
         swapped: boolean; //  low priority on coloring
+        swapCount: number;
         description: string;
         pivotIndex: number; // color this
     }[];

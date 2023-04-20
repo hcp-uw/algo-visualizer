@@ -80,24 +80,77 @@ const QuickSort = () => {
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
             currentName === quickSortDesc.algorithm;
-        /*
+        
         if (isStepAvailable) {
+            // var steps = algorSteps.steps;
+            // var currentArrayStep = currentStep - 1;
+            // var arr: number[] = steps[currentArrayStep].array;
+            // var leftHighlight: number = steps[currentArrayStep].leftHighlight;
+            // var rightHighlight: number = steps[currentArrayStep].rightHighlight;
+            // var swapped: boolean = steps[currentArrayStep].swapped;
+            // var sorted: number[] = steps[currentArrayStep].sorted;
+            // var pivotIndex: number = steps[currentArrayStep].pivotIndex;
+            //     array: number[];
             var steps = algorSteps.steps;
             var currentArrayStep = currentStep - 1;
+            var subArrayStartIndex = 0; // color this
             var arr: number[] = steps[currentArrayStep].array;
-            var leftHighlight: number = steps[currentArrayStep].leftHighlight;
-            var rightHighlight: number = steps[currentArrayStep].rightHighlight;
-            var swapped: boolean = steps[currentArrayStep].swapped;
-            var sorted: number[] = steps[currentArrayStep].sorted;
-            var pivotIndex: number = steps[currentArrayStep].pivotIndex;
+            var leftPointer: number = steps[currentArrayStep].leftPointer;
+            var rightPointer: number = steps[currentArrayStep].rightPointer;
+            var subArrayEndIndex = arr.length; // color this
+            // leftPointer: number;
+            // rightPointer: number;
+            // sorted: boolean; // low priority on coloring
+            // swapped: boolean; //  low priority on coloring
+            // swapCount: number;
+            var description = steps[currentArrayStep].description;
+            var pivotIndex = steps[currentArrayStep].pivotIndex; // color this
+
+            
         } else {
             // default array from contianing numbers from 0 to array.length - 1
             arr = [...Array(array.length).keys()];
         }
-        */
+        
         console.log(algorSteps.steps);
         // more needs to happen!
-        return null;
+        return array.map((value, id) => {
+            var style = "";
+            // if (isStepAvailable) {
+            //     if (highlight.includes(id)) {
+            //         style = swapped ? " highlight-error" : " highlight";
+            //     } else if (sorted.includes(id)) {
+            //         style = " highlight-success";
+            //     } else {
+            //         style = " highlight-domain";
+            //     }
+            // } 
+            if (isStepAvailable) {
+                if (pivotIndex == id) {
+                    style = " highlight-success";
+                }
+                if (leftPointer == id) {
+                    style = " highlight-success";
+                }
+                if (rightPointer == id) {
+                    style = " highlight-success";
+                }
+            }
+            let x = arr.indexOf(id) - id;
+
+            return (
+                <td
+                    className={"value-block" + style}
+                    key={id}
+                    id={id.toString()}
+                    style={{
+                        transform: `translate(${x * 58}px, 0px)`,
+                    }}
+                >
+                    {value}
+                </td>
+            );
+        });
     };
 
     return (
