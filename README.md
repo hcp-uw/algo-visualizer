@@ -72,7 +72,7 @@ npm start
 From now onward, if you make changes to the front-end and you want to view the effects of your latest changes, just save your code and/or do Step 3.
 
 
-### Starting Database
+### Starting Database (note, not crucial to setup)
 
 **Initial Setup**
 
