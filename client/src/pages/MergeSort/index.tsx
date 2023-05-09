@@ -14,7 +14,7 @@ import { RootState } from "../../redux/configureStore";
 import { MergeSortResultType } from "../../AlgoResultTypes";
 import { ExtraData } from "../../CommonTypes";
 
-const ALGORITHM_URL = "sorts/quicksort/";
+const ALGORITHM_URL = "sorts/mergesort/";
 
 const MergeSort = () => {
     const algorSteps = useSelector(
