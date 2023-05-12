@@ -82,58 +82,37 @@ const QuickSort = () => {
             currentName === quickSortDesc.algorithm;
         
         if (isStepAvailable) {
-            // var steps = algorSteps.steps;
-            // var currentArrayStep = currentStep - 1;
-            // var arr: number[] = steps[currentArrayStep].array;
-            // var leftHighlight: number = steps[currentArrayStep].leftHighlight;
-            // var rightHighlight: number = steps[currentArrayStep].rightHighlight;
-            // var swapped: boolean = steps[currentArrayStep].swapped;
-            // var sorted: number[] = steps[currentArrayStep].sorted;
-            // var pivotIndex: number = steps[currentArrayStep].pivotIndex;
-            //     array: number[];
             var steps = algorSteps.steps;
             var currentArrayStep = currentStep - 1;
-            var subArrayStartIndex = 0; // color this
+            var subArrayStartIndex = steps[currentArrayStep].subArrayStartIndex; // color this
             var arr: number[] = steps[currentArrayStep].array;
             var leftPointer: number = steps[currentArrayStep].leftPointer;
             var rightPointer: number = steps[currentArrayStep].rightPointer;
-            var subArrayEndIndex = arr.length; // color this
-            // leftPointer: number;
-            // rightPointer: number;
-            // sorted: boolean; // low priority on coloring
-            // swapped: boolean; //  low priority on coloring
-            // swapCount: number;
+            var subArrayEndIndex = steps[currentArrayStep].subArrayEndIndex; // color this
             var description = steps[currentArrayStep].description;
             var pivotIndex = steps[currentArrayStep].pivotIndex; // color this
-
+            console.log(algorSteps.steps[currentArrayStep]);
             
         } else {
             // default array from contianing numbers from 0 to array.length - 1
             arr = [...Array(array.length).keys()];
         }
         
-        console.log(algorSteps.steps);
         // more needs to happen!
         return array.map((value, id) => {
             var style = "";
-            // if (isStepAvailable) {
-            //     if (highlight.includes(id)) {
-            //         style = swapped ? " highlight-error" : " highlight";
-            //     } else if (sorted.includes(id)) {
-            //         style = " highlight-success";
-            //     } else {
-            //         style = " highlight-domain";
-            //     }
-            // } 
             if (isStepAvailable) {
-                if (pivotIndex == id) {
+                if (pivotIndex == arr.indexOf(id)) {
+                    style = " highlight-compare";
+                }
+                else if (leftPointer == arr.indexOf(id)) {
                     style = " highlight-success";
                 }
-                if (leftPointer == id) {
-                    style = " highlight-success";
+                else if (rightPointer == arr.indexOf(id)) {
+                    style = " highlight-compare";
                 }
-                if (rightPointer == id) {
-                    style = " highlight-success";
+                else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < subArrayEndIndex) {
+                    style = " highlight-domain"
                 }
             }
             let x = arr.indexOf(id) - id;
