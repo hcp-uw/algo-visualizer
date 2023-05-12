@@ -15,6 +15,7 @@ import { QuickSortResultType } from "../../AlgoResultTypes";
 import { ExtraData } from "../../CommonTypes";
 
 const ALGORITHM_URL = "sorts/quicksort/";
+const PIVOT_HEIGHT = 100;
 
 const QuickSort = () => {
     const algorSteps = useSelector(
@@ -101,15 +102,20 @@ const QuickSort = () => {
         // more needs to happen!
         return array.map((value, id) => {
             var style = "";
+            var pivotHeight = 0
             if (isStepAvailable) {
                 if (pivotIndex == arr.indexOf(id)) {
                     style = " highlight-compare";
+                    pivotHeight = PIVOT_HEIGHT;
                 }
                 else if (leftPointer == arr.indexOf(id)) {
                     style = " highlight-success";
                 }
                 else if (rightPointer == arr.indexOf(id)) {
                     style = " highlight-compare";
+                }
+                else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < leftPointer) {
+                    style = " highlight-success";
                 }
                 else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < subArrayEndIndex) {
                     style = " highlight-domain"
@@ -123,10 +129,24 @@ const QuickSort = () => {
                     key={id}
                     id={id.toString()}
                     style={{
-                        transform: `translate(${x * 58}px, 0px)`,
+                        transform: `translate(${x * 58}px, ${pivotHeight}px)`,
                     }}
                 >
                     {value}
+                    {/* Display an index below the box if level > 0 */}
+                    {isStepAvailable && pivotHeight != 0 ? (
+                        <div
+                            style={{
+                                top: "50px",
+                                position: "absolute",
+                                textAlign: "center",
+                                width: "100%",
+                            }}
+                            className="index-row"
+                        >
+                            {"Pivot"}
+                        </div>
+                    ) : null}
                 </td>
             );
         });
@@ -138,7 +158,9 @@ const QuickSort = () => {
                 <AlgorithmPopover data={quickSortDesc} />
             </div>
 
-            <VisualizerContainer>
+            <VisualizerContainer
+                height={250}
+                scale={1}>
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
