@@ -231,6 +231,7 @@ const Controls = ({ ...props }) => {
             target?: number;
             nodes?: string[];
             edges?: Edge[];
+            // @todo: add in startNode
         } = {};
         if (require.includes("arrayInput")) {
             // if the input array does not exist (case of error or new page load)
@@ -446,7 +447,6 @@ const Controls = ({ ...props }) => {
                         onChange={(e) => updateSpeed(e.target.value)}
                     ></input>
                 </div>
-
                 <div style={{ margin: "0px" }}>
                     {/* build button that request the backend to perform algorithm */}
                     <button

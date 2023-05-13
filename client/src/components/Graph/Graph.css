@@ -72,6 +72,16 @@ g > text {
     fill: #e7c1ff;
 }
 
+.node-target-unfound {
+    stroke: #d6d63b;
+    fill: #fdfd96;
+}
+
+.node-target-found {
+    stroke: #40a527;
+    fill: #b0ff9d;
+}
+
 @keyframes edge-anim {
     to {
         stroke-dashoffset: 0%;

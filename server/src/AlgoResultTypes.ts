@@ -74,6 +74,7 @@ type DepthFirstSearchResultType = {
     }[];
     traversalResult: string[];
     startNode: string;
+    targetNode: string;
 };
 
 type BreadthFirstSearchResultType = {
@@ -86,6 +87,7 @@ type BreadthFirstSearchResultType = {
     }[];
     traversalResult: string[];
     startNode: string;
+    targetNode: string;
 };
 
 type SearchAlgorithmResultType =

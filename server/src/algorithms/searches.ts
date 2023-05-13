@@ -130,11 +130,12 @@ function binarySearch(arr: number[], target: number) {
 
 type NodeWithPrev = { id: string; from: string };
 
-function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target: string = "") {
     let result: DepthFirstSearchResultType = {
         steps: [],
         traversalResult: [],
         startNode: "",
+        targetNode: target,
     };
     let adjacencyMap: { [key: string]: string[] } = {};
     let stack: NodeWithPrev[] = [];
@@ -184,6 +185,18 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
                 description: `Visiting node ${node.id}`,
             });
 
+            // processing the target node, stop the search
+            if (node.id.localeCompare(target) === 0){
+                result.steps.push({
+                    stack: copyObject(stack) as NodeWithPrev[], // @todo: do we want to empty the queue? 
+                    currentNode: [],
+                    visitedNodes: copyObject(visited) as string[], 
+                    visitedEdges: copyObject(visitedEdges) as Edge[],
+                    description: `Found target node ${node.id}`,
+                });
+                break; // terminate
+            }
+
             // collecting adjacent nodes
             let addedAdj = [];
             for (const n of adjacencyMap[node.id]) {
@@ -226,12 +239,14 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
 }
 
 
-function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target: string = "") {
     let result: BreadthFirstSearchResultType = {
         steps: [],
         traversalResult: [],
         startNode: "",
+        targetNode: target,
     };
+    
     let adjacencyMap: { [key: string]: string[] } = {};
     let queue: NodeWithPrev[] = [];
     let visited: string[] = [];
@@ -262,6 +277,7 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") 
         description: `Starting from node ${start}`,
     });
 
+
     // bfs
     while (queue.length > 0) {
         // front of the list is the front of the queue
@@ -279,6 +295,18 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") 
                 visitedEdges: copyObject(visitedEdges) as Edge[],
                 description: `Visiting node ${node.id}`,
             });
+
+            // processing the target node, stop the search
+            if (node.id.localeCompare(target) === 0){
+                result.steps.push({
+                    queue: copyObject(queue) as NodeWithPrev[], // @todo: do we want to empty the queue? 
+                    currentNode: [],
+                    visitedNodes: copyObject(visited) as string[], 
+                    visitedEdges: copyObject(visitedEdges) as Edge[],
+                    description: `Found target node ${node.id}`,
+                });
+                break; // terminate
+            }
 
             // collecting adjacent nodes
             let addedAdj = [];

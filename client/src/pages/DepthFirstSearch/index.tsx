@@ -52,6 +52,13 @@ const DepthFirstSearch = () => {
         ) {
             style += "node-highlighted ";
         }
+
+        // target highlighting
+        if (id.localeCompare(algorSteps.targetNode) === 0)  {
+            style += algorSteps.steps[currentStep - 1].visitedNodes.includes(id) ? 
+                "node-target-found " : "node-target-unfound ";
+        }
+
         return style;
     };
 
@@ -95,7 +102,7 @@ const DepthFirstSearch = () => {
 
             <div className="dfs-graph-controls">
                 <div id="controlsDiv" className="controls_graph">
-                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput" ,'singleInput']} />
                 </div>
                 <div id="GraphControlsDiv">
                     <GraphControls/>
