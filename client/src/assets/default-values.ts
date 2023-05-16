@@ -76,3 +76,20 @@ export const DEFAULT_EDGES_1: Edge[] = [
     { n1: "7", n2: "8" },
     { n1: "8", n2: "9" },
 ];
+
+export const DEFAULT_EDGES_2: Edge[] = [
+    { n1: "0", n2: "1", weight: "1" },
+    { n1: "0", n2: "3", weight: "1" },
+    { n1: "0", n2: "5", weight: "1" },
+    { n1: "1", n2: "2", weight: "1" },
+    { n1: "1", n2: "4", weight: "1" },
+    { n1: "1", n2: "8", weight: "1" },
+    { n1: "2", n2: "6", weight: "1" },
+    { n1: "2", n2: "10", weight: "1" },
+    { n1: "3", n2: "5", weight: "1" },
+    { n1: "3", n2: "9", weight: "1" },
+    { n1: "4", n2: "5", weight: "1" },
+    { n1: "6", n2: "7", weight: "1" },
+    { n1: "7", n2: "8", weight: "1" },
+    { n1: "8", n2: "9", weight: "1" },
+];

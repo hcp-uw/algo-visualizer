@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import { dijkstrasFirstSearchDesc } from "../../assets/algorithm-information.js";
-import Queue from "../../components/Queue";
+import PriorityQueue from "../../components/PriorityQueue";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
@@ -80,7 +80,7 @@ const DijkstraSearch = () => {
 
             <VisualizerContainer
                 height="400"
-                staticChildren={<Queue />}
+                staticChildren={<PriorityQueue />}
                 minScale={0.3}
                 scale={0.8}
                 initPosition={{ x: -150, y: -25 }}
@@ -95,13 +95,11 @@ const DijkstraSearch = () => {
 
             <div className="dfs-graph-controls">
                 <div id="controlsDiv" className="controls_graph">
-                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} edgeWeight={true} />
                 </div>
                 <div id="GraphControlsDiv">
                     <GraphControls/>
                 </div>
-
-
             </div>
             <StepTracker />
         </div>

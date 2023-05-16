@@ -95,7 +95,7 @@ const BreadthFirstSearch = () => {
 
             <div className="dfs-graph-controls">
                 <div id="controlsDiv" className="controls_graph">
-                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+                    <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} edgeWeight={false} />
                 </div>
                 <div id="GraphControlsDiv">
                     <GraphControls/>

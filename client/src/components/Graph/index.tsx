@@ -349,7 +349,7 @@ const Graph = ({
                 </g>
                 <g className="nodes">
                     {nodes.map((nodeId) => {
-                        console.log(nodeId);
+                        //console.log(nodeId);
                         return nodeId != null ? (
                             <Draggable
                                 onDrag={(e, data) => {

@@ -35,7 +35,7 @@ const PriorityQueue = ({ ...props }) => {
 
     return (
         <div className="queue-container">
-            <p id="queue-back">Enter PriorityQueue</p>
+            <p id="queue-back">Enter P-Queue</p>
             <div className="queue-item-holder">
                 {toDisplay.map((item: string, index: number) => (
                     <div
@@ -51,7 +51,7 @@ const PriorityQueue = ({ ...props }) => {
                     </div>
                 ))}
             </div>
-            <p id="queue-front">Leave PriorityQueue</p>
+            <p id="queue-front">Leave P-Queue</p>
         </div>
     );
 };

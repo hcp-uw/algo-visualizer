@@ -35,13 +35,15 @@ import { Edge, ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
 import SingleInput from "../SingleInput";
 import ArrayInput from "../ArrayInput";
-import { DEFAULT_EDGES_1, DEFAULT_NODES_1 } from "../../assets/default-values";
+import { DEFAULT_EDGES_1, DEFAULT_EDGES_2, DEFAULT_NODES_1 } from "../../assets/default-values";
 
 type AlgorithmType = "arrayInput" | "singleInput" | "graphInput";
+type GraphType = "Dijkstra" | "NotDijkstra"; // Genius
 
 const Controls = ({ ...props }) => {
     const extraData: ExtraData = props.extraData || [];
     const require: AlgorithmType[] = props.require || [];
+    const edgeWeight: boolean = props.edgeWeight || false;
 
     // global state variables we pull from redux store
     let currentStep = useSelector(
@@ -252,7 +254,13 @@ const Controls = ({ ...props }) => {
             if (nodes.length === 0 && edges.length === 0) {
                 // default values
                 toSend.nodes = Object.keys(DEFAULT_NODES_1({ x: 0, y: 0 }));
-                toSend.edges = DEFAULT_EDGES_1;
+                if (edgeWeight == true) {
+                    console.log("here")
+                    toSend.edges = DEFAULT_EDGES_2;
+                } else {
+                    console.log("huhh")
+                    toSend.edges = DEFAULT_EDGES_1;
+                }
                 dispatch(updateGraphNodes(toSend.nodes));
                 dispatch(updateGraphEdges(toSend.edges));
             } else {
