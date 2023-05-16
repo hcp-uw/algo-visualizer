@@ -14,6 +14,7 @@ import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
+import { resetWeightedGraphInput } from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/DijkstraSearch/";
 
@@ -35,6 +36,7 @@ const DijkstraSearch = () => {
     useEffect(() => {
         // update the name on first load
         dispatch(updateAlgorName(dijkstrasFirstSearchDesc.algorithm));
+        dispatch(resetWeightedGraphInput())
 
         return () => {
             dispatch(resetSteps());

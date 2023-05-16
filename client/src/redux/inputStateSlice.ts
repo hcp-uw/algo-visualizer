@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Edge, NodePositions } from "../CommonTypes";
-import { DEFAULT_NODES_1 } from "../assets/default-values";
+import { DEFAULT_NODES_1, DEFAULT_EDGES_2, DEFAULT_EDGES_1 } from "../assets/default-values";
 
 const initialState: {
     singleInput: string;
@@ -71,9 +71,15 @@ export const inputStateSlice = createSlice({
             state.isGraphInputChanged = action.payload;
         },
         resetGraphInput: (state) => {
-            state.graphNodes = [];
-            state.graphEdges = [];
-            state.graphNodePositions = {};
+            state.graphNodes = Object.keys(DEFAULT_NODES_1({x: 0.0, y: 0.0}));
+            state.graphEdges = DEFAULT_EDGES_1;
+            state.graphNodePositions = DEFAULT_NODES_1({x: 0.0, y:0.0});
+            state.isGraphInputChanged = false;
+        },
+        resetWeightedGraphInput: (state) => {
+            state.graphNodes = Object.keys(DEFAULT_NODES_1({x: 0.0, y: 0.0}));
+            state.graphEdges = DEFAULT_EDGES_2;
+            state.graphNodePositions = DEFAULT_NODES_1({x: 0.0, y:0.0});
             state.isGraphInputChanged = false;
         },
         // updatePrevGraphInput: (state, action) => {
@@ -96,6 +102,7 @@ export const {
     updateGraphEdges,
     updateIsGraphInputChanged,
     resetGraphInput,
+    resetWeightedGraphInput,
 } = inputStateSlice.actions;
 
 export default inputStateSlice.reducer;

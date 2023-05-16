@@ -14,6 +14,7 @@ import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
+import { resetGraphInput } from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/breadthfirstsearch/";
 
@@ -35,6 +36,7 @@ const BreadthFirstSearch = () => {
     useEffect(() => {
         // update the name on first load
         dispatch(updateAlgorName(breadthFirstSearchDesc.algorithm));
+        dispatch(resetGraphInput())
 
         return () => {
             dispatch(resetSteps());
