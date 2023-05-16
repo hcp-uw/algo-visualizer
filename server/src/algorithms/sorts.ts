@@ -560,6 +560,14 @@ function quickSort(origArr: number[]) {
         // starts the partition and swapping process to sort the subarray by the pivot
         let pivotIndex = quickSortPartition(result, ids, swapCount, arr, start, end);
 
+        if (pivotIndex !== undefined && pivotIndex + 1 < end) {
+            stack.push(pivotIndex + 1);
+            stack.push(end);
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Increment left pointer by one and create right subarray", pivotIndex)
+        } else {
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more right subarray splitting is possible", pivotIndex)
+        }
+
         // splitting into more subarrays if there's more splitting necessary
         if (start !== undefined && pivotIndex - 1 > start) {
             stack.push(start);
@@ -568,15 +576,8 @@ function quickSort(origArr: number[]) {
         } else {
             quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more left subarray splitting is possible", pivotIndex)
         }
-
-        if (pivotIndex !== undefined && pivotIndex + 1 < end) {
-            stack.push(pivotIndex + 1);
-            stack.push(end);
-            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Increment left pointer by one and create right subarray", pivotIndex)
-        } else {
-            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more right subarray splitting is possible", pivotIndex)
-        }
     }
+    quickSortResultBuilder(result, [...ids], arr, 0, arr.length - 1, -1, -1, true, false, swapCount, "Algorithm complete!", -1)
     return result;
 }
 

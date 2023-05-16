@@ -87,12 +87,13 @@ const QuickSort = () => {
             var currentArrayStep = currentStep - 1;
             var subArrayStartIndex = steps[currentArrayStep].subArrayStartIndex; // color this
             var arr: number[] = steps[currentArrayStep].array;
+            var sorted: boolean = steps[currentArrayStep].sorted;
             var leftPointer: number = steps[currentArrayStep].leftPointer;
             var rightPointer: number = steps[currentArrayStep].rightPointer;
             var subArrayEndIndex = steps[currentArrayStep].subArrayEndIndex; // color this
             var description = steps[currentArrayStep].description;
             var pivotIndex = steps[currentArrayStep].pivotIndex; // color this
-            console.log(algorSteps.steps[currentArrayStep]);
+            console.log(algorSteps.steps);
             
         } else {
             // default array from contianing numbers from 0 to array.length - 1
@@ -104,7 +105,10 @@ const QuickSort = () => {
             var style = "";
             var pivotHeight = 0
             if (isStepAvailable) {
-                if (pivotIndex == arr.indexOf(id)) {
+                if (sorted){
+                    style = " highlight-success";
+                }
+                else if (pivotIndex == arr.indexOf(id)) {
                     style = " highlight-compare";
                     pivotHeight = PIVOT_HEIGHT;
                 }
@@ -118,7 +122,7 @@ const QuickSort = () => {
                     style = " highlight-success";
                 }
                 else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < subArrayEndIndex) {
-                    style = " highlight-domain"
+                    style = " highlight-domain";
                 }
             }
             let x = arr.indexOf(id) - id;
