@@ -376,7 +376,7 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
         description: `Starting from node ${start}`,
     });
 
-  console.log(edgeWeights)
+      console.log(edgeWeights)
     // dijkstra's algorithm
     while (priorityQueue.length > 0) {
         // front of the list is the front of the queue

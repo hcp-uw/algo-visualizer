@@ -37,6 +37,7 @@ const DijkstraSearch = () => {
         // update the name on first load
         dispatch(updateAlgorName(dijkstrasFirstSearchDesc.algorithm));
         dispatch(resetWeightedGraphInput())
+        dispatch(resetSteps())
 
         return () => {
             dispatch(resetSteps());

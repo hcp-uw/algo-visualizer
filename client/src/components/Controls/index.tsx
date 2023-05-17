@@ -3,7 +3,7 @@
  * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,6 +41,8 @@ type AlgorithmType = "arrayInput" | "singleInput" | "graphInput";
 type GraphType = "Dijkstra" | "NotDijkstra"; // Genius
 
 const Controls = ({ ...props }) => {
+
+
     const extraData: ExtraData = props.extraData || [];
     const require: AlgorithmType[] = props.require || [];
     const edgeWeight: boolean = props.edgeWeight || false;
@@ -92,6 +94,7 @@ const Controls = ({ ...props }) => {
     const interval = 7500 / Math.sqrt(Math.pow(Math.E, playSpeed));
     const totalStep = algorSteps.steps.length ? algorSteps.steps.length : -1;
     const dispatch = useDispatch();
+
 
     // set up the loop for automatic play
     // only activates if the 'playing' variable is true
