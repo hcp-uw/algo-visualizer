@@ -348,6 +348,7 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
     let visitedEdges: Edge[] = [];
     let edgeWeights: {[key:string]: number} = {}
 
+
     if (nodes.length === 0) return result;
 
     for (let i = 0; i < nodes.length; i++) {
@@ -375,10 +376,12 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
         description: `Starting from node ${start}`,
     });
 
+  console.log(edgeWeights)
     // dijkstra's algorithm
     while (priorityQueue.length > 0) {
         // front of the list is the front of the queue
         let node = priorityQueue.shift() as NodeWithPrevAndWeight;
+        console.log(node)
 
         if (!visited.includes(node.id)) {
             visited.push(node.id);
@@ -404,7 +407,7 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
             // Add nodes to queue from least to greatest order
             addedAdj.sort();
             for (const adjacentNode of addedAdj) {
-                priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: adjacentNode.weight + node.weight});
+                priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: Number(adjacentNode.weight) + Number(node.weight)});
             }
 
             // Here we will need to sort the priorityQueue by the weight of each node

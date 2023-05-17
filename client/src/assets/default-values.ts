@@ -79,7 +79,7 @@ export const DEFAULT_EDGES_1: Edge[] = [
 
 export const DEFAULT_EDGES_2: Edge[] = [
     { n1: "0", n2: "1", weight: "1" },
-    { n1: "0", n2: "3", weight: "1" },
+    { n1: "0", n2: "3", weight: "100" },
     { n1: "0", n2: "5", weight: "1" },
     { n1: "1", n2: "2", weight: "1" },
     { n1: "1", n2: "4", weight: "1" },
