@@ -14,6 +14,7 @@ import Stack from "../../components/Stack";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
+import { resetGraphInput } from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/depthfirstsearch/";
 
@@ -35,6 +36,7 @@ const DepthFirstSearch = () => {
     useEffect(() => {
         // update the name on first load
         dispatch(updateAlgorName(depthFirstSearchDesc.algorithm));
+        dispatch(resetGraphInput());
 
         return () => {
             dispatch(resetSteps());

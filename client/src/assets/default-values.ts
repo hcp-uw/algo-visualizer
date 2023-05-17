@@ -2,57 +2,57 @@ import { Edge } from "../CommonTypes";
 
 export const DEFAULT_NODES_1 = (center: { x: number; y: number }) => {
     return {
-        "0": {
+        "a": {
             init: { x: 150 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        "1": {
+        "b": {
             init: { x: 150 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
-        "2": {
+        "c": {
             init: { x: 250 + center.x, y: 325 + center.y },
             x: 0,
             y: 0,
         },
-        "3": {
+        "d": {
             init: { x: 250 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        "4": {
+        "e": {
             init: { x: 250 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
-        "5": {
+        "f": {
             init: { x: 350 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
-        "6": {
+        "g": {
             init: { x: 450 + center.x, y: 250 + center.y },
             x: 0,
             y: 0,
         },
-        "7": {
+        "h": {
             init: { x: 450 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        "8": {
+        "i": {
             init: { x: 350 + center.x, y: 150 + center.y },
             x: 0,
             y: 0,
         },
-        "9": {
+        "j": {
             init: { x: 300 + center.x, y: 50 + center.y },
             x: 0,
             y: 0,
         },
-        "10": {
+        "k": {
             init: { x: 350 + center.x, y: 325 + center.y },
             x: 0,
             y: 0,
@@ -61,35 +61,35 @@ export const DEFAULT_NODES_1 = (center: { x: number; y: number }) => {
 };
 
 export const DEFAULT_EDGES_1: Edge[] = [
-    { n1: "0", n2: "1" },
-    { n1: "0", n2: "3" },
-    { n1: "0", n2: "5" },
-    { n1: "1", n2: "2" },
-    { n1: "1", n2: "4" },
-    { n1: "1", n2: "8" },
-    { n1: "2", n2: "6" },
-    { n1: "2", n2: "10" },
-    { n1: "3", n2: "5" },
-    { n1: "3", n2: "9" },
-    { n1: "4", n2: "5" },
-    { n1: "6", n2: "7" },
-    { n1: "7", n2: "8" },
-    { n1: "8", n2: "9" },
+    { n1: "a", n2: "b" },
+    { n1: "a", n2: "d" },
+    { n1: "a", n2: "f" },
+    { n1: "b", n2: "c" },
+    { n1: "b", n2: "e" },
+    { n1: "b", n2: "i" },
+    { n1: "c", n2: "g" },
+    { n1: "c", n2: "k" },
+    { n1: "d", n2: "f" },
+    { n1: "d", n2: "j" },
+    { n1: "e", n2: "f" },
+    { n1: "g", n2: "h" },
+    { n1: "h", n2: "i" },
+    { n1: "i", n2: "j" },
 ];
 
 export const DEFAULT_EDGES_2: Edge[] = [
-    { n1: "0", n2: "1", weight: "1" },
-    { n1: "0", n2: "3", weight: "100" },
-    { n1: "0", n2: "5", weight: "1" },
-    { n1: "1", n2: "2", weight: "1" },
-    { n1: "1", n2: "4", weight: "1" },
-    { n1: "1", n2: "8", weight: "1" },
-    { n1: "2", n2: "6", weight: "1" },
-    { n1: "2", n2: "10", weight: "1" },
-    { n1: "3", n2: "5", weight: "1" },
-    { n1: "3", n2: "9", weight: "1" },
-    { n1: "4", n2: "5", weight: "1" },
-    { n1: "6", n2: "7", weight: "1" },
-    { n1: "7", n2: "8", weight: "1" },
-    { n1: "8", n2: "9", weight: "1" },
+    { n1: "a", n2: "b" , weight: 1},
+    { n1: "a", n2: "d" , weight: 1},
+    { n1: "a", n2: "f" , weight: 1},
+    { n1: "b", n2: "c" , weight: 1},
+    { n1: "b", n2: "e" , weight: 1},
+    { n1: "b", n2: "i" , weight: 1},
+    { n1: "c", n2: "g" , weight: 1},
+    { n1: "c", n2: "k" , weight: 1},
+    { n1: "d", n2: "f" , weight: 1},
+    { n1: "d", n2: "j" , weight: 1},
+    { n1: "e", n2: "f" , weight: 1},
+    { n1: "g", n2: "h" , weight: 1},
+    { n1: "h", n2: "i" , weight: 1},
+    { n1: "i", n2: "j" , weight: 1},
 ];

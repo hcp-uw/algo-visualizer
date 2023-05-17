@@ -26,7 +26,7 @@ const PriorityQueue = ({ ...props }) => {
         algorSteps.steps[0].priorityQueue;
 
     const priorityQueue = isPriorityQueueReady
-        ? algorSteps.steps[currentStep - 1].priorityQueue.map((e: { id: string; from: string }) => e.id)
+        ? algorSteps.steps[currentStep - 1].priorityQueue.map((e: { id: string; from: string, weight: number}) => e.id + " cost:" + e.weight)
         : [];
 
     const toDisplay = priorityQueue.length < 10 ? priorityQueue : ["...", ...priorityQueue.slice(-9)];

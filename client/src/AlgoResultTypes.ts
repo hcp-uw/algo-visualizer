@@ -90,7 +90,7 @@ type BreadthFirstSearchResultType = {
 
 type DijkstrasSearchResultType = {
     steps: {
-        priorityQueue: { id: string; from: string }[];
+        priorityQueue: { id: string; from: string, weight: number }[];
         currentNode: string[];
         visitedNodes: string[];
         visitedEdges: Edge[];
