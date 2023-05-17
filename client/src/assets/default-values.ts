@@ -78,11 +78,11 @@ export const DEFAULT_EDGES_1: Edge[] = [
 ];
 
 export const DEFAULT_EDGES_2: Edge[] = [
-    { n1: "a", n2: "b" , weight: 1},
+    { n1: "a", n2: "b" , weight: 100},
     { n1: "a", n2: "d" , weight: 1},
     { n1: "a", n2: "f" , weight: 1},
     { n1: "b", n2: "c" , weight: 1},
-    { n1: "b", n2: "e" , weight: 1},
+    { n1: "b", n2: "e" , weight: 100},
     { n1: "b", n2: "i" , weight: 1},
     { n1: "c", n2: "g" , weight: 1},
     { n1: "c", n2: "k" , weight: 1},
