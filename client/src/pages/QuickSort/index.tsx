@@ -87,13 +87,13 @@ const QuickSort = () => {
             var currentArrayStep = currentStep - 1;
             var subArrayStartIndex = steps[currentArrayStep].subArrayStartIndex; // color this
             var arr: number[] = steps[currentArrayStep].array;
-            var sorted: boolean = steps[currentArrayStep].sorted;
             var leftPointer: number = steps[currentArrayStep].leftPointer;
             var rightPointer: number = steps[currentArrayStep].rightPointer;
             var subArrayEndIndex = steps[currentArrayStep].subArrayEndIndex; // color this
             var description = steps[currentArrayStep].description;
             var pivotIndex = steps[currentArrayStep].pivotIndex; // color this
-            console.log(algorSteps.steps);
+            var sorted: boolean = steps[currentArrayStep].sorted;
+            console.log(algorSteps.steps[currentArrayStep]);
             
         } else {
             // default array from contianing numbers from 0 to array.length - 1
@@ -105,7 +105,7 @@ const QuickSort = () => {
             var style = "";
             var pivotHeight = 0
             if (isStepAvailable) {
-                if (sorted){
+                if (sorted) {
                     style = " highlight-success";
                 }
                 else if (pivotIndex == arr.indexOf(id)) {
@@ -113,7 +113,7 @@ const QuickSort = () => {
                     pivotHeight = PIVOT_HEIGHT;
                 }
                 else if (leftPointer == arr.indexOf(id)) {
-                    style = " highlight-success";
+                    style = " highlight-compare";
                 }
                 else if (rightPointer == arr.indexOf(id)) {
                     style = " highlight-compare";
@@ -122,7 +122,7 @@ const QuickSort = () => {
                     style = " highlight-success";
                 }
                 else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < subArrayEndIndex) {
-                    style = " highlight-domain";
+                    style = " highlight-domain"
                 }
             }
             let x = arr.indexOf(id) - id;
@@ -172,6 +172,7 @@ const QuickSort = () => {
                 extraData={extraData}
                 algorithmUrl={ALGORITHM_URL}
                 require={["arrayInput"]}
+                isQuickSort={true}
             />
 
             <div className="swap-counter-container">
