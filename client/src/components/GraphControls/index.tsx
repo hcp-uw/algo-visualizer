@@ -17,6 +17,7 @@ import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { current } from '@reduxjs/toolkit';
 import { computeHeadingLevel } from '@testing-library/dom';
+import { parse } from '@fortawesome/fontawesome-svg-core';
 
 // default values for variables
 
@@ -24,6 +25,11 @@ const DEFAULT_WIDTH = 500;
 const DEFAULT_HEIGHT = 500;
 const NODE_RADIUS = 18;
 const EDGE_WIDTH = 1;
+
+// error messages for input parsing
+const MAX_INPUT_LENGTH = 3;
+const ARGUMENT_LENGTH_ERROR = "Invalid number of arguments";
+const EDGE_WEIGHT_ERROR = "Edge weight must be a number.";
 
 type WeightInputState = {
     show: boolean;
@@ -93,6 +99,7 @@ const GraphControls = ({
         (state: RootState) => state.global.currentStep
     );
 
+    const [textInput, setTextInput] = useState<string>("");
     const [activeNode, setActiveNode] = useState<string | null>(null);
     const [cursorPos, setCursorPos] = useState<Coordinate>({ x: 0, y: 0 }); // relative to svg element
     const [weightInputState, setWeightInputState] = useState<WeightInputState>({
@@ -346,6 +353,65 @@ const GraphControls = ({
       }
     };
 
+
+    type lineReturnType = {
+      error: String
+      nodes: string[]
+      edges?: Edge[]
+    }
+
+    const processLine = (text: String, nodeSet: Set<string>, edgeSet: Set<Edge>):string => {
+      let words = text.split(' ');      
+      
+      if(words.length > MAX_INPUT_LENGTH) {
+        return ARGUMENT_LENGTH_ERROR
+      } if (words.length === 1) {
+        nodeSet.add(words[0]);
+      } if (words.length === 2) {
+        nodeSet.add(words[0])
+        nodeSet.add(words[1])
+        let e:Edge = {
+          n1: words[0],
+          n2: words[1]
+        }
+        edgeSet.add(e)
+      } else if (words.length === 3){
+        if (isNaN(parseFloat(words[2]))) {
+          return EDGE_WEIGHT_ERROR;
+        }
+
+        nodeSet.add(words[0])
+        nodeSet.add(words[1])
+        
+        let e:Edge = {
+          n1: words[0],
+          n2: words[1],
+          weight: Number(words[2])
+        }
+        edgeSet.add(e)
+      }
+
+      return "";
+    }
+
+
+    const parseInputToGraph = () => {
+      const linesOfText = textInput.split('\n');
+      console.log(linesOfText);
+      let nodeSet = new Set<string>();
+      let edgeSet = new Set<Edge>();
+      linesOfText.forEach(line => {
+          let result = processLine(line, nodeSet, edgeSet);
+          console.log(result)
+      })
+      console.log(nodeSet)
+      console.log(edgeSet)
+
+      // Check duplicates
+      // Check number args
+
+    }
+
   // Note use the onClick function for all of these buttons
   // and all but the addNode functionality will require a drop down
   // we need to give the select tags, options, so we will need to give
@@ -358,6 +424,17 @@ const GraphControls = ({
   return (
     <>
       <div id="body">
+       <textarea name="body"
+          onChange={(e) => setTextInput(e.target.value)}
+        value={textInput}/>
+      <button className='buttonClass'
+        onClick={() => {
+          // parse
+          parseInputToGraph();
+        }}
+      
+      >build graph.</button>
+
         <div id="addNodePortion" className="dfs-graph-controls">
           <input id="addNode" type="text" placeholder = "Input node Val"></input>
           <button className = "buttonClass"
