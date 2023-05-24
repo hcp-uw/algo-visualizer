@@ -342,11 +342,13 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
     startNode: "",
   };
 
+
   let adjacencyMap: { [key: string]: string[] } = {};
   let priorityQueue: NodeWithPrevAndWeight[] = [];
   let visited: string[] = [];
   let visitedEdges: Edge[] = [];
   let edgeWeights: {[key:string]: number} = {}
+
 
 
   if (nodes.length === 0) return result;
@@ -376,8 +378,8 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
     visitedEdges: copyObject(visitedEdges) as Edge[],
     description: `Starting from node ${start}`,
   });
-
   console.log(adjacencyMap)
+
   // dijkstra's algorithm
   while (priorityQueue.length > 0) {
     // front of the list is the front of the queue
@@ -412,7 +414,7 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
           if (pqNode.id === adjacentNode.id) {
             found = true;
             if (pqNode.weight > adjacentNode.weight) {
-              pqNode.weight = adjacentNode.weight;
+              pqNode.weight = adjacentNode.weight + node.weight;
               pqNode.from = node.id;
             }
           }
