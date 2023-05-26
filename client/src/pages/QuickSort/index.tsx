@@ -15,7 +15,8 @@ import { QuickSortResultType } from "../../AlgoResultTypes";
 import { ExtraData } from "../../CommonTypes";
 
 const ALGORITHM_URL = "sorts/quicksort/";
-const PIVOT_HEIGHT = 100;
+const PIVOT_HEIGHT = -100;
+const SUBARRAY_HEIGHT = 100;
 
 const QuickSort = () => {
     const algorSteps = useSelector(
@@ -103,14 +104,22 @@ const QuickSort = () => {
         // more needs to happen!
         return array.map((value, id) => {
             var style = "";
-            var pivotHeight = 0
+            var height = 0
+            let x = arr.indexOf(id) - id;
+            
             if (isStepAvailable) {
                 if (sorted) {
                     style = " highlight-success";
                 }
                 else if (pivotIndex == arr.indexOf(id)) {
                     style = " highlight-compare";
-                    pivotHeight = PIVOT_HEIGHT;
+                    height = PIVOT_HEIGHT;
+                    if (rightPointer != -1) {
+                        x = rightPointer - id
+                    }
+                    console.log("right pointer" + rightPointer)
+                    console.log("id " + id)
+                    console.log("pivot x " + x)
                 }
                 else if (leftPointer == arr.indexOf(id)) {
                     style = " highlight-compare";
@@ -119,13 +128,13 @@ const QuickSort = () => {
                     style = " highlight-compare";
                 }
                 else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < leftPointer) {
-                    style = " highlight-success";
+                    style = " highlight-minflag";
                 }
                 else if (subArrayStartIndex <= arr.indexOf(id) && arr.indexOf(id) < subArrayEndIndex) {
                     style = " highlight-domain"
+                    height = SUBARRAY_HEIGHT;
                 }
             }
-            let x = arr.indexOf(id) - id;
 
             return (
                 <td
@@ -133,12 +142,12 @@ const QuickSort = () => {
                     key={id}
                     id={id.toString()}
                     style={{
-                        transform: `translate(${x * 58}px, ${pivotHeight}px)`,
+                        transform: `translate(${x * 58}px, ${height}px)`,
                     }}
                 >
                     {value}
                     {/* Display an index below the box if level > 0 */}
-                    {isStepAvailable && pivotHeight != 0 ? (
+                    {isStepAvailable && height == -100 ? (
                         <div
                             style={{
                                 top: "50px",
@@ -164,7 +173,8 @@ const QuickSort = () => {
 
             <VisualizerContainer
                 height={250}
-                scale={1}>
+                scale={0.70}
+                initPosition={{x: 0, y: 100}}>
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 
