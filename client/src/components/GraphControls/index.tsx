@@ -18,6 +18,7 @@ import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { current } from '@reduxjs/toolkit';
 import { computeHeadingLevel } from '@testing-library/dom';
 import { parse } from '@fortawesome/fontawesome-svg-core';
+import { toast } from 'react-toastify';
 
 // default values for variables
 
@@ -30,6 +31,7 @@ const EDGE_WIDTH = 1;
 const MAX_INPUT_LENGTH = 3;
 const ARGUMENT_LENGTH_ERROR = "Invalid number of arguments";
 const EDGE_WEIGHT_ERROR = "Edge weight must be a number.";
+const NO_PARSING_ERROR = "";
 
 type WeightInputState = {
     show: boolean;
@@ -76,8 +78,13 @@ const GraphControls = ({
 }) => {
     const dispatch = useDispatch();
 
+    // TODO: move these into a constants file 
+    const innerGraphBoxWidth = 1000;
+    const innerGraphBoxHeight = 450;
+
     const nodes: string[] = useSelector((state: RootState) => state.input.graphNodes);
     const nodePositions: NodePositions = useSelector((state: RootState) => state.input.graphNodePositions);
+
 
     const setNodes = (nodes: string[], newNodePositions: NodePositions) => {
         dispatch(updateGraphNodes(nodes));
@@ -86,6 +93,14 @@ const GraphControls = ({
     };
 
     const edges: Edge[] = useSelector((state: RootState) => state.input.graphEdges);
+
+
+    useEffect(() => {
+      // redraw lines in text box
+      // a - b
+      // c
+      generateLines();
+    }, [nodes, edges])
 
     const setEdges = (edges: Edge[]) => {
         dispatch(updateGraphEdges(edges));
@@ -360,14 +375,54 @@ const GraphControls = ({
       edges?: Edge[]
     }
 
+    const generateNodeLine = (node: string):string => {
+      return node + '\n';
+    }
+
+    const generateEdgeLine = (edge: Edge):string => {
+      let line = edge.n1 + " " + edge.n2;
+      if (edge.weight !== undefined) {
+        line += " " + edge.weight;
+      }
+      line += '\n';
+      return line;
+    }
+
+    // Updates text area with current node data
+    const generateLines = () => {
+      let nodeSet = new Set<string>(nodes);
+
+      let lines = ''
+      // filter out duplicates
+      edges.forEach(edge => {
+        if (nodeSet.has(edge.n1)) nodeSet.delete(edge.n1)
+        if (nodeSet.has(edge.n2)) nodeSet.delete(edge.n2)
+
+        lines += generateEdgeLine(edge);
+      })
+
+      nodeSet.forEach(node => {
+        lines += generateNodeLine(node)
+      })
+      setTextInput(lines)
+    }
+
+    // Check that given line's input is correctly formatted.
+    // If so, parses out nodes and possibly an edge from the line and adds 
+    // them to nodeSet and edgeSet
     const processLine = (text: String, nodeSet: Set<string>, edgeSet: Set<Edge>):string => {
+      text = text.trim();
+      if (text === "") { // Skip empty line
+        return NO_PARSING_ERROR;
+      }
+
       let words = text.split(' ');      
       
       if(words.length > MAX_INPUT_LENGTH) {
         return ARGUMENT_LENGTH_ERROR
-      } if (words.length === 1) {
+      } if (words.length === 1) { // just a node
         nodeSet.add(words[0]);
-      } if (words.length === 2) {
+      } if (words.length === 2) { // two nodes with an unweighted edge
         nodeSet.add(words[0])
         nodeSet.add(words[1])
         let e:Edge = {
@@ -375,7 +430,7 @@ const GraphControls = ({
           n2: words[1]
         }
         edgeSet.add(e)
-      } else if (words.length === 3){
+      } else if (words.length === 3){ // two nodes with weighted edge
         if (isNaN(parseFloat(words[2]))) {
           return EDGE_WEIGHT_ERROR;
         }
@@ -390,8 +445,7 @@ const GraphControls = ({
         }
         edgeSet.add(e)
       }
-
-      return "";
+      return NO_PARSING_ERROR;
     }
 
 
@@ -400,18 +454,109 @@ const GraphControls = ({
       console.log(linesOfText);
       let nodeSet = new Set<string>();
       let edgeSet = new Set<Edge>();
-      linesOfText.forEach(line => {
-          let result = processLine(line, nodeSet, edgeSet);
-          console.log(result)
-      })
-      console.log(nodeSet)
-      console.log(edgeSet)
+
+      
+      let errorResult = NO_PARSING_ERROR;
+      let lineNumber = 0; 
+
+      // Check if each line is valid
+      for (lineNumber = 0; lineNumber < linesOfText.length; lineNumber++) {
+        let line = linesOfText[lineNumber];
+        errorResult = processLine(line, nodeSet, edgeSet);
+        if (errorResult !== NO_PARSING_ERROR) {
+          break;
+        }
+      }
+
+
+      let parsedNodes = Array.from(nodeSet)
+      let parsedEdges = Array.from(edgeSet)
+      if (errorResult === NO_PARSING_ERROR) { // valid result
+        // generate a list of random initial positions for each node
+        let positions = generateNodePositions(parsedNodes)
+        setNodes(parsedNodes, positions);
+        setEdges(parsedEdges);
+
+        // push new edges as state 
+        toast.success('parsed graph input!!', { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
+      } else {
+        // alert the user
+        toast.error(errorResult, { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
+      }
 
       // Check duplicates
       // Check number args
 
     }
 
+    const generateNodePositions = (nodes: string[]):NodePositions =>{
+    let positions: NodePositions = {};
+
+    let heightDenominator = 100;
+    let widthDenominator = 200;
+
+    let maxDistanceFromPrevious = 100;
+    
+    var grid:Boolean[][] = Array(Math.floor(innerGraphBoxHeight / heightDenominator)); 
+    for (var i = 0; i < Math.floor(innerGraphBoxHeight / heightDenominator); i++) {
+        grid[i] = Array(Math.floor(innerGraphBoxWidth / widthDenominator)).fill(false);
+    }
+
+    let prevCoordinate: null | Coordinate = null;
+    nodes.forEach(node => {
+      if (prevCoordinate !== null) {
+
+        var xCoord = prevCoordinate.x + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
+        xCoord = xCoord > 0 ? Math.max(xCoord, 20) : Math.min(xCoord, -20);
+        var yCoord = prevCoordinate.y + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
+        yCoord = yCoord > 0 ? Math.max(yCoord, 20) : Math.min(yCoord, -20);
+
+        let attempts = 0;
+        while (attempts <= 250) {
+          console.log("hi")
+          // Generate coordinate to be close to previously added node
+          xCoord = prevCoordinate.x + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
+          xCoord = xCoord > 0 ? Math.max(xCoord, 20) : Math.min(xCoord, -20);
+          yCoord = prevCoordinate.y + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
+          yCoord = yCoord > 0 ? Math.max(yCoord, 20) : Math.min(yCoord, -20);
+
+          xCoord = Math.min(innerGraphBoxWidth - NODE_RADIUS, xCoord);
+          xCoord = Math.max(NODE_RADIUS, xCoord);
+          yCoord = Math.min(innerGraphBoxHeight - NODE_RADIUS, yCoord)
+          yCoord = Math.max(NODE_RADIUS, yCoord)
+
+          let gridRowInd = Math.round(yCoord / heightDenominator);
+          gridRowInd = Math.min(gridRowInd, innerGraphBoxWidth / widthDenominator - 1);
+          let gridColInd = Math.round(xCoord / widthDenominator);
+          gridColInd = Math.min(gridColInd, innerGraphBoxHeight / heightDenominator - 1);
+
+          // If this position does not overlap with existing nodes
+          if (!grid[gridRowInd][gridColInd]) {
+            grid[gridRowInd][gridColInd] = true;
+            break;
+          }
+
+          attempts++;
+          console.log('retrying')
+        }
+
+        positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
+      } else {
+        let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
+        let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
+        let gridRowInd = Math.round(yCoord / heightDenominator);
+        gridRowInd = Math.min(gridRowInd, innerGraphBoxWidth / widthDenominator - 1);
+        let gridColInd = Math.round(xCoord / widthDenominator);
+        gridColInd = Math.min(gridColInd, innerGraphBoxHeight / heightDenominator - 1);
+        grid[gridRowInd][gridColInd] = true;
+
+        positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
+      }
+      prevCoordinate = positions[node].init;
+    });
+    console.log(grid)
+    return positions;
+  }
   // Note use the onClick function for all of these buttons
   // and all but the addNode functionality will require a drop down
   // we need to give the select tags, options, so we will need to give
@@ -423,107 +568,18 @@ const GraphControls = ({
   // You can also make functions that will allow you to put options onto the select elements
   return (
     <>
-      <div id="body">
-       <textarea name="body"
+      <div id="body" className='graph-controls-container'>
+        <textarea name="body"
+          className='graph-input'
           onChange={(e) => setTextInput(e.target.value)}
-        value={textInput}/>
-      <button className='buttonClass'
-        onClick={() => {
-          // parse
-          parseInputToGraph();
-        }}
-      
-      >build graph.</button>
-
-        <div id="addNodePortion" className="dfs-graph-controls">
-          <input id="addNode" type="text" placeholder = "Input node Val"></input>
-          <button className = "buttonClass"
-            onClick={() => {
-              addNode(700, 225);
-            }}
-          >
-            Add Node
-          </button>
-        </div>
-        <div id="removeNodePortion" className="dfs-graph-controls">
-          <select id="removeNodeDropDown"
-            onMouseDown={() => {
-              let element = document.getElementById("removeNodeDropDown");
-              getNodes(element as HTMLSelectElement)
-          }}
-          >
-            <option value="start">-Select Node-</option>
-          </select>
-          <button className = "buttonClass"
+          value={textInput} />
+        <button className='buttonClass'
           onClick={() => {
-            let remove = document.getElementById("removeNodeDropDown") as HTMLSelectElement;
-            removeNode(remove.value);
-            remove.value = "-Select Node-"
-          }}>
-            Remove Node
-          </button>
-        </div>
-        <div id = "addEdgePortion" className="dfs-graph-controls">
-        <select id="addEdgesStart" className="select_two"
-            onMouseDown={() => {
-              let element = document.getElementById("addEdgesStart");
-              getNodes(element as HTMLSelectElement)
-            }}
-          >
-            <option value="Start">Start</option>
-          </select>
-          <select id="addEdgesEnd" className="select_two"
-            onMouseDown={() => {
-              let element = document.getElementById("addEdgesEnd");
-              getNodes(element as HTMLSelectElement)
-            }}
-          >
-            <option value="End">End</option>
-          </select>
-          <button className = "buttonClass"
-            onClick={() => {
-              let start = document.getElementById("addEdgesStart") as HTMLSelectElement;
-              let end = document.getElementById("addEdgesEnd") as HTMLSelectElement;
-              addEdge(
-                start.value,
-                end.value,
-                weighed
-                ? randInt(1, 100)
-                : undefined)
-              start.value = "Start"
-              end.value = "End"
-            }}
-          >
-            Add Edge
-          </button>
-        </div>
-        <div id = "removeEdgePortion" className="dfs-graph-controls">
-          <select id="removeEdgesStart" className="select_two"
-            onMouseDown={() => {
-            let element = document.getElementById("removeEdgesStart");
-            getNodes(element as HTMLSelectElement)
+            // parse
+            parseInputToGraph();
           }}
-          >
-            <option value="Start">Start</option>
-          </select>
-          <select id="removeEdgesEnd" className="select_two"
-            onMouseDown={() => {
-              let element = document.getElementById("removeEdgesEnd");
-              getNodes(element as HTMLSelectElement)
-            }}
-          >
-            <option value="End">End</option>
-          </select>
-          <button className = "buttonClass"
-            onClick={() => {
-              let start = document.getElementById("removeEdgesStart") as HTMLSelectElement;
-              let end = document.getElementById("removeEdgesEnd") as HTMLSelectElement;
-              removeEdge(start, end);
-            }}
-          >
-            Remove Edge
-          </button>
-        </div>
+        >build graph.</button>
+
       </div>
     </>
   )

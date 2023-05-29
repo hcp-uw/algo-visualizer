@@ -1,8 +1,8 @@
 .controls_graph{
-  display: flex;
+  /* display: flex;
   margin: 10px;
   justify-content: left;
-  margin-left: 20%;
+  margin-left: 20%; */
 }
 
 .btn .fa {
@@ -23,11 +23,24 @@
 }
 
 #GraphControlsDiv {
-  margin-top: 2%;
+  margin: 0 !important;
+  width: 400px;
+  height: 400px;
+  margin-right: 30px !important;
+
+
+  /* margin-top: 2%;
   margin-left: 5%;
-  margin-bottom: 2%;
+  margin-bottom: 2%; */ 
 }
 
 #controlsDiv {
-  margin-top: 2.5%;
+  /* margin-top: 2.5%; */
+
+}
+
+.graph-controls-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }

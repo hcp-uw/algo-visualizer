@@ -20,7 +20,7 @@ const ALGORITHM_URL = "searches/breadthfirstsearch/";
 const BreadthFirstSearch = () => {
 
     const dispatch = useDispatch();
-    const innerGraphBoxWidth = 1400;
+    const innerGraphBoxWidth = 1000;
     const innerGraphBoxHeight = 450;
 
     const algorSteps = useSelector(
@@ -77,28 +77,29 @@ const BreadthFirstSearch = () => {
             <div className="centered">
                 <AlgorithmPopover data={breadthFirstSearchDesc} />
             </div>
+           <div style={{display:'flex', flexDirection:'row'}}>
+                <div id="GraphControlsDiv">
+                    <GraphControls />
+                </div>
+                <VisualizerContainer
+                    height="400"
+                    staticChildren={<Queue />}
+                    minScale={0.3}
+                    scale={0.8}
+                    initPosition={{ x: -150, y: -25 }}
+                >
+                    <Graph
+                        containerWidth={innerGraphBoxWidth}
+                        containerHeight={innerGraphBoxHeight}
+                        edgeHighlightStyle={edgeHighlightStyle}
+                        nodeHighlightStyle={nodeHighlightStyle}
+                    />
+                </VisualizerContainer>
 
-            <VisualizerContainer
-                height="400"
-                staticChildren={<Queue />}
-                minScale={0.3}
-                scale={0.8}
-                initPosition={{ x: -150, y: -25 }}
-            >
-                <Graph
-                    containerWidth={innerGraphBoxWidth}
-                    containerHeight={innerGraphBoxHeight}
-                    edgeHighlightStyle={edgeHighlightStyle}
-                    nodeHighlightStyle={nodeHighlightStyle}
-                />
-            </VisualizerContainer>
-
+            </div>
             <div className="dfs-graph-controls">
                 <div id="controlsDiv" className="controls_graph">
                     <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
-                </div>
-                <div id="GraphControlsDiv">
-                    <GraphControls/>
                 </div>
 
 

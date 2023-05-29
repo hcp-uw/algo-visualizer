@@ -5,18 +5,18 @@
 }
 
 input {
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem;
   margin: 0.5rem 0;
   width: 150px;
   width: 150px;
-  border-radius: 5px;
+  border-radius: 5px; */
 }
 
 select {
-  margin-left: 0.5rem;
-  margin: 0.5rem 0;
+  /* margin-left: 0.5rem; */
+  /* margin: 0.5rem 0;
   width: 150px;
-  border-radius: 5px;
+  border-radius: 5px; */
 }
 
 .select_two {
@@ -30,7 +30,7 @@ select {
   border: 2px solid #3e488f;
   margin-left: 0.5rem;
   margin: 0.5rem 0;
-  width: 150px;
+  width: 100%;
 }
 
 .buttonClass:hover {
@@ -48,3 +48,10 @@ select {
   height: 52px;
 }
 
+.graph-input {
+  width: 100%;
+  height: 100%;
+
+
+  resize: none;
+}
