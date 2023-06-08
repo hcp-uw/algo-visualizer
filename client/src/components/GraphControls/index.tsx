@@ -451,7 +451,7 @@ const GraphControls = ({
 
     const parseInputToGraph = () => {
       const linesOfText = textInput.split('\n');
-      console.log(linesOfText);
+      // console.log(linesOfText);
       let nodeSet = new Set<string>();
       let edgeSet = new Set<Edge>();
 
@@ -473,7 +473,7 @@ const GraphControls = ({
       let parsedEdges = Array.from(edgeSet)
       if (errorResult === NO_PARSING_ERROR) { // valid result
         // generate a list of random initial positions for each node
-        let positions = generateNodePositions(parsedNodes)
+        let positions = generateNodePositions(parsedNodes, 1000, .5, 0.975)
         setNodes(parsedNodes, positions);
         setEdges(parsedEdges);
 
@@ -489,17 +489,98 @@ const GraphControls = ({
 
     }
 
-    const generateNodePositions = (nodes: string[]):NodePositions =>{
+
+
+  const generateNodePositions = (nodes: string[], maxIterations = 1000, l = 1, sigma = 1.0): NodePositions => {
+    // generate random positions
+    let positions: NodePositions = {};
+    nodes.forEach(node => {
+      let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
+      let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
+      positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
+    })
+
+    // let positions: NodePositions = generateNodePositions2(nodes) // random positions
+    let t = 1;
+    let sigmat = sigma;
+    while (t < maxIterations) {
+      let forces: { [key: string]: { Fx: number, Fy: number } } = {};
+      // for each vertex compute the force on the vertex
+      Object.keys(nodePositions).forEach(node => {
+        let repForce = netRepForce(nodePositions[node], nodePositions, l);
+        // console.log(repForce)
+        let attrForce = netAttrForce(nodePositions[node], nodePositions, l);
+        let force = { Fx: repForce.Fx + attrForce.Fx, Fy: repForce.Fy + attrForce.Fy };
+        forces[node] = force;
+      });
+
+      Object.keys(nodePositions).forEach(node => {
+        let currPos = nodePositions[node];
+        let newPos = copyObject(currPos) as Node;
+        newPos.init.x += sigmat * forces[node].Fx;
+        newPos.init.y += sigmat * forces[node].Fy;
+      });
+      // console.log(forces);
+
+      sigmat *= sigma;
+      t++;
+    }
+    return positions;
+  }
+
+  const netRepForce = (node: Node, nodePositions: NodePositions, l: number): { Fx: number, Fy: number } => {
+    // loop through all other node positions, sum up the net between other nodes and this node
+    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 };
+    Object.keys(nodePositions).forEach(u => {
+      let Fvu = repForce(node, nodePositions[u], l);
+      F.Fx += Fvu.Fx;
+      F.Fy += Fvu.Fy;
+    })
+    return F;
+  }
+
+  const repForce = (v: Node, u: Node, l: number): { Fx: number, Fy: number } => {
+    if (v.init.x === u.init.x && v.init.y === u.init.y) return { Fx: 0.0, Fy: 0.0 };
+
+    // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
+    let norm = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
+    let PvPu: { x: number, y: number } = { x: u.init.x - v.init.x, y: u.init.y - v.init.y };
+    let scalar = (l ** 2) / norm;
+    return { Fx: scalar * PvPu.x, Fy: scalar * PvPu.y };
+  }
+
+  const netAttrForce = (node: Node, nodePositions: NodePositions, l: number): { Fx: number, Fy: number } => {
+    // loop through all other node positions, sum up the net between other nodes and this node
+    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 };
+    Object.keys(nodePositions).forEach(u => {
+      let Fvu = attrForce(node, nodePositions[u], l);
+      F.Fx += Fvu.Fx;
+      F.Fy += Fvu.Fy;
+    })
+    return F;
+  }
+
+  const attrForce = (v: Node, u: Node, l: number): { Fx: number, Fy: number } => {
+    if (v.init.x === u.init.x && v.init.y === u.init.y) return { Fx: 0.0, Fy: 0.0 };
+
+    // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
+    let norm = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
+    let PvPu: { x: number, y: number } = { x: v.init.x - u.init.x, y: v.init.y - u.init.y };
+    let scalar = (norm ** 2) / l;
+    return { Fx: scalar * PvPu.x, Fy: scalar * PvPu.y };
+  }
+
+  const generateNodePositions2 = (nodes: string[]): NodePositions => {
     let positions: NodePositions = {};
 
     let heightDenominator = 100;
     let widthDenominator = 200;
 
     let maxDistanceFromPrevious = 100;
-    
-    var grid:Boolean[][] = Array(Math.floor(innerGraphBoxHeight / heightDenominator)); 
+
+    var grid: Boolean[][] = Array(Math.floor(innerGraphBoxHeight / heightDenominator));
     for (var i = 0; i < Math.floor(innerGraphBoxHeight / heightDenominator); i++) {
-        grid[i] = Array(Math.floor(innerGraphBoxWidth / widthDenominator)).fill(false);
+      grid[i] = Array(Math.floor(innerGraphBoxWidth / widthDenominator)).fill(false);
     }
 
     let prevCoordinate: null | Coordinate = null;
