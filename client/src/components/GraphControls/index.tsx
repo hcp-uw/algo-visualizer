@@ -19,6 +19,7 @@ import { current } from '@reduxjs/toolkit';
 import { computeHeadingLevel } from '@testing-library/dom';
 import { parse } from '@fortawesome/fontawesome-svg-core';
 import { toast } from 'react-toastify';
+import { DEFAULT_EDGES_1 } from '../../assets/default-values';
 
 // default values for variables
 
@@ -473,9 +474,24 @@ const GraphControls = ({
       let parsedEdges = Array.from(edgeSet)
       if (errorResult === NO_PARSING_ERROR) { // valid result
         // generate a list of random initial positions for each node
-        let positions = generateNodePositions(parsedNodes, 1000, 1.5, 0.975)
-        setNodes(parsedNodes, positions);
+        // let positions = generateNodePositions(parsedNodes, 200, 1.5, 0.975)
+        // setNodes(parsedNodes, positions);
         setEdges(parsedEdges);
+        // TODO: remove, ugly
+        let positions: NodePositions = {};
+        nodes.forEach(node => {
+          let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
+          let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
+          positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
+        })
+        let numTimes = 1;
+        setInterval(() => {
+          positions = updatePositions(positions, numTimes);
+          // console.log(positions)
+          setNodes(parsedNodes, positions)
+          numTimes++;
+
+        }, 50)
 
         // push new edges as state 
         toast.success('parsed graph input!!', { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
@@ -598,13 +614,13 @@ const GraphControls = ({
       // for each vertex compute the force on the vertex
       Object.keys(positions).forEach(node => {
         let repForce = netRepForce(positions[node], positions, l);
-        let attrForce = netAttrForce(positions[node], positions, l);
-        // console.log(repForce)
-        // console.log(attrForce)
+        // let attrForce = netAttrForce(positions[node], positions, l);
+
+
         // let sprForce = netSpringForce(node, nodePositions, edges);
 
-        let force = { Fx: repForce.Fx + 0.000001 * attrForce.Fx, Fy: repForce.Fy + 0.000001 * attrForce.Fy};
-        console.log(force)
+        let force = { Fx: repForce.Fx, Fy: repForce.Fy};
+        // let force = { Fx: repForce.Fx + 0.000001 * attrForce.Fx, Fy: repForce.Fy + 0.000001 * attrForce.Fy};
         // let force = { Fx: repForce.Fx + attrForce.Fx + sprForce.Fx, Fy: repForce.Fy + attrForce.Fy + sprForce.Fy};
         forces[node] = force;
       });
@@ -612,13 +628,64 @@ const GraphControls = ({
       Object.keys(positions).forEach(node => {
         let currPos = positions[node];
         let newPos = copyObject(currPos) as Node;
-        newPos.init.x += 0.00001 * forces[node].Fx;
-        newPos.init.y += 0.00001 * forces[node].Fy;
+        newPos.init.x += 0.0001 * forces[node].Fx;
+        newPos.init.y += 0.0001 * forces[node].Fy;
         positions[node] = newPos;
       });
       t++;
     }
     return positions;
+  }
+
+  const updatePositions = (positions: NodePositions, numTimes:number) => {
+      let newP: NodePositions = copyObject(positions) as NodePositions;
+    let i = 0;
+    // console.log(numTimes)
+    while (i++ < numTimes) {
+      // console.log(i)
+
+      let forces: { [key: string]: { Fx: number, Fy: number } } = {};
+      // for each vertex compute the force on the vertex
+      Object.keys(positions).forEach(node => {
+        let repForce = netRepForce(positions[node], positions, 1.5);
+        let attrForce = netAttrForce(positions[node], positions, 1.5);
+        // let sprForce = netSpringForce(node, nodePositions, edges);
+
+        // let force = { Fx: 1500 * repForce.Fx + -0.00001 * attrForce.Fx, Fy: 1500 * repForce.Fy + -0.00001 * attrForce.Fy };
+        // let force = { Fx: 15000* repForce.Fx , Fy:  15000*repForce.Fy};
+        // console.log(repForce)
+        // let force = { Fx: 15000 * repForce.Fx + -0.00001 * attrForce.Fx + sprForce.Fx, Fy: 15000 * repForce.Fy + -0.00001 * attrForce.Fy + sprForce.Fy};
+        // let force = {Fx: sprForce.Fx, Fy: sprForce.Fy};
+        let force = {Fx: 0, Fy: 0}
+        forces[node] = force;
+      });
+
+      edges.forEach((edge) => {
+        let Fn1 = fSpr(nodePositions[edge.n1], nodePositions[edge.n2])
+
+        let nfN1 = forces[edge.n1]
+        let nFN2 = forces[edge.n2]
+        
+        nfN1.Fx -= Fn1.Fx
+        nfN1.Fy -= Fn1.Fy
+
+        nFN2.Fx += Fn1.Fx
+        nFN2.Fy += Fn1.Fy
+
+        forces[edge.n1] = nfN1
+        forces[edge.n2] = nFN2
+      })
+
+      Object.keys(positions).forEach(node => {
+        let currPos = positions[node];
+        let newPos = copyObject(currPos) as Node;
+        newPos.init.x += 0.005 * forces[node].Fx;
+        newPos.init.y += 0.005 * forces[node].Fy;
+        newP[node] = newPos;
+      });
+
+    }
+    return newP;
   }
 
   const netRepForce = (node: Node, nodePositions: NodePositions, l: number): { Fx: number, Fy: number } => {
@@ -637,12 +704,10 @@ const GraphControls = ({
 
     // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
     let dist = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
-    if (dist === 0) return {Fx: 0.0, Fy: 0.0}
+    if (dist === 0) return { Fx: 0.0, Fy: 0.0 }
 
     let PvPu: { x: number, y: number } = { x: u.init.x - v.init.x, y: u.init.y - v.init.y };
-    // console.log(dist)
-    // console.log(PvPu)
-    let scalar = (l ** 2) / dist;
+    let scalar = -1*(l ** 2) / (dist**2);
     return { Fx: scalar * PvPu.x, Fy: scalar * PvPu.y };
   }
 
@@ -657,52 +722,54 @@ const GraphControls = ({
     return F;
   }
 
-  const netSpringForce = (node: string, nodePositions: NodePositions,  edges: Edge[]): { Fx: number, Fy: number } => {
-    // net spring force on a particle
-
-    // loop thru edges, see if this node is involved
-    // if so, compute spring foce btwn it and other node in edge (sum all edges in which this occurs)
-    let u:Node = nodePositions[node];
-
-    // outer: all edges
-    let F: {Fx: number, Fy: number } = {Fx: 0.0, Fy: 0.0}
-    edges.forEach((e: Edge) => {
-      if (e.n1 === node ){
-        // compute spring force, add it to net force
-        // fSpr
-        let fS = fSpr(u, nodePositions[e.n2])
-        F.Fx+= -1.0 * fS.Fx;
-        F.Fy+= -1.0 * fS.Fy;
-      } else if (e.n2 === node) {
-        let fS = fSpr(u, nodePositions[e.n1]);
-        F.Fx+= -1.0 * fS.Fx;
-        F.Fy+= -1.0 * fS.Fy;
-      }
-    })
-    return F;
-  }
-
-  const fSpr = (n:Node, o: Node): {Fx: number, Fy: number } => {
-    let dist = Math.sqrt(Math.pow(n.init.x - o.init.x, 2) + Math.pow(n.init.y - o.init.y, 2));
-    dist -= 40.0;
-    let unitVec:Node = copyObject(o) as Node;
-    unitVec.init.x -= o.init.x;
-    unitVec.init.y -= o.init.y;
-
-    unitVec.init.x *= dist * 30000;
-    unitVec.init.y *= dist * 30000;
-    return {Fx: unitVec.init.x, Fy: unitVec.init.y};
-  }
-
   const attrForce = (v: Node, u: Node, l: number): { Fx: number, Fy: number } => {
     if (v.init.x === u.init.x && v.init.y === u.init.y) return { Fx: 0.0, Fy: 0.0 };
 
     // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
     let norm = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
-    let PvPu: { x: number, y: number } = { x: v.init.x - u.init.x, y: v.init.y - u.init.y };
+    let PuPv: { x: number, y: number } = { x: v.init.x - u.init.x, y: v.init.y - u.init.y };
     let scalar = (norm ** 2) / l;
-    return { Fx: scalar * PvPu.x, Fy: scalar * PvPu.y };
+    return { Fx: scalar * PuPv.x, Fy: scalar * PuPv.y };
   }
+  const netSpringForce = (node: string, nodePositions: NodePositions, edges: Edge[]): { Fx: number, Fy: number } => {
+    // net spring force on a particle
+
+    // loop thru edges, see if this node is involved
+    // if so, compute spring foce btwn it and other node in edge (sum all edges in which this occurs)
+    let u: Node = nodePositions[node];
+
+    // outer: all edges
+    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 }
+    edges.forEach((e: Edge) => {
+      if (e.n1 === node) {
+        // compute spring force, add it to net force
+        // fSpr
+        let fS = fSpr(u, nodePositions[e.n2])
+        F.Fx += fS.Fx;
+        F.Fy += fS.Fy;}
+      // } else if (e.n2 === node) {
+      //   let fS = fSpr(nodePositions[e.n1], u);
+      //   F.Fx -= fS.Fx;
+      //   F.Fy -= fS.Fy;
+      // }
+    })
+    // console.log(F)
+    return F;
+  }
+
+  const fSpr = (n: Node, o: Node): { Fx: number, Fy: number } => {
+    let dist = Math.sqrt(Math.pow(n.init.x - o.init.x, 2) + Math.pow(n.init.y - o.init.y, 2));
+    // dist -= 400;
+    console.log(dist)
+    let unitVec: Node = copyObject(o) as Node;
+    unitVec.init.x -= n.init.x;
+    unitVec.init.y -= n.init.y;
+
+    unitVec.init.x *= dist * 0.1;
+    unitVec.init.y *= dist * 0.1;
+    return { Fx: unitVec.init.x, Fy: unitVec.init.y };
+  }
+
 
   const generateNodePositions2 = (nodes: string[]): NodePositions => {
     let positions: NodePositions = {};
