@@ -88,6 +88,16 @@ type BreadthFirstSearchResultType = {
     startNode: string;
 };
 
+type BucketSortResultType = {
+    steps: {
+        array: number[];
+        description: string;
+        bucketCount: Map<number, number>;
+        currentIndex: number;
+        state: number;
+    }[];
+};
+
 type GraphAlgorithmResultType = DepthFirstSearchResultType | BreadthFirstSearchResultType;
 
 type SearchAlgorithmResultType =
@@ -100,7 +110,8 @@ type SortAlgorithmResultType =
     | BubbleSortResultType
     | InsertionSortResultType
     | SelectionSortResultType
-    | MergeSortResultType;
+    | MergeSortResultType
+    | BucketSortResultType;
 
 type AlgorithmResultType = SearchAlgorithmResultType | SortAlgorithmResultType;
 
@@ -116,5 +127,6 @@ export {
     SortAlgorithmResultType,
     GraphAlgorithmResultType,
     DepthFirstSearchResultType,
-    BreadthFirstSearchResultType
+    BreadthFirstSearchResultType,
+    BucketSortResultType
 };

@@ -12,7 +12,7 @@
  *              }
  */
 
-import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
+import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, SelectionSortResultType, BucketSortResultType } from "../AlgoResultTypes";
 
 /**
  * Helper function to swap two elements in an array.
@@ -522,6 +522,8 @@ function fillSubarrayPositions(ids1:number[], ids2:number[], positions:Position[
 function copyOject(obj:Object):Object {
     return JSON.parse(JSON.stringify(obj));
 }
+
+
 //-----------------------------------------------------------------------------------------
 
 export {

@@ -85,3 +85,16 @@ export const breadthFirstSearchDesc = {
         "Space Complexity: O(|Vertices|)",
     ],
 };
+
+export const bucketSortDesc = {
+    algorithm: "Bucket Sort",
+    title: "Bucket sort, or bin sort, is a sorting algorithm that works by distributing the elements of an array into a number of buckets.",
+    description: [
+        "Worst Time Complexity: O(n^2)",
+        "In Practice Complexity: O(n + k)",
+        "Best Complexity: O(n + k)",
+        "Space Complexity: O(n + k)",
+        "Stable: Yes",
+        "In-place: No",
+    ],
+};
