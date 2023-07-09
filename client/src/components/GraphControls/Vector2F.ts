@@ -35,3 +35,4 @@ class Vector2F{
       return Math.sqrt(Math.pow(diff.x, 2) + Math.pow(diff.y, 2))
     }
 }
+export default Vector2F

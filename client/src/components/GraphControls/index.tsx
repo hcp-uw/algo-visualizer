@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import "./GraphControls.css";
 // onClick would be in GraphControls and import redux to this file
+import FruchSpring from './LayoutAlgorithm';
+import Vector2F from './Vector2F';
 
 import { randInt, copyObject } from "../../utilities/utilities";
 import Draggable from "react-draggable";
@@ -473,25 +475,47 @@ const GraphControls = ({
       let parsedNodes = Array.from(nodeSet)
       let parsedEdges = Array.from(edgeSet)
       if (errorResult === NO_PARSING_ERROR) { // valid result
-        // generate a list of random initial positions for each node
-        // let positions = generateNodePositions(parsedNodes, 200, 1.5, 0.975)
-        // setNodes(parsedNodes, positions);
+
+
         setEdges(parsedEdges);
-        // TODO: remove, ugly
+
+
         let positions: NodePositions = {};
-        nodes.forEach(node => {
+        parsedNodes.forEach(node => {
           let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
           let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
           positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
         })
-        let numTimes = 1;
-        setInterval(() => {
-          positions = updatePositions(positions, numTimes);
-          // console.log(positions)
-          setNodes(parsedNodes, positions)
-          numTimes++;
 
-        }, 50)
+        // process edges into graph
+        let g = new Map<Node, Array<Node>>;
+        for (let edge of parsedEdges) {
+          let children = g.get(positions[edge.n1]);
+          if (!children) children = new Array<Node>();
+          children.push(positions[edge.n2]);
+          g.set(positions[edge.n1], children);
+
+          let children2 = g.get(positions[edge.n2]);
+          if (!children2) children2 = new Array<Node>();
+          children2.push(positions[edge.n1]);
+          g.set(positions[edge.n2], children2);
+        }
+
+        let fr = new FruchSpring(2.0, 1);
+
+        // parse nodes into position
+        let nn:any = []
+
+        for (let key of Object.keys(positions)) {
+          nn.push(positions[key])
+        }
+
+        for (let i = 0; i < 1500; i++)
+          fr.updateNodes(nn, g);
+
+
+        setNodes(parsedNodes, positions)
+
 
         // push new edges as state 
         toast.success('parsed graph input!!', { position: "bottom-right", autoClose: 2000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
@@ -505,340 +529,6 @@ const GraphControls = ({
 
     }
 
-
-// package pain;
-// import java.util.Set;
-// import java.util.HashMap;
-
-// /**
-//  * Fruch
-//  */
-// public class FruchSpring implements LayoutAlgorithm {
-//   float l;
-//   float damping;
-//   static float a = 0.000001f;
-//   static float repMult = 15000000.0f;
-//   static float c = 30000.0f; // spring constant
-//   static float springLen = 40.0f; // spring ideal length
-
-//   public FruchSpring(float l, float damping) {
-//     this.l = l;
-//     this.damping = damping;
-//   }
-
-//   public void updateNodes(Graph g) {
-//     Set<Node> nodes = g.getNodes();
-//     HashMap<Node, Vec2D> forces = new HashMap<Node, Vec2D>();
-//     for(Node n : nodes){
-//       forces.put(n, netF(n, nodes, g));
-//     }
-
-//     for (Node n : nodes){
-//       Vec2D force = forces.get(n);
-//       n.x += a * damping * force.x;
-//       n.y += a * damping * force.y;
-//     }
-//     this.damping *= damping;
-//   }
-
-
-//   private Vec2D netF(Node n, Set<Node> nodes, Graph g) {
-//     Vec2D force = new Vec2D(0.0f, 0.0f);
-//     Set<Node> children = g.getChildren(n);
-
-//     for (Node b : nodes) {
-//       if (b.equals(n)) continue;
-
-//       Vec2D nVec = new Vec2D(n.x, n.y);
-//       Vec2D bVec = new Vec2D(b.x, b.y);
-//       Vec2D fr = fRep(nVec, bVec);
-//       Vec2D fa = fAttr(nVec, bVec);
-//       // only apply spring force if there is an edge (probably exists better way to structure this)
-//       if (children.contains(b)) {
-//         Vec2D fs = fSpr(nVec, bVec);
-//         force.add(fs);
-//       }
-
-//       force.add(fr);
-//       force.add(fa);
-//     }
-
-//     return force;
-//   }
-
-//   private Vec2D fRep(Vec2D n, Vec2D o) {
-//     float lsq = (float) Math.pow(this.l, 2);
-//     float dist = Vec2D.distance(n, o);
-//     Vec2D unit = Vec2D.unit(o, n);
-//     return unit.scale( repMult * (lsq / dist));
-//   }
-
-//   private Vec2D fAttr(Vec2D n, Vec2D o) {
-//     float dist = Vec2D.distance(n, o);
-//     float dist2 = (float) Math.pow(dist, 2);
-//     Vec2D unit = Vec2D.unit(n, o);
-
-//     return unit.scale(dist2 / this.l);
-//   }
-
-//   private Vec2D fSpr(Vec2D n, Vec2D o) {
-//     // f = -k(x - l)
-//     float dist = Vec2D.distance(n, o);
-//     dist -= springLen;
-//     Vec2D unit = Vec2D.unit(n, o);
-//     Vec2D disp = unit.scale(dist); // displacement
-//     Vec2D F = disp.scale(c);
-//     System.out.println(F);
-//     return F;
-//   }
-  
-// }
-
-
-
-
-  const generateNodePositions = (nodes: string[], maxIterations = 10000, l = 1, sigma = 1.0): NodePositions => {
-    // generate random positions
-    let positions: NodePositions = {};
-    nodes.forEach(node => {
-      let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
-      let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
-      positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
-    })
-
-    // let positions: NodePositions = generateNodePositions2(nodes) // random positions
-    let t = 1;
-    // let sigmat = sigma;
-    while (t < maxIterations) {
-      let forces: { [key: string]: { Fx: number, Fy: number } } = {};
-      // for each vertex compute the force on the vertex
-      Object.keys(positions).forEach(node => {
-        let repForce = netRepForce(positions[node], positions, l);
-        // let attrForce = netAttrForce(positions[node], positions, l);
-
-
-        // let sprForce = netSpringForce(node, nodePositions, edges);
-
-        let force = { Fx: repForce.Fx, Fy: repForce.Fy};
-        // let force = { Fx: repForce.Fx + 0.000001 * attrForce.Fx, Fy: repForce.Fy + 0.000001 * attrForce.Fy};
-        // let force = { Fx: repForce.Fx + attrForce.Fx + sprForce.Fx, Fy: repForce.Fy + attrForce.Fy + sprForce.Fy};
-        forces[node] = force;
-      });
-
-      Object.keys(positions).forEach(node => {
-        let currPos = positions[node];
-        let newPos = copyObject(currPos) as Node;
-        newPos.init.x += 0.0001 * forces[node].Fx;
-        newPos.init.y += 0.0001 * forces[node].Fy;
-        positions[node] = newPos;
-      });
-      t++;
-    }
-    return positions;
-  }
-
-  const updatePositions = (positions: NodePositions, numTimes:number) => {
-      let newP: NodePositions = copyObject(positions) as NodePositions;
-    let i = 0;
-    // console.log(numTimes)
-    while (i++ < numTimes) {
-      // console.log(i)
-
-      let forces: { [key: string]: { Fx: number, Fy: number } } = {};
-      // for each vertex compute the force on the vertex
-      Object.keys(positions).forEach(node => {
-        let repForce = netRepForce(positions[node], positions, 1.5);
-        let attrForce = netAttrForce(positions[node], positions, 1.5);
-        // let sprForce = netSpringForce(node, nodePositions, edges);
-
-        // let force = { Fx: 1500 * repForce.Fx + -0.00001 * attrForce.Fx, Fy: 1500 * repForce.Fy + -0.00001 * attrForce.Fy };
-        // let force = { Fx: 15000* repForce.Fx , Fy:  15000*repForce.Fy};
-        // console.log(repForce)
-        // let force = { Fx: 15000 * repForce.Fx + -0.00001 * attrForce.Fx + sprForce.Fx, Fy: 15000 * repForce.Fy + -0.00001 * attrForce.Fy + sprForce.Fy};
-        // let force = {Fx: sprForce.Fx, Fy: sprForce.Fy};
-        let force = {Fx: 0, Fy: 0}
-        forces[node] = force;
-      });
-
-      edges.forEach((edge) => {
-        let Fn1 = fSpr(nodePositions[edge.n1], nodePositions[edge.n2])
-
-        let nfN1 = forces[edge.n1]
-        let nFN2 = forces[edge.n2]
-        
-        nfN1.Fx -= Fn1.Fx
-        nfN1.Fy -= Fn1.Fy
-
-        nFN2.Fx += Fn1.Fx
-        nFN2.Fy += Fn1.Fy
-
-        forces[edge.n1] = nfN1
-        forces[edge.n2] = nFN2
-      })
-
-      Object.keys(positions).forEach(node => {
-        let currPos = positions[node];
-        let newPos = copyObject(currPos) as Node;
-        newPos.init.x += 0.005 * forces[node].Fx;
-        newPos.init.y += 0.005 * forces[node].Fy;
-        newP[node] = newPos;
-      });
-
-    }
-    return newP;
-  }
-
-  const netRepForce = (node: Node, nodePositions: NodePositions, l: number): { Fx: number, Fy: number } => {
-    // loop through all other node positions, sum up the net between other nodes and this node
-    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 };
-    Object.keys(nodePositions).forEach(u => {
-      let Fvu = repForce(node, nodePositions[u], l);
-      F.Fx += Fvu.Fx;
-      F.Fy += Fvu.Fy;
-    })
-    return F;
-  }
-
-  const repForce = (v: Node, u: Node, l: number): { Fx: number, Fy: number } => {
-    if (v.init.x === u.init.x && v.init.y === u.init.y) return { Fx: 0.0, Fy: 0.0 };
-
-    // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
-    let dist = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
-    if (dist === 0) return { Fx: 0.0, Fy: 0.0 }
-
-    let PvPu: { x: number, y: number } = { x: u.init.x - v.init.x, y: u.init.y - v.init.y };
-    let scalar = -1*(l ** 2) / (dist**2);
-    return { Fx: scalar * PvPu.x, Fy: scalar * PvPu.y };
-  }
-
-  const netAttrForce = (node: Node, nodePositions: NodePositions, l: number): { Fx: number, Fy: number } => {
-    // loop through all other node positions, sum up the net between other nodes and this node
-    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 };
-    Object.keys(nodePositions).forEach(u => {
-      let Fvu = attrForce(node, nodePositions[u], l);
-      F.Fx += Fvu.Fx;
-      F.Fy += Fvu.Fy;
-    })
-    return F;
-  }
-
-  const attrForce = (v: Node, u: Node, l: number): { Fx: number, Fy: number } => {
-    if (v.init.x === u.init.x && v.init.y === u.init.y) return { Fx: 0.0, Fy: 0.0 };
-
-    // frep(u, v) = (l^2 / ||pv - pu||) * pvpu->
-    let norm = Math.sqrt(Math.pow(v.init.x - u.init.x, 2) + Math.pow(v.init.y - u.init.y, 2));
-    let PuPv: { x: number, y: number } = { x: v.init.x - u.init.x, y: v.init.y - u.init.y };
-    let scalar = (norm ** 2) / l;
-    return { Fx: scalar * PuPv.x, Fy: scalar * PuPv.y };
-  }
-  const netSpringForce = (node: string, nodePositions: NodePositions, edges: Edge[]): { Fx: number, Fy: number } => {
-    // net spring force on a particle
-
-    // loop thru edges, see if this node is involved
-    // if so, compute spring foce btwn it and other node in edge (sum all edges in which this occurs)
-    let u: Node = nodePositions[node];
-
-    // outer: all edges
-    let F: { Fx: number, Fy: number } = { Fx: 0.0, Fy: 0.0 }
-    edges.forEach((e: Edge) => {
-      if (e.n1 === node) {
-        // compute spring force, add it to net force
-        // fSpr
-        let fS = fSpr(u, nodePositions[e.n2])
-        F.Fx += fS.Fx;
-        F.Fy += fS.Fy;}
-      // } else if (e.n2 === node) {
-      //   let fS = fSpr(nodePositions[e.n1], u);
-      //   F.Fx -= fS.Fx;
-      //   F.Fy -= fS.Fy;
-      // }
-    })
-    // console.log(F)
-    return F;
-  }
-
-  const fSpr = (n: Node, o: Node): { Fx: number, Fy: number } => {
-    let dist = Math.sqrt(Math.pow(n.init.x - o.init.x, 2) + Math.pow(n.init.y - o.init.y, 2));
-    // dist -= 400;
-    console.log(dist)
-    let unitVec: Node = copyObject(o) as Node;
-    unitVec.init.x -= n.init.x;
-    unitVec.init.y -= n.init.y;
-
-    unitVec.init.x *= dist * 0.1;
-    unitVec.init.y *= dist * 0.1;
-    return { Fx: unitVec.init.x, Fy: unitVec.init.y };
-  }
-
-
-  const generateNodePositions2 = (nodes: string[]): NodePositions => {
-    let positions: NodePositions = {};
-
-    let heightDenominator = 100;
-    let widthDenominator = 200;
-
-    let maxDistanceFromPrevious = 100;
-
-    var grid: Boolean[][] = Array(Math.floor(innerGraphBoxHeight / heightDenominator));
-    for (var i = 0; i < Math.floor(innerGraphBoxHeight / heightDenominator); i++) {
-      grid[i] = Array(Math.floor(innerGraphBoxWidth / widthDenominator)).fill(false);
-    }
-
-    let prevCoordinate: null | Coordinate = null;
-    nodes.forEach(node => {
-      if (prevCoordinate !== null) {
-
-        var xCoord = prevCoordinate.x + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
-        xCoord = xCoord > 0 ? Math.max(xCoord, 20) : Math.min(xCoord, -20);
-        var yCoord = prevCoordinate.y + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
-        yCoord = yCoord > 0 ? Math.max(yCoord, 20) : Math.min(yCoord, -20);
-
-        let attempts = 0;
-        while (attempts <= 250) {
-          console.log("hi")
-          // Generate coordinate to be close to previously added node
-          xCoord = prevCoordinate.x + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
-          xCoord = xCoord > 0 ? Math.max(xCoord, 20) : Math.min(xCoord, -20);
-          yCoord = prevCoordinate.y + maxDistanceFromPrevious * (2 * (Math.random() - 0.5));
-          yCoord = yCoord > 0 ? Math.max(yCoord, 20) : Math.min(yCoord, -20);
-
-          xCoord = Math.min(innerGraphBoxWidth - NODE_RADIUS, xCoord);
-          xCoord = Math.max(NODE_RADIUS, xCoord);
-          yCoord = Math.min(innerGraphBoxHeight - NODE_RADIUS, yCoord)
-          yCoord = Math.max(NODE_RADIUS, yCoord)
-
-          let gridRowInd = Math.round(yCoord / heightDenominator);
-          gridRowInd = Math.min(gridRowInd, innerGraphBoxWidth / widthDenominator - 1);
-          let gridColInd = Math.round(xCoord / widthDenominator);
-          gridColInd = Math.min(gridColInd, innerGraphBoxHeight / heightDenominator - 1);
-
-          // If this position does not overlap with existing nodes
-          if (!grid[gridRowInd][gridColInd]) {
-            grid[gridRowInd][gridColInd] = true;
-            break;
-          }
-
-          attempts++;
-          console.log('retrying')
-        }
-
-        positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
-      } else {
-        let xCoord = (Math.floor(Math.random() * (innerGraphBoxWidth - NODE_RADIUS * 2)) + NODE_RADIUS);
-        let yCoord = (Math.floor(Math.random() * (innerGraphBoxHeight - NODE_RADIUS * 2)) + NODE_RADIUS);
-        let gridRowInd = Math.round(yCoord / heightDenominator);
-        gridRowInd = Math.min(gridRowInd, innerGraphBoxWidth / widthDenominator - 1);
-        let gridColInd = Math.round(xCoord / widthDenominator);
-        gridColInd = Math.min(gridColInd, innerGraphBoxHeight / heightDenominator - 1);
-        grid[gridRowInd][gridColInd] = true;
-
-        positions[node] = { init: { x: xCoord, y: yCoord }, x: 0, y: 0 };
-      }
-      prevCoordinate = positions[node].init;
-    });
-    console.log(grid)
-    return positions;
-  }
   // Note use the onClick function for all of these buttons
   // and all but the addNode functionality will require a drop down
   // we need to give the select tags, options, so we will need to give
