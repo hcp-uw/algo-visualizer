@@ -45,7 +45,7 @@ class FruchSpring {
         let fr = this.fRep(nVec, bVec);
         let fa = this.fAttr(nVec, bVec);
 
-        if (children.includes(b)) {
+        if (children?.includes(b)) {
           let fs:Vector2F = this.fSpr(nVec, bVec);
           // Vec2D fs = fSpr(nVec, bVec);
           force.add(fs);

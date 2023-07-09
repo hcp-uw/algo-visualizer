@@ -101,8 +101,6 @@ const BreadthFirstSearch = () => {
                 <div id="controlsDiv" className="controls_graph">
                     <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
                 </div>
-
-
             </div>
             <StepTracker />
         </div>

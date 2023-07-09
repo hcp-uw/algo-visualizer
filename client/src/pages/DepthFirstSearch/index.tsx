@@ -77,33 +77,29 @@ const DepthFirstSearch = () => {
             <div className="centered">
                 <AlgorithmPopover data={depthFirstSearchDesc} />
             </div>
-
+        <div style={{display:'flex', flexDirection: 'row'}}>
+            <div id="GraphControlsDiv">
+                <GraphControls/>
+            </div>
             <VisualizerContainer
                 height="400"
                 staticChildren={<Stack />}
                 minScale={0.3}
                 scale={0.8}
-                initPosition={{ x: -150, y: -25 }}
-            >
+                initPosition={{ x: -150, y: -25 }} >
                 <Graph
                     containerWidth={innerGraphBoxWidth}
                     containerHeight={innerGraphBoxHeight}
                     edgeHighlightStyle={edgeHighlightStyle}
                     nodeHighlightStyle={nodeHighlightStyle}
                 />
-            </VisualizerContainer>
-
+                </VisualizerContainer>
+            </div>
             <div className="dfs-graph-controls">
                 <div id="controlsDiv" className="controls_graph">
                     <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
                 </div>
-                <div id="GraphControlsDiv">
-                    <GraphControls/>
-                </div>
-
-
             </div>
-
             <StepTracker />
         </div>
     );
