@@ -238,6 +238,14 @@ const Controls = ({ ...props }) => {
             let arrInput: number[] = arrayInput
                 ? arrayInput.split(",").map((e) => parseInt(e))
                 : makeRandomArray(props.requestSortedArray || false);
+            if (props.isQuickSort) {
+                let temp: number[] = [];
+                for (let i = 0; i < arrInput.length; i++) {
+                    temp.push(arrInput[i])
+                }
+                temp.sort()
+                arrInput.push(temp[Math.floor(temp.length / 2)] - 1)
+            }
             dispatch(updateArray(arrInput));
             dispatch(updateArrayInput(arrInput.toString()));
             toSend.array = arrInput;
