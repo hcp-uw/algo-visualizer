@@ -20,6 +20,7 @@ const MergeSort = () => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
     ) as MergeSortResultType;
+    console.log(algorSteps);
     const currentStep = useSelector(
         (state: RootState) => state.global.currentStep
     );

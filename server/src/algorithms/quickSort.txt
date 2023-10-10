@@ -1,0 +1,135 @@
+function quickSort(arr:number[]) {
+    let result:QuickSortResultType = { steps: [] }
+    let sorted:number[] = [];
+    let swapCount = 0;
+    let ids = [...Array(arr.length).keys()];
+
+    sorted.push(ids[0]);
+    quickSortResultBuilder(result, [...ids], -1, -1, sorted, false, swapCount, "Starting quick sort...", -1)
+    return quickSortHelper(arr, 0, arr.length - 1, result, sorted, swapCount, ids)
+}
+
+function quickSortHelper(arr:number[], left:number, right:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]) {
+    if (arr.length > 1) {
+        let index = partition(arr, left, right, result, sorted, swapCount, ids)
+        if (left < index - 1) {
+            quickSortResultBuilder(result, [...ids], left, index - 1, sorted, true, swapCount, `Swapping: ${arr[left]} and ${[arr[index - 1]]}`, index)
+            quickSortHelper(arr, left, index - 1, result, sorted, swapCount, ids)
+        }
+        if (index < right) {
+            quickSortResultBuilder(result, [...ids], index, right, sorted, true, swapCount, `Swapping: ${arr[index]} and ${[arr[right]]}`, index)
+            quickSortHelper(arr, index, right, result, sorted, swapCount, ids)
+        }
+    }
+    return arr
+}
+
+function findPivot(arr:number[], right:number, left:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]) {
+    let middle = (left + right) / 2;
+    // -1 and -1 means no left and right highlight
+    quickSortResultBuilder(result, [...ids], -1, -1, sorted, false, swapCount, `Choosing pivot: ${arr[middle]}`, middle);
+    return arr[middle];
+}
+
+function partition(arr:number[], left:number, right:number, result:QuickSortResultType, sorted:number[], swapCount:number, ids:number[]): number {
+    const pivot = findPivot(arr, 0, arr.length - 1, result, sorted, swapCount, ids)
+    let l = left;
+    let r = right;
+    quickSortResultBuilder(result, [...ids], l, r, sorted, false, swapCount, "Partitioning...", pivot)
+    while (l <= r) {
+        while (arr[l] < pivot) {
+            l++;
+            quickSortResultBuilder(result, [...ids], l, r, sorted, false, swapCount, "Increment left pointer by one", pivot)
+        }
+        while (arr[r] > pivot) {
+            r--;
+            quickSortResultBuilder(result, [...ids], l, r, sorted, false, swapCount, "Decrement right pointer by one", pivot)
+        }
+        if (l <= r) {
+            swap(arr, l, r);
+            swap(ids, l, r);
+            quickSortResultBuilder(result, [...ids], l, r, sorted, true, swapCount, `Swapping: ${arr[left]} and ${[arr[right]]}`, pivot);
+            l++;
+            r--;
+            quickSortResultBuilder(result, [...ids], l, r, sorted, true, swapCount, "Increment left pointer and decrement right pointer by one after swap", pivot);
+        }
+    }
+    return l;
+}
+
+function quickSortResultBuilder(result:QuickSortResultType, array:number[], leftHighlight:number,
+    rightHighlight:number, sorted: number[], swapped:boolean, swapCount:number,
+    description:string, pivotIndex:number) {
+        result.steps.push({
+            array: array,
+            leftHighlight: leftHighlight, // color this
+            rightHighlight: rightHighlight, // color this
+            sorted: sorted, // low priority on coloring
+            swapped: swapped, //  low priority on coloring
+            swapCount: swapCount,
+            description: description,
+            pivotIndex: pivotIndex, // color this
+        });
+}
+
+
+
+
+
+
+function quickSort(array:number[]) {
+    if (array.length <= 1) return "Array is empty!";
+    // Create an array to hold the indices of the elements to be sorted
+    const indices: number[] = [];
+
+    // Initialize the indices array with the starting and ending indices of the input array
+    indices.push(0);
+    indices.push(array.length - 1);
+
+    // Loop through the indices array, sorting subarrays until there are no more subarrays to sort
+    while (indices.length > 1) {
+        console.log(indices);
+        // Pop the last two indices from the array
+        const end = indices.pop()!;
+        const start = indices.pop()!;
+
+        // Choose a pivot element (in this case, the middle element)
+        const pivot = array[(start + end) / 2];
+
+        // Create two variables to hold the indices of the elements smaller and larger than the pivot
+        let i = start;
+        let j = end;
+        let counter = 0;
+        // Loop through the subarray, swapping elements as necessary to partition the array around the pivot
+        while (i <= j) {
+            console.log(`i: ${i}, j: ${j}, array=${array}, end: ${pivot}, counter: ${counter}`);
+            while (array[i] < pivot) {
+                i++;
+            }
+            while (array[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                [array[i], array[j]] = [array[j], array[i]];
+                i++;
+                j--;
+                counter++;
+            }
+        }
+        console.log(`i: ${i}, j: ${j}, array=${array}`);
+        // If there are elements to the left of the pivot, add the left subarray's start and end indices
+        if (i - 1 > start) {
+            indices.push(start);
+            indices.push(i - 1);
+        }
+
+        // If there are elements to the right of the pivot, add the right subarray's start and end indices
+        if (i + 1 < end) {
+            indices.push(i + 1);
+            indices.push(end);
+        }
+    }
+
+    // Return the sorted array
+    return array;
+  }
