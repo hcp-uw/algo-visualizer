@@ -1,10 +1,3 @@
-.controls_graph{
-  display: flex;
-  margin: 10px;
-  justify-content: left;
-  margin-left: 20%;
-}
-
 .btn .fa {
   color: var(--purple);
   transition-duration: 0.1s;
@@ -22,12 +15,8 @@
   align-items: stretch;
 }
 
-#GraphControlsDiv {
+#GraphControlsContainer {
   margin-top: 2%;
   margin-left: 5%;
   margin-bottom: 2%;
-}
-
-#controlsDiv {
-  margin-top: 2.5%;
 }
