@@ -592,7 +592,6 @@ const GraphControls = ({
         <button
           className="buttonClass"
           onClick={() => {
-            // parse
             parseInputToGraph();
           }}
         >
