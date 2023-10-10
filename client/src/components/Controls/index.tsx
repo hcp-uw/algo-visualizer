@@ -82,6 +82,10 @@ const Controls = ({ ...props }) => {
 
     const edges = useSelector((state: RootState) => state.input.graphEdges);
 
+    const startNode = useSelector((state: RootState) => state.input.startNode);
+    const targetNode = useSelector((state: RootState) => state.input.targetNode);
+
+
     const isGraphInputChanged = useSelector(
         (state: RootState) => state.input.isGraphInputChanged
     );
@@ -231,7 +235,8 @@ const Controls = ({ ...props }) => {
             target?: number;
             nodes?: string[];
             edges?: Edge[];
-            // @todo: add in startNode
+            startNode?: string;
+            targetNode?: string;
         } = {};
         if (require.includes("arrayInput")) {
             // if the input array does not exist (case of error or new page load)
@@ -268,6 +273,10 @@ const Controls = ({ ...props }) => {
                 toSend.nodes = nodes;
                 toSend.edges = edges;
             }
+
+          // send start and target nodes
+          toSend.startNode = startNode;
+          toSend.targetNode = targetNode;
         }
         return AlgoFetcher.post(props.algorithmUrl, toSend);
     };

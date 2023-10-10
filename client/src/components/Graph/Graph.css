@@ -73,11 +73,16 @@ g > text {
 }
 
 .node-target-unfound {
-    stroke: #d6d63b;
-    fill: #fdfd96;
+    stroke: #707035;
+    fill: #d6d65c;
 }
 
 .node-target-found {
+    stroke: #40a527;
+    fill: #b0ff9d;
+}
+
+.node-start {
     stroke: #40a527;
     fill: #b0ff9d;
 }

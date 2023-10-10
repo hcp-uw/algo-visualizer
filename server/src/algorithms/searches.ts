@@ -130,11 +130,11 @@ function binarySearch(arr: number[], target: number) {
 
 type NodeWithPrev = { id: string; from: string };
 
-function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target: string = "") {
+function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string) {
     let result: DepthFirstSearchResultType = {
         steps: [],
         traversalResult: [],
-        startNode: "",
+        startNode: start,
         targetNode: target,
     };
     let adjacencyMap: { [key: string]: string[] } = {};
@@ -186,7 +186,7 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", ta
             });
 
             // processing the target node, stop the search
-            if (node.id.localeCompare(target) === 0){
+            if (target && node.id.localeCompare(target) === 0){
                 result.steps.push({
                     stack: copyObject(stack) as NodeWithPrev[], // @todo: do we want to empty the queue? 
                     currentNode: [],
@@ -239,11 +239,12 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", ta
 }
 
 
-function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target: string = "") {
+function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string ) {
+    console.log('I am in hell')
     let result: BreadthFirstSearchResultType = {
         steps: [],
         traversalResult: [],
-        startNode: "",
+        startNode: start,
         targetNode: target,
     };
     
@@ -297,13 +298,14 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", 
             });
 
             // processing the target node, stop the search
-            if (node.id.localeCompare(target) === 0){
+      
+            if (target && node.id.localeCompare(target) === 0){
                 result.steps.push({
                     queue: copyObject(queue) as NodeWithPrev[], // @todo: do we want to empty the queue? 
                     currentNode: [],
                     visitedNodes: copyObject(visited) as string[], 
                     visitedEdges: copyObject(visitedEdges) as Edge[],
-                    description: `Found target node ${node.id}`,
+                    description: `Found target node ${node.id}, terminating`,
                 });
                 break; // terminate
             }
