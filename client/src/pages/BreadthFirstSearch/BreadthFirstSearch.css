@@ -9,12 +9,6 @@
   margin: 0.5rem 0;
 }
 
-.dfs-graph-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-}
-
 #GraphControlsContainer {
   margin-top: 2%;
   margin-left: 5%;
