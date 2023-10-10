@@ -12,7 +12,7 @@
  *              }
  */
 
-import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
+import { BubbleSortResultType, InsertionSortResultType, MergeSortResultType, QuickSortResultType, SelectionSortResultType } from "../AlgoResultTypes";
 
 /**
  * Helper function to swap two elements in an array.
@@ -313,7 +313,7 @@ function mergeSort(arr:number[]) {
     }
 
     r.steps.push({
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         description: "Starting merge sort...",
@@ -325,7 +325,7 @@ function mergeSort(arr:number[]) {
     mergeSortHelper(arr, ids, r, positions, 0, 0);
 
     r.steps.push({
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: [],
         compareCount: r.compareCount,
         sorted: true,
@@ -349,7 +349,7 @@ function mergeSortHelper(arr:number[], ids:number[], r:MergeSortResultType, posi
     // adding step
     fillSubarrayPositions(ids1, ids2, positions, level, treePos);
     let step = {
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: ids1.concat(ids2),
         compareCount: r.compareCount,
         description: `Splitting array into subarrays...`,
@@ -382,7 +382,7 @@ function mergeSortHelper(arr:number[], ids:number[], r:MergeSortResultType, posi
         // adding step
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: ids1.concat(ids2),
             compareCount: r.compareCount,
             description: `Merging subarrays...`,
@@ -405,7 +405,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
         // add step for comparing
         fillSubarrayPositions(ids1, ids2, positions, level, treePos);
         let step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: [ids1[0], ids2[0]],
             comparing: true,
             compareCount: r.compareCount,
@@ -451,7 +451,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
             };
         }
         step = {
-            positions: copyOject(positions) as Position[],
+            positions: copyObject(positions) as Position[],
             highlight: highlighted,
             swapped: true,
             compareCount: r.compareCount,
@@ -489,7 +489,7 @@ function mergeHelper(arr:number[], ids1:number[], ids2:number[], r:MergeSortResu
         };
     }
     let step = {
-        positions: copyOject(positions) as Position[],
+        positions: copyObject(positions) as Position[],
         highlight: ids3,
         compareCount: r.compareCount,
         description: description,
@@ -519,14 +519,129 @@ function fillSubarrayPositions(ids1:number[], ids2:number[], positions:Position[
     }
 }
 
-function copyOject(obj:Object):Object {
+//----------------------------------QUICK SORT----------------------------------------------
+
+// QuickSortResultType
+
+// steps: {
+//     array: number[];
+//     subArrayStartIndex: number; // color this
+//     subArrayEndIndex: number; // color this
+//     leftPointer: number;
+//     rightPointer: number;
+//     sorted: boolean; // low priority on coloring
+//     swapped: boolean; //  low priority on coloring
+//     swapCount: number;
+//     description: string;
+//     pivotIndex: number; // color this
+// }[];
+
+function quickSort(origArr: number[]) {
+    let arr = copyObject(origArr) as number[];
+    if (arr.length <= 1) return "Array is empty or single-element array!";
+
+    let result: QuickSortResultType = { steps: [] }
+    let swapCount = 0;
+    let ids = [...Array(arr.length).keys()];
+    let stack: number[] = [];
+
+    quickSortResultBuilder(result, [...ids], arr, 0, arr.length - 1, -1, -1, false, false, swapCount, "Starting quick sort...", -1)
+
+    // Choosing the front and back pointer indexes before sorting
+    stack.push(0);
+    stack.push(arr.length - 1);
+
+    // now, let's iterate through each subarray option by pulling each subarray's front/end index
+    // and using that to reference the subarray
+    while (stack.length > 0) {
+        let end: number = stack.pop()!;
+        let start: number = stack.pop()!;
+
+        // starts the partition and swapping process to sort the subarray by the pivot
+        let pivotIndex = quickSortPartition(result, ids, swapCount, arr, start, end);
+
+        if (pivotIndex !== undefined && pivotIndex + 1 < end) {
+            stack.push(pivotIndex + 1);
+            stack.push(end);
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Increment left pointer by one and create right subarray", pivotIndex)
+        } else {
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more right subarray splitting is possible", pivotIndex)
+        }
+
+        // splitting into more subarrays if there's more splitting necessary
+        if (start !== undefined && pivotIndex - 1 > start) {
+            stack.push(start);
+            stack.push(pivotIndex - 1);
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "Decrement right pointer by one and create left subarray", pivotIndex)
+        } else {
+            quickSortResultBuilder(result, [...ids], arr, start, end, -1, -1, false, false, swapCount, "No more left subarray splitting is possible", pivotIndex)
+        }
+    }
+    quickSortResultBuilder(result, [...ids], arr, 0, arr.length - 1, -1, -1, true, false, swapCount, "Algorithm complete!", -1)
+    return result;
+}
+
+function quickSortPartition(result: QuickSortResultType, ids:number[], swapCount: number, arr: number[], start: number, end: number) {
+    let pivotIndex = start;
+    let pivotValue = arr[end];
+
+    quickSortResultBuilder(result, [...ids], arr, start, end, start, start, false, false, swapCount, `Choosing pivot: ${pivotValue}`, end);
+
+    for (let i = start; i < end; i++) {
+        quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `Comparing ${arr[i]} and ${arr[pivotIndex]}`, end);
+        if (arr[i] < pivotValue) {
+            // swap left and right pointers to align with sorting by pivot and Update ids state.
+            [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
+            [ids[i], ids[pivotIndex]] = [ids[pivotIndex], ids[i]];
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}! Swapping: ${arr[i]} and ${arr[pivotIndex]}`, end);
+            // increment and log pivotIndex
+            pivotIndex++;
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, true, swapCount, `Incrementing left pointer by one`, end);
+        } else {
+            quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, i, false, false, swapCount, `${arr[i]} < ${arr[pivotIndex]}, continue incrementing right pointer`, end);
+        }
+    }
+    // the pivotIndex represents where the pivot value should belong to retain sorting by pivot
+    [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]];
+    [ids[pivotIndex], ids[end]] = [ids[end], ids[pivotIndex]];
+    quickSortResultBuilder(result, [...ids], arr, start, end, pivotIndex, end, false, true, swapCount, `Swap pivot with left pointer to finish partitioning by ${pivotValue}`, pivotIndex);
+    return pivotIndex;
+}
+
+function quickSortResultBuilder(
+        result: QuickSortResultType, array: number[], sortedArray: number[],
+        subArrayStartIndex: number, subArrayEndIndex: number,
+        leftPointer: number, rightPointer: number,
+        sorted: boolean, swapped: boolean,
+        swapCount: number,description: string,
+        pivotIndex: number
+    ) {
+        result.steps.push({
+            array: copyObject(array) as number[],
+            sortedArray: copyObject(sortedArray) as number[],
+            subArrayStartIndex: subArrayStartIndex, // color this
+            subArrayEndIndex: subArrayEndIndex, // color this
+            leftPointer: leftPointer,
+            rightPointer: rightPointer,
+            sorted: sorted, // low priority on coloring
+            swapped: swapped, //  low priority on coloring
+            swapCount: swapCount,
+            description: description,
+            pivotIndex: pivotIndex, // color this
+        });
+}
+
+
+//-----------------------------------------------------------------------------------------
+
+function copyObject(obj:Object):Object {
     return JSON.parse(JSON.stringify(obj));
 }
-//-----------------------------------------------------------------------------------------
 
 export {
     bubbleSort,
     insertionSort,
     selectionSort,
     mergeSort,
+    quickSort,
 };
