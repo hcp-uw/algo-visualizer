@@ -240,7 +240,6 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", ta
 
 
 function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string ) {
-    console.log('I am in hell')
     let result: BreadthFirstSearchResultType = {
         steps: [],
         traversalResult: [],
