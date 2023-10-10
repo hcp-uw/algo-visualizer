@@ -216,7 +216,7 @@ const Graph = ({
 
     return (
         // this outter div act as an anchor for any absolute positioned elements
-        <div style={{ position: "relative", border: '1px solid #000'}}>
+        <div style={{ position: "relative", border: '1px solid #000' }}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={`0 0 ${containerWidth} ${containerHeight}`}

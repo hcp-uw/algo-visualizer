@@ -1,17 +1,16 @@
-import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
+import { Node } from "../../CommonTypes";
 import Vector2F from "./Vector2F";
 
 class FruchSpring {
   l: number;
   damping: number;
-  // todo: make this a common type (coordinate)
   center: Vector2F;
-  static a: number = 0.000001;
-  static repMult: number = 15000000.0;
+  static a: number = 0.000001; // scalar affecting net force
+  static repMult: number = 15000000.0; // strenght of repulsive force
   static c: number = 30000.0; // spring constant
   static springLen: number = 40.0; // spring ideal length
-  static centerScalar = 1000;
-  static attrScalar = 0.1;
+  static centerScalar = 1000; // pull towards center
+  static attrScalar = 0.1; // strength of attractive force
 
   constructor(l: number, damping: number, centerx: number, centery: number) {
     this.l = l;
@@ -50,13 +49,16 @@ class FruchSpring {
       let fr = this.fRep(nVec, bVec);
       let fa = this.fAttr(nVec, bVec);
 
+
+      // spring force between pairs of nodes
       if (children?.includes(b)) {
+        // note this only does spring force along one direction,
+        // the other direction will be handled when child's net 
+        // force is processed
         let fs: Vector2F = this.fSpr(nVec, bVec);
-        // Vec2D fs = fSpr(nVec, bVec);
         force.add(fs);
       }
 
-      // forces
       force.add(fr);
       force.add(fa);
     }
