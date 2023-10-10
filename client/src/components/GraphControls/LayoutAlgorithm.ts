@@ -9,7 +9,7 @@ class FruchSpring {
   static repMult: number = 15000000.0; // strenght of repulsive force
   static c: number = 30000.0; // spring constant
   static springLen: number = 40.0; // spring ideal length
-  static centerScalar = 1000; // pull towards center
+  static centerScalar = 10000; // pull towards center
   static attrScalar = 0.1; // strength of attractive force
 
   constructor(l: number, damping: number, centerx: number, centery: number) {
@@ -49,11 +49,10 @@ class FruchSpring {
       let fr = this.fRep(nVec, bVec);
       let fa = this.fAttr(nVec, bVec);
 
-
       // spring force between pairs of nodes
       if (children?.includes(b)) {
         // note this only does spring force along one direction,
-        // the other direction will be handled when child's net 
+        // the other direction will be handled when child's net
         // force is processed
         let fs: Vector2F = this.fSpr(nVec, bVec);
         force.add(fs);
