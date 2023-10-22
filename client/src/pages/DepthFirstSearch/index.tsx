@@ -48,6 +48,17 @@ const DepthFirstSearch = () => {
     } else if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
       style += "node-highlighted ";
     }
+
+    if (id === algorSteps.startNode) {
+      style += "node-start ";
+    } else if (id === algorSteps.targetNode) {
+      if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+        style += "node-target-found "
+      } else {
+        style += "node-target-unfound";
+      }
+    }
+
     return style;
   };
 
@@ -93,7 +104,7 @@ const DepthFirstSearch = () => {
         </VisualizerContainer>
       </div>
       <div className="centered">
-        <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+          <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
       </div>
       <StepTracker />
     </div>

@@ -12,6 +12,8 @@ const initialState: {
     graphNodePositions: NodePositions;
     graphEdges: Edge[];
     isGraphInputChanged: boolean;
+    startNode: string,
+    targetNode?: string
     //prevGraphInput: string;
 } = {
     singleInput: "",
@@ -23,6 +25,8 @@ const initialState: {
     graphNodePositions: DEFAULT_NODES_1({ x: 0, y: 0 }),
     graphEdges: [],
     isGraphInputChanged: false,
+    startNode: "",
+    targetNode: undefined
     //prevGraphInput: "",
 };
 
@@ -70,11 +74,19 @@ export const inputStateSlice = createSlice({
         updateIsGraphInputChanged: (state, action) => {
             state.isGraphInputChanged = action.payload;
         },
+        updateGraphStartNode: (state, action) => {
+            state.startNode = action.payload
+        }, 
+        updateGraphTargetNode: (state, action) => {
+            state.targetNode = action.payload
+        }, 
         resetGraphInput: (state) => {
             state.graphNodes = [];
             state.graphEdges = [];
             state.graphNodePositions = {};
             state.isGraphInputChanged = false;
+            state.targetNode = undefined;
+            state.startNode = ""
         },
         // updatePrevGraphInput: (state, action) => {
         //     state.prevGraphInput = action.payload;
@@ -95,6 +107,8 @@ export const {
     updateGraphNodePositions,
     updateGraphEdges,
     updateIsGraphInputChanged,
+    updateGraphStartNode,
+    updateGraphTargetNode,
     resetGraphInput,
 } = inputStateSlice.actions;
 

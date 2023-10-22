@@ -9,6 +9,8 @@ import {
   updateGraphNodePositions,
   updateGraphNodes,
   updateIsGraphInputChanged,
+  updateGraphStartNode,
+  updateGraphTargetNode,
 } from "../../redux/inputStateSlice";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
@@ -69,6 +71,36 @@ const GraphControls = ({
     dispatch(updateGraphEdges(edges));
     dispatch(updateIsGraphInputChanged(true));
   };
+
+  const startNode = useSelector((state: RootState) => state.input.startNode);
+  const targetNode = useSelector((state: RootState) => state.input.targetNode);
+
+  const setGraphStartNode = (start:string) => {
+    // @todo: validation
+    if (start !== '' &&  !nodes.includes(start)) {
+      // @node: right now this requires user to click 'build graph' first,
+      // which isn't super obvious
+      toast.error('Start node must be in graph', {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+
+    }
+    dispatch(updateGraphStartNode(start));
+    dispatch(updateIsGraphInputChanged(true));
+  } 
+
+  const setGraphTargetNode = (target:string) => {
+    // @todo: validation
+    dispatch(updateGraphTargetNode(target));
+    dispatch(updateIsGraphInputChanged(true));
+  } 
 
   const [textInput, setTextInput] = useState<string>("");
 
@@ -281,6 +313,21 @@ const GraphControls = ({
         >
           build graph.
         </button>
+
+
+        {/*  @todo: dropdowns to select a node (maybe) */}
+        <input
+          className="graph-search-input"
+          onChange={(e) => setGraphStartNode(e.target.value)}
+          placeholder="Start node"
+          value={startNode}
+        />
+        <input
+          className="graph-search-input"
+          onChange={(e) => setGraphTargetNode(e.target.value)}
+          placeholder="Target node"
+          value={targetNode}
+        />
       </div>
     </>
   );
