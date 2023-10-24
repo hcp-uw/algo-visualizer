@@ -13,10 +13,10 @@
 
 import {
   BinarySearchResultType,
-  DepthFirstSearchResultType,
   BreadthFirstSearchResultType,
+  DepthFirstSearchResultType,
+  DijkstraSearchResultType,
   LinearSearchResultType,
-  DijkstraSearchResultType
 } from "../AlgoResultTypes";
 import { Edge, NodeMap } from "../CommonTypes";
 
@@ -135,7 +135,12 @@ type NodeWithPrevAndWeight = { id: string; from: string; weight: number };
 
 type AdjacentNode = { id: string; weight: number };
 
-function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string) {
+function depthFirstSearch(
+  nodes: string[],
+  edges: Edge[],
+  start: string = "",
+  target?: string,
+) {
   let result: DepthFirstSearchResultType = {
     steps: [],
     traversalResult: [],
@@ -243,7 +248,12 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", ta
   return result;
 }
 
-function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string) {
+function breadthFirstSearch(
+  nodes: string[],
+  edges: Edge[],
+  start: string = "",
+  target?: string,
+) {
   let result: BreadthFirstSearchResultType = {
     steps: [],
     traversalResult: [],
@@ -299,7 +309,6 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", 
         description: `Visiting node ${node.id}`,
       });
 
-
       // processing the target node, stop the search
 
       if (target && node.id.localeCompare(target) === 0) {
@@ -319,7 +328,6 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", 
         if (!visited.includes(n)) {
           addedAdj.push(n);
         }
-
       }
 
       // Add nodes to queue from least to greatest order
@@ -360,25 +368,26 @@ function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", 
   return result;
 }
 
-
-
 // The main difference with this and BFS is the fact that we will
 // now be using a priorityQueue rather than using a queue
-function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
+function dijkstraSearch(
+  nodes: string[],
+  edges: Edge[],
+  start: string = "",
+  target?: string,
+) {
   let result: DijkstraSearchResultType = {
     steps: [],
     traversalResult: [],
-    startNode: "",
+    startNode: start,
+    targetNode: target,
   };
-
 
   let adjacencyMap: { [key: string]: string[] } = {};
   let priorityQueue: NodeWithPrevAndWeight[] = [];
   let visited: string[] = [];
   let visitedEdges: Edge[] = [];
-  let edgeWeights: { [key: string]: number } = {}
-
-
+  let edgeWeights: { [key: string]: number } = {};
 
   if (nodes.length === 0) return result;
 
@@ -391,8 +400,10 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
     // add to front so we search from left to right
     adjacencyMap[edges[i].n1].unshift(edges[i].n2);
     adjacencyMap[edges[i].n2].unshift(edges[i].n1);
-    edgeWeights["" + edges[i].n1 + " " + edges[i].n2] = edges[i].weight as number;
-    edgeWeights["" + edges[i].n2 + " " + edges[i].n1] = edges[i].weight as number;
+    edgeWeights["" + edges[i].n1 + " " + edges[i].n2] = edges[i]
+      .weight as number;
+    edgeWeights["" + edges[i].n2 + " " + edges[i].n1] = edges[i]
+      .weight as number;
   }
 
   // The start is going to have a weight of 0
@@ -407,7 +418,7 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
     visitedEdges: copyObject(visitedEdges) as Edge[],
     description: `Starting from node ${start}`,
   });
-  console.log(adjacencyMap)
+  console.log(adjacencyMap);
 
   // dijkstra's algorithm
   while (priorityQueue.length > 0) {
@@ -426,6 +437,17 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
         visitedEdges: copyObject(visitedEdges) as Edge[],
         description: `Visiting node ${node.id}`,
       });
+
+      if (node.id === target) {
+        result.steps.push({
+          priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
+          currentNode: [node.id],
+          visitedNodes: copyObject(visited) as string[],
+          visitedEdges: copyObject(visitedEdges) as Edge[],
+          description: `Found target node ${node.id}, terminating`,
+        });
+        break;
+      }
 
       // collecting adjacent nodes
       var addedAdj: AdjacentNode[] = [];
@@ -448,9 +470,14 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
             }
           }
         }
-        if (!found) priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: Number(adjacentNode.weight) + Number(node.weight) });
+        if (!found) {
+          priorityQueue.push({
+            id: adjacentNode.id,
+            from: node.id,
+            weight: Number(adjacentNode.weight) + Number(node.weight),
+          });
+        }
       }
-
 
       // Here we will need to sort the priorityQueue by the weight of each node
       priorityQueue.sort(function (x, y) {
@@ -470,7 +497,9 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
         visitedEdges: copyObject(visitedEdges) as Edge[],
         description:
           addedAdj.length > 0
-            ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
+            ? `Added adjacent nodes ${addedAdj
+                .map((node) => node.id)
+                .toString()} to the queue.`
             : "Did not add any adjacent nodes.",
       });
     } else {
@@ -495,5 +524,10 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
   return result;
 }
 
-
-export { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch, dijkstraSearch };
+export {
+  binarySearch,
+  breadthFirstSearch,
+  depthFirstSearch,
+  dijkstraSearch,
+  linearSearch,
+};

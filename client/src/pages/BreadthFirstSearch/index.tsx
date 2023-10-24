@@ -87,6 +87,10 @@ const BreadthFirstSearch = () => {
         <AlgorithmPopover data={breadthFirstSearchDesc} />
       </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
+        <div id="GraphControlsContainer">
+          <GraphControls />
+        </div>
+
         <VisualizerContainer
           height="400"
           staticChildren={<Queue />}

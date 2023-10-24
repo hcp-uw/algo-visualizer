@@ -14,10 +14,7 @@ import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
-import {
-  resetGraphInput,
-  resetWeightedGraphInput,
-} from "../../redux/inputStateSlice";
+import { resetWeightedGraphInput } from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/DijkstraSearch/";
 
@@ -38,7 +35,6 @@ const DijkstraSearch = () => {
     // update the name on first load
     dispatch(updateAlgorName(dijkstrasFirstSearchDesc.algorithm));
     dispatch(resetWeightedGraphInput());
-    dispatch(resetGraphInput());
     dispatch(resetSteps());
 
     return () => {
@@ -55,6 +51,17 @@ const DijkstraSearch = () => {
     } else if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
       style += "node-highlighted ";
     }
+
+    if (id === algorSteps.startNode) {
+      style += "node-start ";
+    } else if (id === algorSteps.targetNode) {
+      if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+        style += "node-target-found ";
+      } else {
+        style += "node-target-unfound";
+      }
+    }
+
     return style;
   };
 
@@ -80,22 +87,27 @@ const DijkstraSearch = () => {
       <div className="centered">
         <AlgorithmPopover data={dijkstrasFirstSearchDesc} />
       </div>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div id="GraphControlsContainer">
+          <GraphControls />
+        </div>
 
-      <VisualizerContainer
-        height="400"
-        staticChildren={<PriorityQueue />}
-        minScale={0.3}
-        scale={0.8}
-        initPosition={{ x: -150, y: -25 }}
-      >
-        <Graph
-          containerWidth={innerGraphBoxWidth}
-          containerHeight={innerGraphBoxHeight}
-          edgeHighlightStyle={edgeHighlightStyle}
-          nodeHighlightStyle={nodeHighlightStyle}
-          weighed={true}
-        />
-      </VisualizerContainer>
+        <VisualizerContainer
+          height="400"
+          staticChildren={<PriorityQueue />}
+          minScale={0.3}
+          scale={0.8}
+          initPosition={{ x: -150, y: -25 }}
+        >
+          <Graph
+            containerWidth={innerGraphBoxWidth}
+            containerHeight={innerGraphBoxHeight}
+            edgeHighlightStyle={edgeHighlightStyle}
+            nodeHighlightStyle={nodeHighlightStyle}
+            weighed={true}
+          />
+        </VisualizerContainer>
+      </div>
 
       <div className="dfs-graph-controls">
         <div id="controlsDiv" className="controls_graph">
@@ -104,9 +116,6 @@ const DijkstraSearch = () => {
             require={["graphInput"]}
             edgeWeight={true}
           />
-        </div>
-        <div id="GraphControlsDiv">
-          <GraphControls />
         </div>
       </div>
       <StepTracker />
