@@ -36,6 +36,7 @@ import BubbleSort from "./pages/BubbleSort";
 import InsertionSort from "./pages/InsertionSort";
 import SelectionSort from "./pages/SelectionSort";
 import MergeSort from "./pages/MergeSort";
+import QuickSort from "./pages/QuickSort";
 import DepthFirstSearch from "./pages/DepthFirstSearch";
 import BreadthFirstSearch from "./pages/BreadthFirstSearch";
 import DijkstraSearch from "./pages/DijkstraSearch";
@@ -96,6 +97,7 @@ const App = () => {
                     <Route path="/insertion-sort" element={<InsertionSort />} />
                     <Route path="/selection-sort" element={<SelectionSort />} />
                     <Route path="/merge-sort" element={<MergeSort />} />
+                    <Route path="/quick-sort" element={<QuickSort />} />
                     <Route path="/depth-first-search" element={<DepthFirstSearch />} />
                     <Route path="/breadth-first-search" element={<BreadthFirstSearch />} />
                     <Route path="/dijkstra-search" element={<DijkstraSearch />} />

@@ -9,17 +9,17 @@ import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
 import AlgoFetcher from "../../apis/AlgoFetcher";
 import {
-    updateAlgorSteps,
-    updateArray,
-    updateStep,
+  updateAlgorSteps,
+  updateArray,
+  updateStep,
 } from "../../redux/stateSlice";
 import {
-    updateArrayInput,
-    updateGraphEdges,
-    updateGraphNodes,
-    updateIsGraphInputChanged,
-    updatePrevArrayInput,
-    updatePrevSingleInput,
+  updateArrayInput,
+  updateGraphEdges,
+  updateGraphNodes,
+  updateIsGraphInputChanged,
+  updatePrevArrayInput,
+  updatePrevSingleInput,
 } from "../../redux/inputStateSlice";
 import useInterval from "../hooks/useInterval";
 import { makeRandomArray } from "../../utilities/utilities";
@@ -27,9 +27,9 @@ import { Spinner } from "react-bootstrap";
 import { RootState } from "../../redux/configureStore";
 import { useQuery } from "react-query";
 import {
-    AlgorithmResultType,
-    MergeSortResultType,
-    SortAlgorithmResultType,
+  AlgorithmResultType,
+  MergeSortResultType,
+  SortAlgorithmResultType,
 } from "../../AlgoResultTypes";
 import { Edge, ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
@@ -91,6 +91,10 @@ const Controls = ({ ...props }) => {
   const nodes = useSelector((state: RootState) => state.input.graphNodes);
 
   const edges = useSelector((state: RootState) => state.input.graphEdges);
+
+  const startNode = useSelector((state: RootState) => state.input.startNode);
+  const targetNode = useSelector((state: RootState) => state.input.targetNode);
+
 
   const isGraphInputChanged = useSelector(
     (state: RootState) => state.input.isGraphInputChanged
@@ -237,11 +241,14 @@ const Controls = ({ ...props }) => {
      */
   const fetchAlgorithm = () => {
     doPause();
+    doReset();
     let toSend: {
       array?: number[];
       target?: number;
       nodes?: string[];
       edges?: Edge[];
+      startNode?: string;
+      targetNode?: string;
     } = {};
     if (require.includes("arrayInput")) {
       // if the input array does not exist (case of error or new page load)
@@ -249,6 +256,14 @@ const Controls = ({ ...props }) => {
       let arrInput: number[] = arrayInput
         ? arrayInput.split(",").map((e) => parseInt(e))
         : makeRandomArray(props.requestSortedArray || false);
+      if (props.isQuickSort) {
+        let temp: number[] = [];
+        for (let i = 0; i < arrInput.length; i++) {
+          temp.push(arrInput[i])
+        }
+        temp.sort()
+        arrInput.push(temp[Math.floor(temp.length / 2)] - 1)
+      }
       dispatch(updateArray(arrInput));
       dispatch(updateArrayInput(arrInput.toString()));
       toSend.array = arrInput;
@@ -276,6 +291,9 @@ const Controls = ({ ...props }) => {
         toSend.nodes = nodes;
         toSend.edges = edges;
       }
+      // send start and target nodes
+      toSend.startNode = startNode;
+      toSend.targetNode = targetNode;
     }
 
     return AlgoFetcher.post(props.algorithmUrl, toSend);
@@ -339,7 +357,7 @@ const Controls = ({ ...props }) => {
     (singleInput !== prevSingleInput ||
       arrayInput !== prevArrayInput ||
       isGraphInputChanged) &&
-      isArrayInputValid;
+    isArrayInputValid;
   // spawn a toast when change is available
   if (algorithmFetchAvailable) {
     toast.info("Algorithm fetch available!", {
@@ -384,13 +402,13 @@ const Controls = ({ ...props }) => {
               />
             </button>
           ) : (
-              <button className="btn glow-border" onClick={doPlay}>
-                <FontAwesomeIcon
-                  icon={["fas", "play"]}
-                  className="fa"
-                />
-              </button>
-            )}
+            <button className="btn glow-border" onClick={doPlay}>
+              <FontAwesomeIcon
+                icon={["fas", "play"]}
+                className="fa"
+              />
+            </button>
+          )}
 
           {/* step backward button */}
           <button
@@ -427,9 +445,9 @@ const Controls = ({ ...props }) => {
           <button
             className={
               "btn" +
-                (currentStep < algorSteps.steps.length
-                  ? ""
-                  : " disabled")
+              (currentStep < algorSteps.steps.length
+                ? ""
+                : " disabled")
             }
             title="step forward once"
             onClick={stepForward}
@@ -471,9 +489,9 @@ const Controls = ({ ...props }) => {
           <button
             className={
               "btn" +
-                (algorithmFetchAvailable
-                  ? " build-glow-border"
-                  : " disabled")
+              (algorithmFetchAvailable
+                ? " build-glow-border"
+                : " disabled")
             }
             title="do algorithm"
             onClick={() => {

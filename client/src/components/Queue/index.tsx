@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 import { BreadthFirstSearchResultType } from "../../AlgoResultTypes";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { current } from "@reduxjs/toolkit";
 
 /**
  * this component will use the queue in algorithmsteps
@@ -11,6 +12,11 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
  * @param param0
  * @returns
  */
+
+var currentIndex = -1;
+
+var newStep = -1;
+
 const Queue = ({ ...props }) => {
     const algorSteps = useSelector(
         (state: RootState) => state.global.algorSteps
@@ -25,33 +31,57 @@ const Queue = ({ ...props }) => {
         currentStep > 0 &&
         algorSteps.steps[0].queue;
 
+    // This is the queue object in which we will be using
     const queue = isQueueReady
         ? algorSteps.steps[currentStep - 1].queue.map((e: { id: string; from: string }) => e.id)
         : [];
 
+    // Here we might want to add a class to each of the
+
     const toDisplay = queue.length < 10 ? queue : ["...", ...queue.slice(-9)];
 
-    // STACK ANIMATION IS BUGGY WHEN STACK EXCEED LIMITED AMOUNT
+    newStep = currentStep
+
+    const temp = currentIndex
+    currentIndex = currentStep;
 
     return (
-        <div className="queue-container">
-            <p id="queue-back">Enter Queue</p>
-            <div className="queue-item-holder">
-                {toDisplay.map((item: string, index: number) => (
-                    <div
-                        style={{
-                            top: `${17.5 - index * 3.8}rem`,
-                        }}
-                        className={
-                            "queue-item " +
-                            (item === "..." ? "queue-item-extra " : "")
-                        }
-                    >
-                        {item}
-                    </div>
-                ))}
+        <div className="queueBack-container">
+            <div className="text-queue">
+                <p id="queueBack-back">Enter Queue</p>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <p id="queueBack-front">Leave Queue</p>
             </div>
-            <p id="queue-front">Leave Queue</p>
+            <div className="queueBack-item-holder">
+                <TransitionGroup>
+                    {toDisplay.map((item: string, index: number) => (
+                        <CSSTransition
+                            timeout={350}
+                            key={item + index}
+                            classNames= {temp <= currentStep ? "queue-item" : "queueBack-item"}
+                        >
+                            <div
+                                style={{
+                                    top: `${19 - index * 3.8}rem`,
+                                }}
+                                className={(temp <= currentStep ? "queue-item" : "queueBack-item")
+                                        +
+                                    (item === "..." ? (temp <= currentStep ? "queue-item-extra" : "queueBack-item-extra") : "")
+                                }
+                            >
+                                {item}
+                            </div>
+                        </CSSTransition>
+                    ))}
+                </TransitionGroup>
+            </div>
         </div>
     );
 };

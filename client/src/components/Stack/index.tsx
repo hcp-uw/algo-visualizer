@@ -30,8 +30,6 @@ const Stack = ({ ...props }) => {
 
     const toDisplay = stack.length < 10 ? stack : ["...", ...stack.slice(-9)];
 
-    // STACK ANIMATION IS BUGGY WHEN STACK EXCEED LIMITED AMOUNT
-
     return (
         <div className="stack-container">
             <div className="stack-item-holder">

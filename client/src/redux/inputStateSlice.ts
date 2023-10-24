@@ -12,7 +12,8 @@ const initialState: {
     graphNodePositions: NodePositions;
     graphEdges: Edge[];
     isGraphInputChanged: boolean;
-    //prevGraphInput: string;
+    startNode: string,
+    targetNode: string
 } = {
     singleInput: "",
     prevSingleInput: "",
@@ -23,6 +24,8 @@ const initialState: {
     graphNodePositions: DEFAULT_NODES_1({ x: 0, y: 0 }),
     graphEdges: [],
     isGraphInputChanged: false,
+    startNode: "",
+    targetNode: ""
     //prevGraphInput: "",
 };
 
@@ -70,17 +73,27 @@ export const inputStateSlice = createSlice({
         updateIsGraphInputChanged: (state, action) => {
             state.isGraphInputChanged = action.payload;
         },
+        updateGraphStartNode: (state, action) => {
+            state.startNode = action.payload
+        },
+        updateGraphTargetNode: (state, action) => {
+            state.targetNode = action.payload
+        },
         resetGraphInput: (state) => {
-            state.graphNodes = Object.keys(DEFAULT_NODES_1({x: 0.0, y: 0.0}));
+            state.graphNodes = Object.keys(DEFAULT_NODES_1({ x: 0.0, y: 0.0 }));
             state.graphEdges = DEFAULT_EDGES_1;
-            state.graphNodePositions = DEFAULT_NODES_1({x: 0.0, y:0.0});
+            state.graphNodePositions = DEFAULT_NODES_1({ x: 0.0, y: 0.0 });
             state.isGraphInputChanged = false;
+            state.targetNode = ""
+            state.startNode = ""
         },
         resetWeightedGraphInput: (state) => {
-            state.graphNodes = Object.keys(DEFAULT_NODES_1({x: 0.0, y: 0.0}));
+            state.graphNodes = Object.keys(DEFAULT_NODES_1({ x: 0.0, y: 0.0 }));
             state.graphEdges = DEFAULT_EDGES_2;
-            state.graphNodePositions = DEFAULT_NODES_1({x: 0.0, y:0.0});
+            state.graphNodePositions = DEFAULT_NODES_1({ x: 0.0, y: 0.0 });
             state.isGraphInputChanged = false;
+            state.targetNode = "";
+            state.startNode = ""
         },
         // updatePrevGraphInput: (state, action) => {
         //     state.prevGraphInput = action.payload;
@@ -101,6 +114,8 @@ export const {
     updateGraphNodePositions,
     updateGraphEdges,
     updateIsGraphInputChanged,
+    updateGraphStartNode,
+    updateGraphTargetNode,
     resetGraphInput,
     resetWeightedGraphInput,
 } = inputStateSlice.actions;

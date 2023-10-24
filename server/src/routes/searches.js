@@ -24,14 +24,14 @@ router.post("/linearsearch", (req, res) => {
 });
 
 router.post("/depthfirstsearch", (req, res) => {
-    let r = searches.depthFirstSearch(req.body.nodes, req.body.edges);
+    let r = searches.depthFirstSearch(req.body.nodes, req.body.edges, req.body.startNode, req.body.targetNode);
     res.status(200).send({
         result: r,
     });
 });
 
 router.post("/breadthfirstsearch", (req, res) => {
-    let r = searches.breadthFirstSearch(req.body.nodes, req.body.edges);
+    let r = searches.breadthFirstSearch(req.body.nodes, req.body.edges, req.body.startNode, req.body.targetNode);
     res.status(200).send({
         result: r,
     });

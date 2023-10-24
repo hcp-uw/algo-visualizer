@@ -4,9 +4,11 @@
     "description": "",
     "main": "./build/index.js",
     "scripts": {
-        "test": "jest --coverage",
+        "test": "jest build --coverage",
         "start": "node ./build/index.js",
-        "build": "tsc"
+        "build": "tsc",
+        "bstart": "npm run build && npm start",
+        "btest": "npm run build && npm test"
     },
     "keywords": [],
     "author": "",
@@ -17,7 +19,11 @@
         "express": "^4.17.3",
         "express-rate-limit": "^6.4.0",
         "jest": "^28.1.3",
-        "pg": "^8.7.3",
+        "mysql2": "^3.1.2",
+        "path": "^0.12.7",
         "typescript": "^4.8.2"
+    },
+    "jest": {
+        "verbose": true
     }
 }

@@ -70,18 +70,18 @@ function binarySearch(arr: number[], target: number) {
     foundIndex: -1,
   };
   let l = 0,
-  r = arr.length - 1;
+    r = arr.length - 1;
 
-// array is not sorted
-for (let i = 0; i < arr.length - 1; i++) {
-if (arr[i] > arr[i + 1]) {
-result.steps.push({
-  step: -1,
-l: l,
-r: r,
-description: "Array is not sorted! Search aborted",
-});
-return result;
+  // array is not sorted
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+      result.steps.push({
+        step: -1,
+        l: l,
+        r: r,
+        description: "Array is not sorted! Search aborted",
+      });
+      return result;
     }
   }
 
@@ -131,15 +131,16 @@ return result;
 
 type NodeWithPrev = { id: string; from: string };
 
-type NodeWithPrevAndWeight = { id: string; from: string; weight: number};
+type NodeWithPrevAndWeight = { id: string; from: string; weight: number };
 
-type AdjacentNode = { id: string; weight: number};
+type AdjacentNode = { id: string; weight: number };
 
-function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string) {
   let result: DepthFirstSearchResultType = {
     steps: [],
     traversalResult: [],
-    startNode: "",
+    startNode: start,
+    targetNode: target,
   };
   let adjacencyMap: { [key: string]: string[] } = {};
   let stack: NodeWithPrev[] = [];
@@ -189,6 +190,18 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
         description: `Visiting node ${node.id}`,
       });
 
+      // processing the target node, stop the search
+      if (target && node.id.localeCompare(target) === 0) {
+        result.steps.push({
+          stack: copyObject(stack) as NodeWithPrev[], // @todo: do we want to empty the queue?
+          currentNode: [],
+          visitedNodes: copyObject(visited) as string[],
+          visitedEdges: copyObject(visitedEdges) as Edge[],
+          description: `Found target node ${node.id}`,
+        });
+        break; // terminate
+      }
+
       // collecting adjacent nodes
       let addedAdj = [];
       for (const n of adjacencyMap[node.id]) {
@@ -204,9 +217,9 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
         visitedNodes: copyObject(visited) as string[],
         visitedEdges: copyObject(visitedEdges) as Edge[],
         description:
-        addedAdj.length > 0
-          ? `Added adjacent nodes ${addedAdj.toString()} to the stack.`
-          : "Did not add any adjacent nodes.",
+          addedAdj.length > 0
+            ? `Added adjacent nodes ${addedAdj.toString()} to the stack.`
+            : "Did not add any adjacent nodes.",
       });
     } else {
       result.steps.push({
@@ -220,37 +233,38 @@ function depthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
   }
 
   result.steps.push({
-  stack: copyObject(stack) as NodeWithPrev[],
-currentNode: [],
-visitedNodes: copyObject(visited) as string[],
-visitedEdges: copyObject(visitedEdges) as Edge[],
-description: `Traversal finished.`,
-});
-result.traversalResult = visited;
-return result;
+    stack: copyObject(stack) as NodeWithPrev[],
+    currentNode: [],
+    visitedNodes: copyObject(visited) as string[],
+    visitedEdges: copyObject(visitedEdges) as Edge[],
+    description: `Traversal finished.`,
+  });
+  result.traversalResult = visited;
+  return result;
 }
 
-
-function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "") {
+function breadthFirstSearch(nodes: string[], edges: Edge[], start: string = "", target?: string) {
   let result: BreadthFirstSearchResultType = {
-  steps: [],
-traversalResult: [],
-startNode: "",
-};
-let adjacencyMap: { [key: string]: string[] } = {};
-let queue: NodeWithPrev[] = [];
-let visited: string[] = [];
-let visitedEdges: Edge[] = [];
+    steps: [],
+    traversalResult: [],
+    startNode: start,
+    targetNode: target,
+  };
 
-if (nodes.length === 0) return result;
+  let adjacencyMap: { [key: string]: string[] } = {};
+  let queue: NodeWithPrev[] = [];
+  let visited: string[] = [];
+  let visitedEdges: Edge[] = [];
 
-for (let i = 0; i < nodes.length; i++) {
-adjacencyMap[nodes[i]] = [];
-}
+  if (nodes.length === 0) return result;
 
-// build adjacency map
-for (let i = 0; i < edges.length; i++) {
-// add to front so we search from left to right
+  for (let i = 0; i < nodes.length; i++) {
+    adjacencyMap[nodes[i]] = [];
+  }
+
+  // build adjacency map
+  for (let i = 0; i < edges.length; i++) {
+    // add to front so we search from left to right
     adjacencyMap[edges[i].n1].unshift(edges[i].n2);
     adjacencyMap[edges[i].n2].unshift(edges[i].n1);
   }
@@ -285,6 +299,20 @@ for (let i = 0; i < edges.length; i++) {
         description: `Visiting node ${node.id}`,
       });
 
+
+      // processing the target node, stop the search
+
+      if (target && node.id.localeCompare(target) === 0) {
+        result.steps.push({
+          queue: copyObject(queue) as NodeWithPrev[], // @todo: do we want to empty the queue?
+          currentNode: [],
+          visitedNodes: copyObject(visited) as string[],
+          visitedEdges: copyObject(visitedEdges) as Edge[],
+          description: `Found target node ${node.id}, terminating`,
+        });
+        break; // terminate
+      }
+
       // collecting adjacent nodes
       let addedAdj = [];
       for (const n of adjacencyMap[node.id]) {
@@ -293,6 +321,7 @@ for (let i = 0; i < edges.length; i++) {
         }
 
       }
+
       // Add nodes to queue from least to greatest order
       addedAdj.sort();
       for (const n of addedAdj) {
@@ -305,9 +334,9 @@ for (let i = 0; i < edges.length; i++) {
         visitedNodes: copyObject(visited) as string[],
         visitedEdges: copyObject(visitedEdges) as Edge[],
         description:
-        addedAdj.length > 0
-          ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
-          : "Did not add any adjacent nodes.",
+          addedAdj.length > 0
+            ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
+            : "Did not add any adjacent nodes.",
       });
     } else {
       result.steps.push({
@@ -347,7 +376,7 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
   let priorityQueue: NodeWithPrevAndWeight[] = [];
   let visited: string[] = [];
   let visitedEdges: Edge[] = [];
-  let edgeWeights: {[key:string]: number} = {}
+  let edgeWeights: { [key: string]: number } = {}
 
 
 
@@ -359,8 +388,8 @@ function dijkstraSearch(nodes: string[], edges: Edge[], start: string = "") {
 
   // build adjacency map
   for (let i = 0; i < edges.length; i++) {
-// add to front so we search from left to right
-adjacencyMap[edges[i].n1].unshift(edges[i].n2);
+    // add to front so we search from left to right
+    adjacencyMap[edges[i].n1].unshift(edges[i].n2);
     adjacencyMap[edges[i].n2].unshift(edges[i].n1);
     edgeWeights["" + edges[i].n1 + " " + edges[i].n2] = edges[i].weight as number;
     edgeWeights["" + edges[i].n2 + " " + edges[i].n1] = edges[i].weight as number;
@@ -368,7 +397,7 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
 
   // The start is going to have a weight of 0
   if (!start) start = nodes[0].toString();
-  priorityQueue.push({ id: start, from: "", weight: 0});
+  priorityQueue.push({ id: start, from: "", weight: 0 });
   result.startNode = start.toString();
 
   result.steps.push({
@@ -388,7 +417,7 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
     if (!visited.includes(node.id)) {
       visited.push(node.id);
       // add visited edge
-      visitedEdges.push({ n1: node.from, n2: node.id, weight: node.weight});
+      visitedEdges.push({ n1: node.from, n2: node.id, weight: node.weight });
 
       result.steps.push({
         priorityQueue: copyObject(priorityQueue) as NodeWithPrevAndWeight[],
@@ -399,10 +428,10 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
       });
 
       // collecting adjacent nodes
-      var addedAdj:AdjacentNode[] = [];
+      var addedAdj: AdjacentNode[] = [];
       for (const n of adjacencyMap[node.id]) {
         if (!visited.includes(n)) {
-          addedAdj.push({id:n, weight: edgeWeights["" + node.id + " " + n]});
+          addedAdj.push({ id: n, weight: edgeWeights["" + node.id + " " + n] });
         }
       }
 
@@ -419,12 +448,12 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
             }
           }
         }
-        if (!found) priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: Number(adjacentNode.weight) + Number(node.weight)});
+        if (!found) priorityQueue.push({ id: adjacentNode.id, from: node.id, weight: Number(adjacentNode.weight) + Number(node.weight) });
       }
 
 
       // Here we will need to sort the priorityQueue by the weight of each node
-      priorityQueue.sort(function(x, y) {
+      priorityQueue.sort(function (x, y) {
         if (x.weight < y.weight) {
           return -1;
         }
@@ -440,9 +469,9 @@ adjacencyMap[edges[i].n1].unshift(edges[i].n2);
         visitedNodes: copyObject(visited) as string[],
         visitedEdges: copyObject(visitedEdges) as Edge[],
         description:
-        addedAdj.length > 0
-          ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
-          : "Did not add any adjacent nodes.",
+          addedAdj.length > 0
+            ? `Added adjacent nodes ${addedAdj.toString()} to the queue.`
+            : "Did not add any adjacent nodes.",
       });
     } else {
       result.steps.push({

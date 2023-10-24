@@ -101,9 +101,15 @@ const NavBar = () => {
                                     Selection Sort
                                 </NavDropdown.Item>
                             </LinkContainer>
-
                             <LinkContainer to="/merge-sort">
-                                <NavDropdown.Item>Merge Sort</NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    Merge Sort
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/quick-sort">
+                                <NavDropdown.Item>
+                                    Quick Sort
+                                </NavDropdown.Item>
                             </LinkContainer>
                         </div>
                     </NavDropdown>
@@ -122,7 +128,7 @@ const NavBar = () => {
 
                 <Nav.Item className="ms-auto me-4">
                     <a
-                        href="https://github.com/hieuc/algo-visualizer"
+                        href="https://github.com/Husky-Coding-Project/algo-visualizer"
                         target="_blank"
                         rel="noreferrer"
                         className="github-ref"

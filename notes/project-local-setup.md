@@ -1,36 +1,43 @@
-If you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
+# Standard Installation and Setup
 
-# Backend
+First, if you don't have Node.js, install it from the [official website](https://nodejs.org/en/).
 
-Open a terminal on VS Code. Follow the following steps on terminal:
+## Starting Backend
+
+Open a terminal on VS Code and check you're at your project root folder. Follow the following steps on terminal:
 
 1. Change directory to `server` folder
-
 ```cmd
 cd server
 ```
 
-2. Install necessary packages (Repeat for new new package isntalled)
-
+2. Install necessary packages
 ```cmd
 npm install
 ```
+Do `npm install <package_name>` if you want to install more specific packages in the future. Same for front-end.
 
 3. Compile Typescript (Repeat for every new changes)
-
 ```
 npm run build
 ```
 
-4. Start server
-
+4. Start Node.js server
 ```
 npm start
 ```
 
-# Frontend
+From now onward, if you make changes to the back-end and you want to view the effects of your latest changes, just do Steps 3 and 4.
 
-Open a terminal on VS Code. Follow the follwing steps on terminal:
+If you want to run the back-end tests, do the following
+```
+npm run build
+npm test
+```
+
+## Starting Frontend
+
+Open a terminal on VS Code. Follow the following steps on terminal:
 
 1. Change directory to `client` folder
 
@@ -38,46 +45,61 @@ Open a terminal on VS Code. Follow the follwing steps on terminal:
 cd client
 ```
 
-2. Install necessary packages (Repeat for new new package isntalled)
+2. Install necessary packages
 
 ```cmd
 npm install
 ```
 
-3. Start server
+There might be warnings for vulnerabilities after packages are installed. Run `npm audit fix` to repair any critical severity vulnerabilities. After going through this process, the website will be functional and hosted on `localhost:3000`.
+
+3. Start React App server
 
 ```cmd
 npm start
 ```
 
-There might be warnings for vulnerabilities after packages are installed. They can be ignored for now.
+From now onward, if you make changes to the front-end and you want to view your the effects of your latest changes, just save your code and/or do Step 3.
 
-# Database
 
-Note that at the current state, the database isn't necessary for the AlgoViz to function, it would just make the "Provide Feedback" function useless.
+## Starting Database
 
-**Postgresql Download**
+In process of documenting this! Currently, the database is not very necessary since we only use it to store feedback from users. However, we have our database hosted on SimpleDB as an add-on to Heroku. Contact whoever is hosting AlgoViz to get the DB credentials/environment variables to access.
 
-Follow the Postgres' official [site](https://www.postgresql.org/download/) and select your OS to install Postgres. During setup, use either password `test123` or your own, but then `PGPASSWORD` variable in .env file must be modified for the database to run correctly. Other fields can be left as default.
 
-**Database Setup and Monitor**
+# Local Docker Deployment
 
-1. To start PSQL, there are two options:
-    - Open `SQL Shell`. A quick search from start menu should find it, or it should be located at `C:\Program Files\PostgreSQL\<POSTGRES VERSION>\scripts\runpsql.bat`
-    - Add psql to PATH (e.g. for [Windows](https://blog.sqlbackupandftp.com/setting-windows-path-for-postgres-tools)). Then `psql -U postgres` can be used to start SQL shell from any shell.
-2. Login with default parameters (press enter when prompted) and saved password (default `test123`). After logging in you can make direct database queries through the command line
-3. Copy and run the content of `./server/db/SetupTables.sql` to setup tables.
+If you want to deploy Algo-Viz via Docker locally, first ensure that you have Docker Desktop installed and the Docker CLI installed. Then, run the following Terminal commands to make use of root `Dockerfile` file:
 
-**Setup environment variables** (for local testing)
-
-Create a file called `.env` in `./server/` folder with the following content:
-
-```
-PGUSER=postgres
-PGHOST=localhost
-PGPASSWORD=test123
-PGDATABASE=postgres
-PGPORT=5432
+```cmd
+docker build -f Dockerfile -t algo-viz .
+docker run -p 3001:3001 -t algo-viz
 ```
 
-Express will use this credentials to login to Postgres database.
+This will take a while, but will deploy your codebase at `localhost:3001` (not 3000) because our back-end serves the static build files from our front-end
+
+# Heroku Deployment
+
+As of March 4th, 2023, the Algo Viz codebase is hosted on Heroku on Vikram Nithyanandam's Heroku account.
+Currently, our codebase is deployed to Heroku automatically via Github Actions on the `production` branch. Whenever you want to update the `production` branch with our latest `main` branch code, submit a pull request from `main` to `production`. The deployment process makes use of the `Dockerfile.web` file in root folder, which provide instructions to construct the Docker image for the Algo-Viz application.
+
+To **deploy to Heroku manually without Github Actions**, you can run the following in your Heroku CLI (assuming you have Vikram's credentials) at the root folder.
+
+**ONLY do this if you need to test something Docker + Heroku related that cannot be tested without deploying.**
+
+```cmd
+heroku container:push web --app algo-vizualizer --recursive
+heroku container:release web --app algo-vizualizer
+```
+
+Now, if you want to test the Github Action specifically without merging to production branch, then you can do the following:
+
+Navigate to `.github/workflows/main.yml` and check the following code block:
+```code
+# Run workflow on every push to main branch.
+on:
+  push:
+    branches: [production]
+```
+
+and rename `production` to your current branch. Then, once you commit and push to Github, the Github action will run on your separate branch. **Do NOT use this approach for testing regular code on production unless absolutely necessary.**

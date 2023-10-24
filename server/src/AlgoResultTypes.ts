@@ -33,6 +33,23 @@ type BubbleSortResultType = {
     }[];
 };
 
+type QuickSortResultType = {
+    steps: {
+        array: number[];
+        sortedArray: number[];
+        subArrayStartIndex: number; // color this
+        subArrayEndIndex: number; // color this
+        leftPointer: number;
+        rightPointer: number;
+        sorted: boolean;
+        swapped: boolean; //  low priority on coloring
+        swapCount: number;
+        description: string;
+        pivotIndex: number; // color this
+    }[];
+};
+
+
 type InsertionSortResultType = BubbleSortResultType;
 
 type SelectionSortResultType = {
@@ -74,6 +91,7 @@ type DepthFirstSearchResultType = {
     }[];
     traversalResult: string[];
     startNode: string;
+    targetNode?: string;
 };
 
 type BreadthFirstSearchResultType = {
@@ -86,6 +104,7 @@ type BreadthFirstSearchResultType = {
     }[];
     traversalResult: string[];
     startNode: string;
+    targetNode?: string;
 };
 
 // We most likely will need to have a weight as well for the priorityQueue
@@ -112,7 +131,8 @@ type SortAlgorithmResultType =
     | BubbleSortResultType
     | InsertionSortResultType
     | SelectionSortResultType
-    | MergeSortResultType;
+    | MergeSortResultType
+    | QuickSortResultType;
 
 type AlgorithmResultType = SearchAlgorithmResultType | SortAlgorithmResultType;
 
@@ -123,6 +143,7 @@ export {
     InsertionSortResultType,
     SelectionSortResultType,
     MergeSortResultType,
+    QuickSortResultType,
     AlgorithmResultType,
     SearchAlgorithmResultType,
     SortAlgorithmResultType,
