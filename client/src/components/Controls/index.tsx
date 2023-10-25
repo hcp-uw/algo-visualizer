@@ -3,7 +3,7 @@
  * Currently includes: speed slider, build, play/pause, forward/backward, reset buttons
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Controls.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,31 +35,28 @@ import { Edge, ExtraData } from "../../CommonTypes";
 import { toast } from "react-toastify";
 import SingleInput from "../SingleInput";
 import ArrayInput from "../ArrayInput";
-import { DEFAULT_EDGES_1, DEFAULT_EDGES_2, DEFAULT_NODES_1 } from "../../assets/default-values";
+import {
+  DEFAULT_EDGES_1,
+  DEFAULT_EDGES_2,
+  DEFAULT_NODES_1,
+} from "../../assets/default-values";
 
 type AlgorithmType = "arrayInput" | "singleInput" | "graphInput";
 type GraphType = "Dijkstra" | "NotDijkstra"; // Genius
 
 const Controls = ({ ...props }) => {
-
-
   const [renderControls, setRenderControls] = useState(false);
   useEffect(() => {
-    setRenderControls(true)
-  }
-    , [])
+    setRenderControls(true);
+  }, []);
 
   const extraData: ExtraData = props.extraData || [];
   const require: AlgorithmType[] = props.require || [];
   const edgeWeight: boolean = props.edgeWeight || false;
 
   // global state variables we pull from redux store
-  let currentStep = useSelector(
-    (state: RootState) => state.global.currentStep
-  );
-  const algorSteps = useSelector(
-    (state: RootState) => state.global.algorSteps
-  );
+  let currentStep = useSelector((state: RootState) => state.global.currentStep);
+  const algorSteps = useSelector((state: RootState) => state.global.algorSteps);
 
   // local state variables
   const [playSpeed, setSpeed] = useState<number>(5);
@@ -69,23 +66,21 @@ const Controls = ({ ...props }) => {
 
   // saving a previous value for input box, for glowing animation of buttons
   const singleInput = useSelector(
-    (state: RootState) => state.input.singleInput
+    (state: RootState) => state.input.singleInput,
   );
   const prevSingleInput = useSelector(
-    (state: RootState) => state.input.prevSingleInput
+    (state: RootState) => state.input.prevSingleInput,
   );
 
   // states related to array input box
   const prevArrayInput = useSelector(
-    (state: RootState) => state.input.prevArrayInput
+    (state: RootState) => state.input.prevArrayInput,
   );
 
-  const arrayInput = useSelector(
-    (state: RootState) => state.input.arrayInput
-  );
+  const arrayInput = useSelector((state: RootState) => state.input.arrayInput);
 
   const isArrayInputValid = useSelector(
-    (state: RootState) => state.input.isArrayInputValid
+    (state: RootState) => state.input.isArrayInputValid,
   );
 
   const nodes = useSelector((state: RootState) => state.input.graphNodes);
@@ -95,9 +90,8 @@ const Controls = ({ ...props }) => {
   const startNode = useSelector((state: RootState) => state.input.startNode);
   const targetNode = useSelector((state: RootState) => state.input.targetNode);
 
-
   const isGraphInputChanged = useSelector(
-    (state: RootState) => state.input.isGraphInputChanged
+    (state: RootState) => state.input.isGraphInputChanged,
   );
 
   // miscellaneous variables
@@ -105,18 +99,17 @@ const Controls = ({ ...props }) => {
   const totalStep = algorSteps.steps.length ? algorSteps.steps.length : -1;
   const dispatch = useDispatch();
 
-
   // set up the loop for automatic play
   // only activates if the 'playing' variable is true
   useInterval(
     () => {
       stepForward();
     },
-    playing ? interval : null
+    playing ? interval : null,
   );
 
   const handleProgressBarClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     let target = e.nativeEvent.target as HTMLDivElement;
     if (target) {
@@ -134,7 +127,7 @@ const Controls = ({ ...props }) => {
       dispatch(
         updateStep({
           currentStep: newStep,
-        })
+        }),
       );
     } else {
       // at the of possible steps, just pause
@@ -149,17 +142,17 @@ const Controls = ({ ...props }) => {
       dispatch(
         updateStep({
           currentStep: newStep,
-        })
+        }),
       );
       doPause();
     }
   };
 
   /**
-     * Callback that handle data fetched from backend
-     *
-     * @param data
-     */
+   * Callback that handle data fetched from backend
+   *
+   * @param data
+   */
   const onAlgorithmFetched = (data: any) => {
     // data is empty then dont do anything
     if (!data) return;
@@ -169,7 +162,7 @@ const Controls = ({ ...props }) => {
     dispatch(
       updateAlgorSteps({
         algorSteps: dataResult,
-      })
+      }),
     );
     // set previous variables to most updated value used in the algorithm request
     if (require.includes("singleInput")) {
@@ -237,8 +230,8 @@ const Controls = ({ ...props }) => {
   };
 
   /**
-     * Handle state setup before sending the request for algorithm fetch.
-     */
+   * Handle state setup before sending the request for algorithm fetch.
+   */
   const fetchAlgorithm = () => {
     doPause();
     doReset();
@@ -259,10 +252,10 @@ const Controls = ({ ...props }) => {
       if (props.isQuickSort) {
         let temp: number[] = [];
         for (let i = 0; i < arrInput.length; i++) {
-          temp.push(arrInput[i])
+          temp.push(arrInput[i]);
         }
-        temp.sort()
-        arrInput.push(temp[Math.floor(temp.length / 2)] - 1)
+        temp.sort();
+        arrInput.push(temp[Math.floor(temp.length / 2)] - 1);
       }
       dispatch(updateArray(arrInput));
       dispatch(updateArrayInput(arrInput.toString()));
@@ -279,10 +272,10 @@ const Controls = ({ ...props }) => {
         // default values
         toSend.nodes = Object.keys(DEFAULT_NODES_1({ x: 0, y: 0 }));
         if (edgeWeight == true) {
-          console.log("here")
+          console.log("here");
           toSend.edges = DEFAULT_EDGES_2;
         } else {
-          console.log("huhh")
+          console.log("huhh");
           toSend.edges = DEFAULT_EDGES_1;
         }
         dispatch(updateGraphNodes(toSend.nodes));
@@ -308,10 +301,8 @@ const Controls = ({ ...props }) => {
       refetchOnWindowFocus: false,
       retry: 1,
       enabled: renderControls,
-
       // cacheTime: 1000
     },
-
   );
 
   // reset the current step back to 0
@@ -321,10 +312,10 @@ const Controls = ({ ...props }) => {
   };
 
   /**
-     * For the play button.
-     *
-     * Automatically increment the step at an interval.
-     */
+   * For the play button.
+   *
+   * Automatically increment the step at an interval.
+   */
   const doPlay = () => {
     // restart the current step if the user press play at last step
     if (currentStep === algorSteps.steps.length) {
@@ -344,10 +335,10 @@ const Controls = ({ ...props }) => {
   };
 
   /**
-     * For the speed slider.
-     *
-     * @param {number} speed parse from the slider element
-     */
+   * For the speed slider.
+   *
+   * @param {number} speed parse from the slider element
+   */
   const updateSpeed = (speed: string): void => {
     let spd = parseInt(speed);
     setSpeed(spd);
@@ -376,9 +367,7 @@ const Controls = ({ ...props }) => {
         {/* Array Input */}
         <div className="array-input-container">
           {/* search input box (if applied) */}
-          {require.includes("singleInput") ? (
-            <SingleInput></SingleInput>
-          ) : null}
+          {require.includes("singleInput") ? <SingleInput></SingleInput> : null}
 
           {require.includes("arrayInput") ? (
             <ArrayInput
@@ -392,21 +381,12 @@ const Controls = ({ ...props }) => {
         <div className="controls">
           {/* play/pause button, conditioned by the 'playing' state */}
           {playing ? (
-            <button
-              className="btn glow-border-anim"
-              onClick={doPause}
-            >
-              <FontAwesomeIcon
-                icon={["fas", "pause"]}
-                className="fa"
-              />
+            <button className="btn glow-border-anim" onClick={doPause}>
+              <FontAwesomeIcon icon={["fas", "pause"]} className="fa" />
             </button>
           ) : (
             <button className="btn glow-border" onClick={doPlay}>
-              <FontAwesomeIcon
-                icon={["fas", "play"]}
-                className="fa"
-              />
+              <FontAwesomeIcon icon={["fas", "play"]} className="fa" />
             </button>
           )}
 
@@ -416,10 +396,7 @@ const Controls = ({ ...props }) => {
             title="step backward once"
             onClick={stepBackward}
           >
-            <FontAwesomeIcon
-              icon={["fas", "backward-step"]}
-              className="fa"
-            />
+            <FontAwesomeIcon icon={["fas", "backward-step"]} className="fa" />
           </button>
 
           {/* Progress bar */}
@@ -435,39 +412,24 @@ const Controls = ({ ...props }) => {
             ></div>
             <span className="step-label">
               <b>{currentStep}</b>/
-              {algorSteps.steps.length
-                ? algorSteps.steps.length
-                : 0}
+              {algorSteps.steps.length ? algorSteps.steps.length : 0}
             </span>
           </div>
 
           {/* step forward button */}
           <button
             className={
-              "btn" +
-              (currentStep < algorSteps.steps.length
-                ? ""
-                : " disabled")
+              "btn" + (currentStep < algorSteps.steps.length ? "" : " disabled")
             }
             title="step forward once"
             onClick={stepForward}
           >
-            <FontAwesomeIcon
-              icon={["fas", "forward-step"]}
-              className="fa"
-            />
+            <FontAwesomeIcon icon={["fas", "forward-step"]} className="fa" />
           </button>
 
           {/* reset button: reset the current step to 0 */}
-          <button
-            className="btn"
-            title="restart algorithm"
-            onClick={doReset}
-          >
-            <FontAwesomeIcon
-              icon={["fas", "rotate-left"]}
-              className="fa"
-            />
+          <button className="btn" title="restart algorithm" onClick={doReset}>
+            <FontAwesomeIcon icon={["fas", "rotate-left"]} className="fa" />
           </button>
         </div>
 
@@ -489,20 +451,15 @@ const Controls = ({ ...props }) => {
           <button
             className={
               "btn" +
-              (algorithmFetchAvailable
-                ? " build-glow-border"
-                : " disabled")
+              (algorithmFetchAvailable ? " build-glow-border" : " disabled")
             }
             title="do algorithm"
             onClick={() => {
               refetch();
             }}
           >
-            <span>Fetch Algorithm </span>
-            <FontAwesomeIcon
-              icon={["fas", "wrench"]}
-              className="fa"
-            />
+            <span>Fetch Algorithm</span>
+            <FontAwesomeIcon icon={["fas", "wrench"]} className="fa" />
           </button>
 
           <Spinner
