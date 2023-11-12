@@ -14,7 +14,10 @@ import Stack from "../../components/Stack";
 import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
-import { resetGraphInput, resetWeightedGraphInput } from "../../redux/inputStateSlice";
+import {
+  resetGraphInput,
+  resetWeightedGraphInput,
+} from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/depthfirstsearch/";
 
@@ -35,13 +38,13 @@ const DepthFirstSearch = () => {
     // update the name on first load
     dispatch(updateAlgorName(depthFirstSearchDesc.algorithm));
     dispatch(resetGraphInput());
-    dispatch(resetSteps())
+    dispatch(resetSteps());
 
     return () => {
-      console.log('>>>>>');
+      console.log(">>>>>");
       dispatch(resetGraphInput());
       dispatch(resetSteps());
-      dispatch(resetWeightedGraphInput())
+      dispatch(resetWeightedGraphInput());
     };
   }, []);
 
@@ -49,17 +52,17 @@ const DepthFirstSearch = () => {
     let style = " ";
     if (currentStep < 1 || algorSteps.steps.length === 0) return style;
 
-    if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
+    if (algorSteps.steps[currentStep - 1].currentNode?.includes(id)) {
       style += "node-active ";
-    } else if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+    } else if (algorSteps.steps[currentStep - 1]?.visitedNodes?.includes(id)) {
       style += "node-highlighted ";
     }
 
     if (id === algorSteps.startNode) {
       style += "node-start ";
     } else if (id === algorSteps.targetNode) {
-      if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
-        style += "node-target-found "
+      if (algorSteps.steps[currentStep - 1].visitedNodes?.includes(id)) {
+        style += "node-target-found ";
       } else {
         style += "node-target-unfound";
       }

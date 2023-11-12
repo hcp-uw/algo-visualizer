@@ -45,16 +45,16 @@ const BreadthFirstSearch = () => {
     let style = " ";
     if (currentStep < 1 || algorSteps.steps.length === 0) return style;
 
-    if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
+    if (algorSteps.steps[currentStep - 1].currentNode?.includes(id)) {
       style += "node-active ";
-    } else if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+    } else if (algorSteps.steps[currentStep - 1]?.visitedNodes?.includes(id)) {
       style += "node-highlighted ";
     }
 
     if (id === algorSteps.startNode) {
       style += "node-start ";
     } else if (id === algorSteps.targetNode) {
-      if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+      if (algorSteps.steps[currentStep - 1].visitedNodes?.includes(id)) {
         style += "node-target-found ";
       } else {
         style += "node-target-unfound";
