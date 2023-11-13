@@ -115,15 +115,7 @@ const NavBar = () => {
                     </NavDropdown>
 
                     {/* pathfinding dropdown */}
-                    <NavDropdown title="Pathfinding" disabled>
-                        <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
-                            <div style={invisBlock}>m</div>
-                            <NavDropdown.Item href="#">1st</NavDropdown.Item>
-                            <NavDropdown.Item href="#">2nd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">3rd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                        </div>
-                    </NavDropdown>
+                    
                 </Navbar.Collapse>
 
                 <Nav.Item className="ms-auto me-4">
