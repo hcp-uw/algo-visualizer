@@ -67,6 +67,13 @@ g > text {
     animation: edge-anim 3s ease forwards;
 }
 
+.shortest-edge-highlighted {
+    stroke: rgb(4, 150, 62);
+    stroke-dasharray: 100%;
+    stroke-dashoffset: 100%;
+    animation: edge-anim 3s ease forwards;
+}
+
 .node-highlighted {
     stroke: #9124d4;
     fill: #e7c1ff;
