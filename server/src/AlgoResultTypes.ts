@@ -118,6 +118,7 @@ type DijkstraSearchResultType = {
   traversalResult: string[];
   startNode: string;
   targetNode?: string;
+  shortestPath?: string[];
 };
 
 type SearchAlgorithmResultType =

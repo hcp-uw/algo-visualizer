@@ -11,7 +11,10 @@ import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
 import { dijkstrasFirstSearchDesc } from "../../assets/algorithm-information.js";
 import PriorityQueue from "../../components/PriorityQueue";
 import { RootState } from "../../redux/configureStore";
-import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
+import {
+  DijkstrasSearchResultType,
+  GraphAlgorithmResultType,
+} from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
 import { resetWeightedGraphInput } from "../../redux/inputStateSlice";
@@ -25,7 +28,7 @@ const DijkstraSearch = () => {
 
   const algorSteps = useSelector(
     (state: RootState) => state.global.algorSteps,
-  ) as GraphAlgorithmResultType;
+  ) as DijkstrasSearchResultType;
   const currentStep = useSelector(
     (state: RootState) => state.global.currentStep,
   );
@@ -69,6 +72,17 @@ const DijkstraSearch = () => {
     let style = " ";
     if (currentStep < 1 || algorSteps.steps.length === 0) return style;
 
+    // @todo: don't compute this every time :)
+    let shortestPathEdgesKinda = [];
+    if (algorSteps.shortestPath) {
+      for (let i = 0; i < algorSteps.shortestPath.length - 1; i++) {
+        shortestPathEdgesKinda.push([
+          algorSteps.shortestPath[i],
+          algorSteps.shortestPath[i + 1],
+        ]);
+      }
+    }
+
     let currentEdgeList = algorSteps.steps[currentStep - 1].visitedEdges;
     for (const edg of currentEdgeList) {
       if (`${edge.n1} ${edge.n2}` === `${edg.n1} ${edg.n2}`) {
@@ -79,6 +93,23 @@ const DijkstraSearch = () => {
         break;
       }
     }
+
+    if (
+      shortestPathEdgesKinda.length &&
+      currentStep === algorSteps.steps.length
+    ) {
+      if (
+        shortestPathEdgesKinda.find((el) => {
+          return (
+            (el[0] === edge.n1 && el[1] === edge.n2) ||
+            (el[0] === edge.n2 && el[1] === edge.n1)
+          );
+        })
+      ) {
+        style += "shortest-edge-highlighted ";
+      }
+    }
+
     return style;
   };
 

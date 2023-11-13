@@ -384,6 +384,7 @@ function dijkstraSearch(
   };
 
   let adjacencyMap: { [key: string]: string[] } = {};
+  let predecessorMap: { [key: string]: string | undefined } = {};
   let priorityQueue: NodeWithPrevAndWeight[] = [];
   let visited: string[] = [];
   let visitedEdges: Edge[] = [];
@@ -393,6 +394,7 @@ function dijkstraSearch(
 
   for (let i = 0; i < nodes.length; i++) {
     adjacencyMap[nodes[i]] = [];
+    predecessorMap[nodes[i]] = undefined;
   }
 
   // build adjacency map
@@ -446,6 +448,7 @@ function dijkstraSearch(
           visitedEdges: copyObject(visitedEdges) as Edge[],
           description: `Found target node ${node.id}, terminating`,
         });
+        result.shortestPath = getPathFromPredecessorMap(target, predecessorMap);
         break;
       }
 
@@ -466,6 +469,7 @@ function dijkstraSearch(
             found = true;
             if (pqNode.weight > adjacentNode.weight) {
               pqNode.weight = adjacentNode.weight + node.weight;
+              predecessorMap[adjacentNode.id] = node.id;
               pqNode.from = node.id;
             }
           }
@@ -476,6 +480,7 @@ function dijkstraSearch(
             from: node.id,
             weight: Number(adjacentNode.weight) + Number(node.weight),
           });
+          predecessorMap[adjacentNode.id] = node.id;
         }
       }
 
@@ -523,6 +528,25 @@ function dijkstraSearch(
   result.traversalResult = visited;
   return result;
 }
+
+const getPathFromPredecessorMap = (
+  targetNodeId: string,
+  predecessorMap: {
+    [key: string]: string | undefined;
+  },
+) => {
+  console.log(predecessorMap);
+  let nodePath: string[] = [];
+  let pred = predecessorMap[targetNodeId];
+  nodePath.push(targetNodeId);
+  while (pred !== undefined) {
+    nodePath.push(pred);
+    pred = predecessorMap[pred];
+  }
+  nodePath.reverse();
+  console.log(nodePath);
+  return nodePath;
+};
 
 export {
   binarySearch,
