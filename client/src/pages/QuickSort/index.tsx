@@ -82,7 +82,7 @@ const QuickSort = () => {
             currentStep > 0 &&
             // IF THE CURRENT ALGORITHM NAME IS MATCHING
             currentName === quickSortDesc.algorithm;
-        
+
         if (isStepAvailable) {
             var steps = algorSteps.steps;
             var currentArrayStep = currentStep - 1;
@@ -95,18 +95,18 @@ const QuickSort = () => {
             var pivotIndex = steps[currentArrayStep].pivotIndex; // color this
             var sorted: boolean = steps[currentArrayStep].sorted;
             console.log(algorSteps.steps[currentArrayStep]);
-            
+
         } else {
             // default array from contianing numbers from 0 to array.length - 1
             arr = [...Array(array.length).keys()];
         }
-        
+
         // more needs to happen!
         return array.map((value, id) => {
             var style = "";
             var height = 0
             let x = arr.indexOf(id) - id;
-            
+
             if (isStepAvailable) {
                 if (sorted) {
                     style = " highlight-success";
@@ -174,7 +174,7 @@ const QuickSort = () => {
             <VisualizerContainer
                 height={250}
                 scale={0.70}
-                initPosition={{x: 0, y: 100}}>
+                initPosition={{ x: 0, y: 100 }}>
                 <Array1D drawBlocks={drawBlocks} />
             </VisualizerContainer>
 

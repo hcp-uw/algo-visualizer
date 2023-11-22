@@ -1,4 +1,4 @@
-const { linearSearch, binarySearch, depthFirstSearch, breadthFirstSearch } = require("./searches");
+const { linearSearch, binarySearch, depthFirstSearch, dijkstraSearch, breadthFirstSearch } = require("./searches");
 
 test("Linear Search basic cases", () => {
     // a success case
@@ -155,6 +155,26 @@ test("Depth First Search edge cases", () => {
     expect(result).toEqual(["0"]);
 });
 
+test("dijkstra's test case", () => {
+    // make the edges
+    let nodes = [0, 1, 2, 3, 4, 5, 6];
+    let edges = [
+        { n1: 0, n2: 1, weight: 2 },
+        { n1: 0, n2: 2, weight: 6 },
+        { n1: 1, n2: 3, weight: 5 },
+        { n1: 2, n2: 3, weight: 8 },
+        { n1: 3, n2: 4, weight: 10 },
+        { n1: 3, n2: 5, weight: 15 },
+        { n1: 5, n2: 6, weight: 6 },
+        { n1: 4, n2: 6, weight: 2 },
+        { n1: 4, n2: 5, weight: 6 },
+    ];
+
+    var result = dijkstraSearch(nodes, edges, 0).traversalResult;
+
+    expect(result).toEqual(["0", 1, 2, 3, 4, 6, 5]);
+
+});
 test("Breadth First Search edge cases", () => {
     // empty graph
     let nodes = [];
@@ -170,4 +190,3 @@ test("Breadth First Search edge cases", () => {
     result = breadthFirstSearch(nodes, edges, 0).traversalResult;
     expect(result).toEqual(["0"]);
 });
-

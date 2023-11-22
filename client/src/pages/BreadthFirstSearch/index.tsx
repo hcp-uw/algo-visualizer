@@ -14,6 +14,7 @@ import { RootState } from "../../redux/configureStore";
 import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
 import { Edge } from "../../CommonTypes";
 import GraphControls from "../../components/GraphControls";
+import { resetGraphInput } from "../../redux/inputStateSlice";
 
 const ALGORITHM_URL = "searches/breadthfirstsearch/";
 
@@ -33,6 +34,7 @@ const BreadthFirstSearch = () => {
   useEffect(() => {
     // update the name on first load
     dispatch(updateAlgorName(breadthFirstSearchDesc.algorithm));
+    dispatch(resetGraphInput());
 
     return () => {
       dispatch(resetSteps());
@@ -43,17 +45,17 @@ const BreadthFirstSearch = () => {
     let style = " ";
     if (currentStep < 1 || algorSteps.steps.length === 0) return style;
 
-    if (algorSteps.steps[currentStep - 1].currentNode.includes(id)) {
+    if (algorSteps.steps[currentStep - 1].currentNode?.includes(id)) {
       style += "node-active ";
-    } else if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
+    } else if (algorSteps.steps[currentStep - 1]?.visitedNodes?.includes(id)) {
       style += "node-highlighted ";
     }
 
     if (id === algorSteps.startNode) {
       style += "node-start ";
     } else if (id === algorSteps.targetNode) {
-      if (algorSteps.steps[currentStep - 1].visitedNodes.includes(id)) {
-        style += "node-target-found "
+      if (algorSteps.steps[currentStep - 1].visitedNodes?.includes(id)) {
+        style += "node-target-found ";
       } else {
         style += "node-target-unfound";
       }
@@ -88,6 +90,7 @@ const BreadthFirstSearch = () => {
         <div id="GraphControlsContainer">
           <GraphControls />
         </div>
+
         <VisualizerContainer
           height="400"
           staticChildren={<Queue />}

@@ -3,7 +3,7 @@ import "./GraphControls.css";
 import FruchSpring from "./LayoutAlgorithm";
 
 import { Coordinate, Edge, Node, NodePositions } from "../../CommonTypes";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   updateGraphEdges,
   updateGraphNodePositions,
@@ -72,12 +72,12 @@ const GraphControls = ({
     dispatch(updateIsGraphInputChanged(true));
   };
 
-  const startNode = useSelector((state: RootState) => state.input.startNode);
-  const targetNode = useSelector((state: RootState) => state.input.targetNode);
+  const startNode = useSelector((state: RootState) => state.input.startNode, shallowEqual);
+  const targetNode = useSelector((state: RootState) => state.input.targetNode, shallowEqual);
 
-  const setGraphStartNode = (start:string) => {
+  const setGraphStartNode = (start: string) => {
     // @todo: validation
-    if (start !== '' &&  !nodes.includes(start)) {
+    if (start !== '' && !nodes.includes(start)) {
       // @node: right now this requires user to click 'build graph' first,
       // which isn't super obvious
       toast.error('Start node must be in graph', {
@@ -94,13 +94,20 @@ const GraphControls = ({
     }
     dispatch(updateGraphStartNode(start));
     dispatch(updateIsGraphInputChanged(true));
-  } 
+  }
 
-  const setGraphTargetNode = (target:string) => {
+  useEffect(() => {
+    console.log(`target node is ${targetNode}`)
+
+  }, [targetNode])
+
+
+  const [targetNodeState, setTargetNodeState] = useState<string>("");
+  const setGraphTargetNode = (target: string) => {
     // @todo: validation
     dispatch(updateGraphTargetNode(target));
     dispatch(updateIsGraphInputChanged(true));
-  } 
+  }
 
   const [textInput, setTextInput] = useState<string>("");
 

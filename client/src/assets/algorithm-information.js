@@ -98,3 +98,11 @@ export const breadthFirstSearchDesc = {
         "Space Complexity: O(|Vertices|)",
     ],
 };
+
+export const dijkstrasFirstSearchDesc = {
+    algorithm: "Dijkstra's Search Algorithm",
+    title: "Dijkstra's search algorithm is an algorithm for finding the most optimal path(shortest path or least-weight path) between one node to all other nodes in a graph data structure. (add more later)",
+    description: [
+        "Worst Time Complexity: O(Edges * log(Vertices))"
+    ],
+}
