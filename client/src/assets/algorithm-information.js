@@ -57,7 +57,7 @@ export const selectionSortDesc = {
 
 export const mergeSortDesc = {
     algorithm: "Merge Sort",
-    title: "Merge Sort is a divide and conquer algorithm that recursively divides the array in half to the smallest subarrays, then gradually sorts and merges adjacent subarrays until it reaches the original array size.",
+    title: "Merge Sort is a divide-and-conquer sorting algorithm that recursively divides the array in half to the smallest subarrays, then gradually sorts and merges adjacent subarrays until it reaches the original array size.",
     description: [
         "Worst Time Complexity: O(nlog(n))",
         "In Practice Complexity: O(nlog(n))",
@@ -65,6 +65,19 @@ export const mergeSortDesc = {
         "Space Complexity: O(n)",
         "Stable: Yes",
         "In-place: No",
+    ],
+};
+
+export const quickSortDesc = {
+    algorithm: "Quick Sort",
+    title: "Quicksort is a divide-and-conquer sorting algorithm that recursively partitions an array into smaller sub-arrays. Each subarray is partitioned by choosing a pivot value and assigning other values to subarrays depending on whether the numbers are less than/greater than the pivot. The resulting sorted subarrays are merged back together to form a fully sorted array.",
+    description: [
+        "Worst Time Complexity: O(n^2)",
+        "In Practice Complexity: O(nlog(n))",
+        "Best Complexity: O(nlog(n))",
+        "Space Complexity: O(n)",
+        "Stable: No",
+        "In-place: Yes",
     ],
 };
 
@@ -85,3 +98,11 @@ export const breadthFirstSearchDesc = {
         "Space Complexity: O(|Vertices|)",
     ],
 };
+
+export const dijkstrasFirstSearchDesc = {
+    algorithm: "Dijkstra's Search Algorithm",
+    title: "Dijkstra's search algorithm is an algorithm for finding the most optimal path(shortest path or least-weight path) between one node to all other nodes in a graph data structure. (add more later)",
+    description: [
+        "Worst Time Complexity: O(Edges * log(Vertices))"
+    ],
+}

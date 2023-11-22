@@ -1,34 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./DepthFirstSearch.css";
+import "./DijkstraSearch.css";
 import Controls from "../../components/Controls";
-import GraphControls from "../../components/GraphControls";
 import StepTracker from "../../components/StepTracker";
 import Graph from "../../components/Graph";
 import VisualizerContainer from "../../components/VisualizerContainer";
 import { useDispatch, useSelector } from "react-redux";
 import AlgorithmPopover from "../../components/AlgorithmPopover";
 import { resetSteps, updateAlgorName } from "../../redux/stateSlice";
-import { depthFirstSearchDesc } from "../../assets/algorithm-information.js";
-import Stack from "../../components/Stack";
+import { dijkstrasFirstSearchDesc } from "../../assets/algorithm-information.js";
+import PriorityQueue from "../../components/PriorityQueue";
 import { RootState } from "../../redux/configureStore";
-import { GraphAlgorithmResultType } from "../../AlgoResultTypes";
-import { Edge } from "../../CommonTypes";
 import {
-  resetGraphInput,
-  resetWeightedGraphInput,
-} from "../../redux/inputStateSlice";
+  DijkstrasSearchResultType,
+  GraphAlgorithmResultType,
+} from "../../AlgoResultTypes";
+import { Edge } from "../../CommonTypes";
+import GraphControls from "../../components/GraphControls";
+import { resetWeightedGraphInput } from "../../redux/inputStateSlice";
 
-const ALGORITHM_URL = "searches/depthfirstsearch/";
+const ALGORITHM_URL = "searches/DijkstraSearch/";
 
-const DepthFirstSearch = () => {
+const DijkstraSearch = () => {
   const dispatch = useDispatch();
   const innerGraphBoxWidth = 1400;
   const innerGraphBoxHeight = 450;
 
   const algorSteps = useSelector(
     (state: RootState) => state.global.algorSteps,
-  ) as GraphAlgorithmResultType;
+  ) as DijkstrasSearchResultType;
   const currentStep = useSelector(
     (state: RootState) => state.global.currentStep,
   );
@@ -36,15 +36,12 @@ const DepthFirstSearch = () => {
   // reset data upon exiting the page
   useEffect(() => {
     // update the name on first load
-    dispatch(updateAlgorName(depthFirstSearchDesc.algorithm));
-    dispatch(resetGraphInput());
+    dispatch(updateAlgorName(dijkstrasFirstSearchDesc.algorithm));
+    dispatch(resetWeightedGraphInput());
     dispatch(resetSteps());
 
     return () => {
-      console.log(">>>>>");
-      dispatch(resetGraphInput());
       dispatch(resetSteps());
-      dispatch(resetWeightedGraphInput());
     };
   }, []);
 
@@ -75,6 +72,17 @@ const DepthFirstSearch = () => {
     let style = " ";
     if (currentStep < 1 || algorSteps.steps.length === 0) return style;
 
+    // @todo: don't compute this every time :)
+    let shortestPathEdgesKinda = [];
+    if (algorSteps.shortestPath) {
+      for (let i = 0; i < algorSteps.shortestPath.length - 1; i++) {
+        shortestPathEdgesKinda.push([
+          algorSteps.shortestPath[i],
+          algorSteps.shortestPath[i + 1],
+        ]);
+      }
+    }
+
     let currentEdgeList = algorSteps.steps[currentStep - 1].visitedEdges;
     for (const edg of currentEdgeList) {
       if (`${edge.n1} ${edge.n2}` === `${edg.n1} ${edg.n2}`) {
@@ -85,21 +93,39 @@ const DepthFirstSearch = () => {
         break;
       }
     }
+
+    if (
+      shortestPathEdgesKinda.length &&
+      currentStep === algorSteps.steps.length
+    ) {
+      if (
+        shortestPathEdgesKinda.find((el) => {
+          return (
+            (el[0] === edge.n1 && el[1] === edge.n2) ||
+            (el[0] === edge.n2 && el[1] === edge.n1)
+          );
+        })
+      ) {
+        style += "shortest-edge-highlighted ";
+      }
+    }
+
     return style;
   };
 
   return (
     <div className="content">
       <div className="centered">
-        <AlgorithmPopover data={depthFirstSearchDesc} />
+        <AlgorithmPopover data={dijkstrasFirstSearchDesc} />
       </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div id="GraphControlsContainer">
           <GraphControls />
         </div>
+
         <VisualizerContainer
           height="400"
-          staticChildren={<Stack />}
+          staticChildren={<PriorityQueue />}
           minScale={0.3}
           scale={0.8}
           initPosition={{ x: -150, y: -25 }}
@@ -109,15 +135,23 @@ const DepthFirstSearch = () => {
             containerHeight={innerGraphBoxHeight}
             edgeHighlightStyle={edgeHighlightStyle}
             nodeHighlightStyle={nodeHighlightStyle}
+            weighed={true}
           />
         </VisualizerContainer>
       </div>
-      <div className="centered">
-        <Controls algorithmUrl={ALGORITHM_URL} require={["graphInput"]} />
+
+      <div className="dfs-graph-controls">
+        <div id="controlsDiv" className="controls_graph">
+          <Controls
+            algorithmUrl={ALGORITHM_URL}
+            require={["graphInput"]}
+            edgeWeight={true}
+          />
+        </div>
       </div>
       <StepTracker />
     </div>
   );
 };
 
-export default DepthFirstSearch;
+export default DijkstraSearch;

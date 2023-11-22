@@ -3,6 +3,7 @@ const {
     insertionSort,
     selectionSort,
     mergeSort,
+    quickSort,
 } = require("./sorts");
 
 const BASE_CASE = [
@@ -214,3 +215,36 @@ test("Merge Sort edge cases", () => {
     // array with medium amount of elements case
     mergeSortTest(MEDIUM_CASE);
 });
+
+test("Quick Sort base cases", () => {
+    // base case
+    standardTest(quickSort, BASE_CASE);
+});
+
+test("Quick Sort edge cases", () => {
+    // empty array
+    expect(quickSort([])).toEqual("Array is empty or single-element array!");
+
+    // sorted array case (pass!)
+    standardTest(quickSort, SORTED_CASE);
+
+    // array with negative values case (pass!)
+    standardTest(quickSort, INCLUDE_NEGATIVES_CASE);
+
+    // array with float values case
+    standardTest(quickSort, FLOATS_CASE);
+
+    // array with duplicate values case
+    standardTest(quickSort, INCLUDE_DUPS_CASE);
+
+    // array with medium amount of elements case
+    standardTest(quickSort, MEDIUM_CASE);
+
+})
+
+function testSortOnly(algorithm, arr) {
+    let sortedArr = algorithm(arr);
+    for (let i = 0; i < sortedArr.length - 1; i++) {
+        expect(sortedArr[i]).toBeLessThanOrEqual(sortedArr[i + 1]);
+    }
+}

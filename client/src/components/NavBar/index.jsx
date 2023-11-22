@@ -76,6 +76,11 @@ const NavBar = () => {
                                     Breadth First Search
                                 </NavDropdown.Item>
                             </LinkContainer>
+                            <LinkContainer to="/dijkstra-search">
+                                <NavDropdown.Item>
+                                    Dijkstra's Search
+                                </NavDropdown.Item>
+                            </LinkContainer>
                         </div>
                     </NavDropdown>
 
@@ -96,23 +101,21 @@ const NavBar = () => {
                                     Selection Sort
                                 </NavDropdown.Item>
                             </LinkContainer>
-
                             <LinkContainer to="/merge-sort">
-                                <NavDropdown.Item>Merge Sort</NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    Merge Sort
+                                </NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to="/quick-sort">
+                                <NavDropdown.Item>
+                                    Quick Sort
+                                </NavDropdown.Item>
                             </LinkContainer>
                         </div>
                     </NavDropdown>
 
                     {/* pathfinding dropdown */}
-                    <NavDropdown title="Pathfinding" disabled>
-                        <div onMouseLeave={(e) => navMenuMouseLeave(e)}>
-                            <div style={invisBlock}>m</div>
-                            <NavDropdown.Item href="#">1st</NavDropdown.Item>
-                            <NavDropdown.Item href="#">2nd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">3rd</NavDropdown.Item>
-                            <NavDropdown.Item href="#">4th</NavDropdown.Item>
-                        </div>
-                    </NavDropdown>
+                    
                 </Navbar.Collapse>
 
                 <Nav.Item className="ms-auto me-4">
