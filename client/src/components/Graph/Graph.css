@@ -63,7 +63,7 @@ g > text {
 
 .edge-highlighted,
 .edge-highlighted-reverse {
-  stroke: rgb(177, 200, 197);
+  stroke: rgb(187, 97, 217);
   stroke-dasharray: 100%;
   stroke-dashoffset: 100%;
   animation: edge-anim 3s ease forwards;
