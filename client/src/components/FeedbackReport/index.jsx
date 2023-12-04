@@ -7,6 +7,7 @@ import AlgoFetcher from "../../apis/AlgoFetcher";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import emailjs from '@emailjs/browser';
 
 const FeedbackReport = (props) => {
     // state for putting the popup on/off
@@ -19,6 +20,29 @@ const FeedbackReport = (props) => {
 
     // feedback input box ref
     const inputRef = useRef(null);
+
+    const sendEmail = () => {
+        if (inputRef.current.value.trim()) {
+
+            let algorithmData = { name, array, currentStep };
+            let params = {
+                message: inputRef.current.value.trim(),
+                algo: name,
+                state: array.toString(),
+                steps: currentStep
+            }
+            emailjs.send('service_jtr2pnd', 'template_t6rz3uu', params, 'WgFww_SkUhQPjIR3b')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
+            // clear string in input box
+            inputRef.current.value = "";
+            // close the popup
+            swapActive(!active);
+        }
+    };
 
     // send data and feedback message to backend
     const handleSendFeedback = () => {
@@ -86,7 +110,7 @@ const FeedbackReport = (props) => {
                         <div>
                             <button
                                 className="btn"
-                                onClick={handleSendFeedback}
+                                onClick={sendEmail}
                             >
                                 Submit
                             </button>
